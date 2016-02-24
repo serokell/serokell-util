@@ -12,16 +12,27 @@ module Serokell.Util.Exceptions
        , eitherToFail
        ) where
 
-import           Control.Exception   (Exception, SomeException)
-import           Control.Monad.Catch (MonadThrow, throwM)
-import           Data.Text           (Text)
-import           Data.Typeable       (Typeable)
+import           Control.Exception      (Exception, SomeException, fromException)
+import           Control.Monad.Catch    (MonadThrow, throwM)
+import           Data.Text              (Text)
+import qualified Data.Text.Format       as F
+import           Data.Text.Buildable    (Buildable (build))
+import           Data.Text.Lazy.Builder (Builder)
+import           Data.Typeable          (Typeable)
+
+instance Buildable SomeException where
+  build e =
+    maybe (build $ F.Shown e) (build :: TextException -> Builder) $ fromException e
 
 -- | Use this type if you are sure that text description is enough to represent error
 newtype TextException = TextException { teMessage :: Text }
   deriving (Show, Typeable)
 
 instance Exception TextException
+
+instance Buildable TextException where
+  build = 
+    F.build "TextException: {}" . F.Only . teMessage
 
 throwText :: MonadThrow m
           => Text -> m a
