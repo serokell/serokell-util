@@ -19,12 +19,14 @@ library
   exposed-modules:     Serokell.Util
                        Serokell.Util.Exceptions
                        Serokell.Util.Lens
+                       Serokell.Util.StaticAssert
                        Serokell.Util.Text
                        Serokell.Util.Verify
   build-depends:       base >= 4.8
                      , lens
                      , exceptions
                      , mtl
+                     , template-haskell
                      , text
                      , text-format
                      , transformers
@@ -35,4 +37,3 @@ library
                      , RecordWildCards
                      , DeriveDataTypeable
                      , GeneralizedNewtypeDeriving
-

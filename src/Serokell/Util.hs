@@ -2,13 +2,11 @@
 
 module Serokell.Util
        (
-         module Serokell.Util.Exceptions
-       , module Serokell.Util.Lens
-       , module Serokell.Util.Text
-       , module Serokell.Util.Verify
+         module Exports
        ) where
 
-import           Serokell.Util.Exceptions
-import           Serokell.Util.Lens
-import           Serokell.Util.Text
-import           Serokell.Util.Verify
+import           Serokell.Util.Exceptions   as Exports
+import           Serokell.Util.Lens         as Exports
+import           Serokell.Util.StaticAssert as Exports
+import           Serokell.Util.Text         as Exports
+import           Serokell.Util.Verify       as Exports
