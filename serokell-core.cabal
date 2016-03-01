@@ -17,12 +17,14 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     Serokell.Util
+                       Serokell.Util.AcidState
                        Serokell.Util.Exceptions
                        Serokell.Util.Lens
                        Serokell.Util.StaticAssert
                        Serokell.Util.Text
                        Serokell.Util.Verify
-  build-depends:       base >= 4.8
+  build-depends:       acid-state
+                     , base >= 4.8
                      , lens
                      , exceptions
                      , mtl

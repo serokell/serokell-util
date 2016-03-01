@@ -5,6 +5,7 @@ module Serokell.Util
          module Exports
        ) where
 
+import           Serokell.Util.AcidState    as Exports
 import           Serokell.Util.Exceptions   as Exports
 import           Serokell.Util.Lens         as Exports
 import           Serokell.Util.StaticAssert as Exports
