@@ -14,6 +14,7 @@ module Serokell.Util.Text
        , listBuilderJSON
        , listBuilderJSONIndent
        , listBuilderCSV
+       , mapBuilder
        , format
        , format'
        , formatSingle
@@ -111,6 +112,15 @@ listBuilderCSV
   :: (Foldable t, Buildable a)
   => t a -> B.Builder
 listBuilderCSV = _listBuilder "" "," ""
+
+-- | There is no appropriate type class for map, but all reasonable maps
+-- provide something like `assocs` function.
+-- Map may be printed prettier (e. g. using JSON style), it's future task.
+-- Haing at least one such function is still good anyway.
+mapBuilder
+    :: (Traversable t, Buildable k, Buildable v)
+    => t (k, v) -> B.Builder
+mapBuilder = listBuilderJSON . fmap pairBuilder
 
 -- | Re-export Data.Text.Format.format for convenience
 format :: Params ps
