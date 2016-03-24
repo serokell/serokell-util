@@ -10,6 +10,7 @@ module Serokell.Util.Text
        , showDecimal
        , showDecimal'
        , pairBuilder
+       , tripleBuilder
        , listBuilder
        , listBuilderJSON
        , listBuilderJSONIndent
@@ -65,9 +66,16 @@ showDecimal' :: (Integral a)
 showDecimal' = LT.toStrict . showDecimal
 
 -- | Prints pair (a, b) like "(a, b)"
-pairBuilder :: (Buildable a, Buildable b)
-            => (a, b) -> B.Builder
+pairBuilder
+    :: (Buildable a, Buildable b)
+    => (a, b) -> B.Builder
 pairBuilder = F.build "({}, {})"
+
+-- | Prints triple (a, b, c) like "(a, b, c)"
+tripleBuilder
+    :: (Buildable a, Buildable b, Buildable c)
+    => (a, b, c) -> B.Builder
+tripleBuilder = F.build "({}, {}, {})"
 
 -- | Generic list builder. Prints prefix, then values separated by delimiter and finally suffix
 listBuilder
