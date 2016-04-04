@@ -1,0 +1,73 @@
+# Default stylish-haskell configuration file in Serokell.
+# It's based on default config provided by `stylish-haskell --defaults` but has some changes
+# ==================================
+
+# The stylish-haskell tool is mainly configured by specifying steps. These steps
+# are a list, so they have an order, and one specific step may appear more than
+# once (if needed). Each file is processed by these steps in the given order.
+steps:
+  # Finally we decided to disable unicode_syntax
+  # - unicode_syntax:
+  #     # We disable `add_language_pragma` feature because
+  #     # we have `UnicodeSyntax` in `default-extensions`
+  #     add_language_pragma: false
+
+  # Import cleanup
+  - imports:
+      # There are different ways we can align names and lists.
+      #
+      # - global: Align the import names and import list throughout the entire
+      #   file.
+      #
+      # - file: Like global, but don't add padding when there are no qualified
+      #   imports in the file.
+      #
+      # - group: Only align the imports per group (a group is formed by adjacent
+      #   import lines).
+      #
+      # - none: Do not perform any alignment.
+      #
+      # Default: global.
+      align: global
+
+  # Language pragmas
+  - language_pragmas:
+      # We can generate different styles of language pragma lists.
+      #
+      # - vertical: Vertical-spaced language pragmas, one per line.
+      #
+      # - compact: A more compact style.
+      #
+      # - compact_line: Similar to compact, but wrap each line with
+      #   `{-#LANGUAGE #-}'.
+      #
+      # Default: vertical.
+      style: vertical
+
+      # stylish-haskell can detect redundancy of some language pragmas. If this
+      # is set to true, it will remove those redundant pragmas. Default: true.
+      remove_redundant: true
+
+  # Align the types in record declarations
+  - records: {}
+
+  # Replace tabs by spaces. This is disabled by default.
+  # - tabs:
+  #     # Number of spaces to use for each tab. Default: 8, as specified by the
+  #     # Haskell report.
+  #     spaces: 8
+
+  # Remove trailing whitespace
+  - trailing_whitespace: {}
+
+# A common setting is the number of columns (parts of) code will be wrapped
+# to. Different steps take this into account. Default: 80.
+columns: 80
+
+# These are exactly the same extensions which we enable in .cabal file
+# Some of them shouldn't affect stylish-haskell, but let them be
+language_extensions:
+  - OverloadedStrings
+  - RecordWildCards
+  - DeriveDataTypeable
+  - GeneralizedNewtypeDeriving
