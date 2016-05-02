@@ -6,7 +6,7 @@ version:             0.1.0.0
 synopsis:            General-purpose functions by Serokell
 
 homepage:            http://gitlab.serokell.io/serokell-team/serokell-core
-license:             AllRightsReserved
+license:             MIT
 license-file:        LICENSE
 author:              Ante Kegalj, Ivan Gromakovsky, Jonn Mostovoy, Mikhail Volhov
 maintainer:          Jonn Mostovoy <jm@serokell.io>

@@ -18,6 +18,7 @@ let
         ];
         homepage = "http://gitlab.serokell.io/serokell-team/serokell-core";
         description = "General-purpose functions by Serokell";
+        license = stdenv.lib.licenses.mit;
       };
 
   haskellPackages = if compiler == "default"
