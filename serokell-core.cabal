@@ -18,6 +18,7 @@ cabal-version:       >=1.10
 library
   exposed-modules:     Serokell.Util
                        Serokell.Util.AcidState
+                       Serokell.Util.Bench
                        Serokell.Util.Common
                        Serokell.Util.OptParse
                        Serokell.Util.Exceptions
@@ -27,8 +28,10 @@ library
                        Serokell.Util.Verify
   build-depends:       acid-state
                      , base >= 4.8
-                     , lens
+                     , clock
                      , exceptions
+                     , formatting
+                     , lens
                      , mtl
                      , optparse-applicative
                      , template-haskell

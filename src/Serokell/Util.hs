@@ -6,6 +6,7 @@ module Serokell.Util
        ) where
 
 import           Serokell.Util.AcidState    as Exports
+import           Serokell.Util.Bench        as Exports
 import           Serokell.Util.Common       as Exports
 import           Serokell.Util.Exceptions   as Exports
 import           Serokell.Util.Lens         as Exports
