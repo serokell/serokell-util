@@ -16,9 +16,11 @@ import           Formatting          (bprint, shown, (%))
 import           System.Clock        (Clock (..), TimeSpec, diffTimeSpec,
                                       getTime, toNanoSecs)
 
+-- | Get current wall-clock time as any time unit.
 getWallTime :: (MonadIO m, TimeUnit a) => m a
 getWallTime = timeSpecToUnit <$> getTime' Realtime
 
+-- | Get current CPU time as any time unit.
 getCpuTime :: (MonadIO m, TimeUnit a) => m a
 getCpuTime = timeSpecToUnit <$> getTime' ProcessCPUTime
 
@@ -28,6 +30,7 @@ timeSpecToUnit
 timeSpecToUnit =
     convertUnit . (fromIntegral :: Integer -> Nanosecond) . toNanoSecs
 
+-- | Data type describing time passed during execution of something.
 data ElapsedTime = ElapsedTime
     { elapsedCpuTime  :: TimeSpec
     , elapsedWallTime :: TimeSpec
@@ -43,6 +46,7 @@ instance Buildable ElapsedTime where
 getTime' :: MonadIO m => Clock -> m TimeSpec
 getTime' = liftIO . getTime
 
+-- | Run given action and measure how much time it took.
 measureTime :: MonadIO m => m a -> m (ElapsedTime, a)
 measureTime action = do
     cpuTimeBefore <- getTime' ProcessCPUTime
@@ -57,9 +61,13 @@ measureTime action = do
           }
         , res)
 
+-- | Run given action and measure how much time it took, discarding
+-- result of action.
 measureTime_ :: MonadIO m => m a -> m ElapsedTime
 measureTime_ = fmap fst . measureTime
 
+-- | Given number of actions executed during some time, this function
+-- calculates how much actions were executed per second (on average).
 perSecond :: (Real a, Fractional b) => a -> TimeSpec -> b
 perSecond n time =
     fromRational $
