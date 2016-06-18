@@ -9,17 +9,18 @@ module Serokell.Util.Bench
        , perSecond
        ) where
 
+import           Control.Monad.Trans (MonadIO (liftIO))
 import           Data.Text.Buildable (Buildable (build))
 import           Data.Time.Units     (Nanosecond, TimeUnit, convertUnit)
 import           Formatting          (bprint, shown, (%))
 import           System.Clock        (Clock (..), TimeSpec, diffTimeSpec,
                                       getTime, toNanoSecs)
 
-getWallTime :: TimeUnit a => IO a
-getWallTime = timeSpecToUnit <$> getTime Realtime
+getWallTime :: (MonadIO m, TimeUnit a) => m a
+getWallTime = timeSpecToUnit <$> getTime' Realtime
 
-getCpuTime :: TimeUnit a => IO a
-getCpuTime = timeSpecToUnit <$> getTime ProcessCPUTime
+getCpuTime :: (MonadIO m, TimeUnit a) => m a
+getCpuTime = timeSpecToUnit <$> getTime' ProcessCPUTime
 
 timeSpecToUnit
     :: TimeUnit a
@@ -39,13 +40,16 @@ instance Buildable ElapsedTime where
             elapsedCpuTime
             elapsedWallTime
 
-measureTime :: IO a -> IO (ElapsedTime, a)
+getTime' :: MonadIO m => Clock -> m TimeSpec
+getTime' = liftIO . getTime
+
+measureTime :: MonadIO m => m a -> m (ElapsedTime, a)
 measureTime action = do
-    cpuTimeBefore <- getTime ProcessCPUTime
-    wallTimeBefore <- getTime Realtime
+    cpuTimeBefore <- getTime' ProcessCPUTime
+    wallTimeBefore <- getTime' Realtime
     res <- action
-    wallTimeAfter <- getTime Realtime
-    cpuTimeAfter <- getTime ProcessCPUTime
+    wallTimeAfter <- getTime' Realtime
+    cpuTimeAfter <- getTime' ProcessCPUTime
     return
         ( ElapsedTime
           { elapsedCpuTime = cpuTimeAfter `diffTimeSpec` cpuTimeBefore
@@ -53,7 +57,7 @@ measureTime action = do
           }
         , res)
 
-measureTime_ :: IO a -> IO ElapsedTime
+measureTime_ :: MonadIO m => m a -> m ElapsedTime
 measureTime_ = fmap fst . measureTime
 
 perSecond :: (Real a, Fractional b) => a -> TimeSpec -> b
