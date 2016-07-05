@@ -16,7 +16,8 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     Serokell.Util
+  exposed-modules:     Serokell.Aeson.Options
+                       Serokell.Util
                        Serokell.Util.AcidState
                        Serokell.Util.Bench
                        Serokell.Util.Common
@@ -27,6 +28,7 @@ library
                        Serokell.Util.Text
                        Serokell.Util.Verify
   build-depends:       acid-state
+                     , aeson
                      , base >= 4.8
                      , clock
                      , exceptions
