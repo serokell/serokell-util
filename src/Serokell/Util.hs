@@ -8,6 +8,7 @@ module Serokell.Util
 import           Serokell.Util.AcidState    as Exports
 import           Serokell.Util.Bench        as Exports
 import           Serokell.Util.Common       as Exports
+import           Serokell.Util.Concurrent   as Exports
 import           Serokell.Util.Exceptions   as Exports
 import           Serokell.Util.Lens         as Exports
 import           Serokell.Util.OptParse     as Exports

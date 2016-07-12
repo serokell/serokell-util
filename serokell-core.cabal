@@ -21,6 +21,7 @@ library
                        Serokell.Util.AcidState
                        Serokell.Util.Bench
                        Serokell.Util.Common
+                       Serokell.Util.Concurrent
                        Serokell.Util.OptParse
                        Serokell.Util.Exceptions
                        Serokell.Util.Lens
