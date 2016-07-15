@@ -19,6 +19,7 @@ library
   exposed-modules:     Serokell.Aeson.Options
                        Serokell.Util
                        Serokell.Util.AcidState
+                       Serokell.Util.Base64
                        Serokell.Util.Bench
                        Serokell.Util.Common
                        Serokell.Util.Concurrent
@@ -31,7 +32,10 @@ library
   build-depends:       acid-state
                      , aeson
                      , base >= 4.8
+                     , base64-bytestring
+                     , bytestring
                      , clock
+                     , either
                      , exceptions
                      , formatting
                      , lens
