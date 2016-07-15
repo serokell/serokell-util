@@ -53,4 +53,7 @@ leaveTagOptions = defaultOptions { A.constructorTagModifier = id }
 
 -- | Options used for communication with PureScript by default.
 defaultOptionsPS :: A.Options
-defaultOptionsPS = A.defaultOptions
+defaultOptionsPS =
+    A.defaultOptions
+    { A.constructorTagModifier = headToLower . stripConstructorPrefix
+    }
