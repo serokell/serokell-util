@@ -6,6 +6,7 @@
 module Serokell.Aeson.Options
        ( defaultOptions
        , leaveTagOptions
+       , defaultOptionsPS
        ) where
 
 import qualified Data.Aeson.TH as A
@@ -49,3 +50,7 @@ defaultOptions =
 -- modify constructor tags.
 leaveTagOptions :: A.Options
 leaveTagOptions = defaultOptions { A.constructorTagModifier = id }
+
+-- | Options used for communication with PureScript by default.
+defaultOptionsPS :: A.Options
+defaultOptionsPS = A.defaultOptions
