@@ -193,6 +193,7 @@ module Data.Set
 ```
 
 Some clarifications:
+
 1. Use indent 8 spaces for export list.
 2. You can split export list into sections or just write all as single section.
 3. Each section should be sorted alpabetically but classes, data types and type
@@ -217,15 +218,15 @@ and third party libraries. Try to use `qualified` imports only if import list is
 big enought or there are conflicts in names. This makes the code more robust
 against changes in these libraries. Exception: _The Prelude_.
 
-If `import` is unqualifed then put _11 spaces_ between `import` keyword and
-module name (e.g. length of `qualifed` + 2).
+If `import` is unqualified then put _11 spaces_ between `import` keyword and
+module name (e.g. length of `qualified` + 2).
 
-Unqualifed types (i.e. `Map` vs. `M.Map`) look pretty good and not so ugly.
+Unqualified types (i.e. `Map` vs. `M.Map`) look pretty good and not so ugly.
 Prefer two-line imports for such standard containers.
 
 ```haskell
-import          Data.Map (Map)
-import qualifed Data.Map as M hiding (Map)
+import           Data.Map (Map)
+import qualified Data.Map as M hiding (Map)
 ```
 
 Such tools like `stylish-haskell` can make your import section look very nice!
