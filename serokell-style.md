@@ -68,7 +68,7 @@ Use some tool to remove trailing spaces.
 Casing:
 + **_lowerCamelCase_** for function and variable names.
 + **_UpperCamelCase_** for types.
-+ **_UPPER_CASE_WITH_UNDERSCORES_** for global constants.
++ TODO: some convention for global constants?
 
 Don't use short names like `n`, `sk`, `f` until their meaning is not clear from
 context (function name, types, other variables, etc.).
