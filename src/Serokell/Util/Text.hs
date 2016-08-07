@@ -1,5 +1,6 @@
--- | Utility functions to work with `text` and `text-format`. Feel free to add more if you need.
--- Some functions have two versions, `'` suffix means that function operates on strict Text.
+-- | Utility functions to work with `text` and `text-format`. Feel
+-- free to add more if you need. Some functions have two versions, `'`
+-- suffix means that function operates on strict Text.
 
 module Serokell.Util.Text
        ( show
@@ -129,6 +130,8 @@ mapBuilder
     :: (Traversable t, Buildable k, Buildable v)
     => t (k, v) -> B.Builder
 mapBuilder = listBuilderJSON . fmap pairBuilder
+
+{-# DEPRECATED format, format', formatSingle, formatSingle' "Not typesafe. Use formatting library instead" #-}
 
 -- | Re-export Data.Text.Format.format for convenience
 format :: Params ps
