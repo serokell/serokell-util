@@ -7,7 +7,8 @@ module Serokell.Util.Base64
        ) where
 
 import           Control.Monad              ((>=>))
-import           Data.Aeson                 (FromJSON (parseJSON), ToJSON (toJSON))
+import           Data.Aeson                 (FromJSON (parseJSON),
+                                             ToJSON (toJSON))
 import qualified Data.ByteString            as BS
 import qualified Data.ByteString.Base64.URL as B64
 import           Data.Either.Combinators    (mapLeft)

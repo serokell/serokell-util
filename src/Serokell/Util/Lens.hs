@@ -15,13 +15,13 @@ import           Control.Monad.Trans.Except (ExceptT, mapExceptT)
 -- | Similar to %= operator, but takes State action instead of (a -> a)
 infix 4 %%=
 (%%=) :: L.Lens' s a -> State a b -> State s b
-(%%=) l ma =
-  do attr <- L.view l <$> get
-     let (res, newAttr) = runState ma attr
-     l L..= newAttr
-     return res
+(%%=) l ma = do
+    attr <- L.view l <$> get
+    let (res,newAttr) = runState ma attr
+    l L..= newAttr
+    return res
 
 -- | Like %%= but with possiblity of failure
 infix 4 %?=
 (%?=) :: L.Lens' s a -> ExceptT t (State a) b -> ExceptT t (State s) b
-(%?=) l = mapExceptT $ (l %%=)
+(%?=) l = mapExceptT (l %%=)

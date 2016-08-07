@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 -- | Compile time assertions
 -- Very simple implementation from: http://stackoverflow.com/a/6654903
 -- TODO: understand and maybe improve
