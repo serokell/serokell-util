@@ -12,6 +12,14 @@ steps:
   #     # we have `UnicodeSyntax` in `default-extensions`
   #     add_language_pragma: false
 
+  # Align the right hand side of some elements.  This is quite conservative
+  # and only applies to statements where each element occupies a single
+  # line.
+  - simple_align:
+      cases: true
+      top_level_patterns: true
+      records: true
+
   # Import cleanup
   - imports:
       # There are different ways we can align names and lists.
@@ -48,9 +56,6 @@ steps:
       # is set to true, it will remove those redundant pragmas. Default: true.
       remove_redundant: true
 
-  # Align the types in record declarations
-  - records: {}
-
   # Replace tabs by spaces. This is disabled by default.
   # - tabs:
   #     # Number of spaces to use for each tab. Default: 8, as specified by the
@@ -63,6 +68,18 @@ steps:
 # A common setting is the number of columns (parts of) code will be wrapped
 # to. Different steps take this into account. Default: 80.
 columns: 80
+
+# By default, line endings are converted according to the OS. You can override
+# preferred format here.
+#
+# - native: Native newline format. CRLF on Windows, LF on other OSes.
+#
+# - lf: Convert to LF ("\n").
+#
+# - crlf: Convert to CRLF ("\r\n").
+#
+# Default: native.
+newline: native
 
 # These are exactly the same extensions which we enable in .cabal file
 # Some of them shouldn't affect stylish-haskell, but let them be
