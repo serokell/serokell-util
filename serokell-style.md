@@ -16,7 +16,7 @@ General guide lines
 
 Maximum line length is *80 characters* or *100 characters* if necessary.
 
-Modern screens has high definition and big width.
+Modern screens have high definition and big width.
 But with some tiling managers and two terminals on screen you are not able to
 see many characters on one line.
 On the other hand restricting line size to very small number like 80 leads to
@@ -272,7 +272,7 @@ version. Compiler can optimize specialized functions better
 Use this rule until you are library creator and want your library to be abstract
 as possible.
 
-It is allowed to ommit parenthesis for only one type class constraint.
+It is allowed to omit parenthesis for only one type class constraint.
 
 If function type signature is very long then place type of each argument under
 its own line with respect to alignment.
