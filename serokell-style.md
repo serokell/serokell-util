@@ -173,7 +173,8 @@ align by max width among them.
 
 Use singular when naming modules e.g. use `Data.Map` and
 `Data.ByteString.Internal` instead of `Data.Maps` and
-`Data.ByteString.Internals`.
+`Data.ByteString.Internals`. Sometimes it's acceptable to use plural
+(e. g. `Types`, `Instances`).
 
 ### Export Lists
 
@@ -181,23 +182,25 @@ Format export lists as follows:
 
 ```haskell
 module Data.Set
-        (
-          -- * The @Set@ type
-          Set
-        , empty
-        , singleton
+       (
+         -- * The @Set@ type
+         Set
+       , empty
+       , singleton
 
-          -- * Querying
-        , member
-        ) where
+         -- * Querying
+       , member
+       ) where
 ```
 
 Some clarifications:
 
-1. Use indent 8 spaces for export list.
+1. Use 7 spaces indentation for export list (so that bracket is below
+   the first letter in module name).
 2. You can split export list into sections or just write all as single section.
-3. Each section should be sorted alpabetically but classes, data types and type
-aliases should be written before functions.
+3. It strongly adviced to sort each section alpabetically. However,
+   classes, data types and type aliases should be written before
+   functions.
 
 ### Imports
 
@@ -258,8 +261,8 @@ data Person = Person
     } deriving (Eq, Show)
 ```
 
-Type classes in `deriving` section should be sorted alphabetically and should be
-always surrounded by parenthesis.
+Type classes in `deriving` section should be always surrounded by
+parenthesis. Space between names is optional.
 
 ### Function declaration
 
