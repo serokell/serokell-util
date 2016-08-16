@@ -302,7 +302,7 @@ putValueInState
 
 On other cases place `=` sign on the same line where function definition is.
 
-Use `() <$` to  ignore resul of function. It looks cool. If this is not possible
+Use `() <$` to  ignore result of function. It looks cool. If this is not possible
 due to `$` then use either `_ <-` or `void $`.
 
 ```haskell
