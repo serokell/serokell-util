@@ -35,8 +35,10 @@ library
                      , base64-bytestring
                      , bytestring
                      , clock
+                     , directory
                      , either
                      , exceptions
+                     , filepath
                      , formatting
                      , lens
                      , mtl
