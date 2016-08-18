@@ -11,6 +11,7 @@ module Serokell.Util.AcidState
 import           Control.Exception          (Exception, throw)
 import           Control.Monad.Reader       (Reader, asks, runReader)
 import           Control.Monad.State        (State, runState, state)
+import           Control.Monad.Trans        (MonadIO (liftIO))
 import           Control.Monad.Trans.Except (ExceptT, runExceptT)
 import           Data.Acid                  (AcidState, Query, Update,
                                              createArchive)
@@ -39,6 +40,6 @@ exceptStateToUpdateGeneric toException u =
 
 -- | Archive unnecessary data (see createArchive docs for details) and
 -- discard it.
-createAndDiscardArchive :: AcidState st -> FilePath -> IO ()
+createAndDiscardArchive :: MonadIO m => AcidState st -> FilePath -> m ()
 createAndDiscardArchive st path =
-    createArchive st >> removeDirectoryRecursive (path </> "Archive")
+    liftIO $ createArchive st >> removeDirectoryRecursive (path </> "Archive")
