@@ -1,0 +1,31 @@
+-- | Helper instances for Acid State to remove boilerplate and introduce
+-- redundant instances for other data types.
+
+module Serokell.Util.AcidState.Instances where
+
+import           Control.Exception    (throw)
+import           Control.Monad.Catch  (MonadThrow (throwM))
+
+import           Data.Acid            (Update)
+import           Data.Hashable        (Hashable)
+import           Data.HashMap.Strict  (HashMap)
+import qualified Data.HashMap.Strict  as HM hiding (HashMap)
+import           Data.HashSet         (HashSet)
+import qualified Data.HashSet as HS   hiding (HashSet)
+import           Data.SafeCopy        (SafeCopy (getCopy, putCopy),
+                                       contain, safeGet, safePut)
+
+instance MonadThrow (Update s) where
+    throwM = throw
+
+instance (Eq a, Hashable a, SafeCopy a) => SafeCopy (HashSet a) where
+    putCopy = contain . safePut . HS.toList
+    getCopy = contain $ do
+        hsList <- safeGet
+        pure $ HS.fromList hsList
+
+instance (Eq a, Hashable a, SafeCopy a, SafeCopy b) => SafeCopy (HashMap a b) where
+    putCopy = contain . safePut . HM.toList
+    getCopy = contain $ do
+        hmList <- safeGet
+        pure $ HM.fromList hmList
