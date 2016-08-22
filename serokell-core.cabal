@@ -16,10 +16,12 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     Serokell.Aeson.Options
+  exposed-modules:     Serokell.AcidState
+                       Serokell.AcidState.ExtendedState
+                       Serokell.AcidState.Instances
+                       Serokell.AcidState.Util
+                       Serokell.Aeson.Options
                        Serokell.Util
-                       Serokell.Util.AcidState
-                       Serokell.Util.AcidState.Instances
                        Serokell.Util.Base64
                        Serokell.Util.Bench
                        Serokell.Util.Common
