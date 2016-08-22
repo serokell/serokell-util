@@ -21,6 +21,7 @@ library
                        Serokell.AcidState.Instances
                        Serokell.AcidState.Util
                        Serokell.Aeson.Options
+                       Serokell.Data.Memory.Units
                        Serokell.Util
                        Serokell.Util.Base64
                        Serokell.Util.Bench
