@@ -19,6 +19,7 @@ library
   exposed-modules:     Serokell.AcidState
                        Serokell.AcidState.ExtendedState
                        Serokell.AcidState.Instances
+                       Serokell.AcidState.Statistics
                        Serokell.AcidState.Util
                        Serokell.Aeson.Options
                        Serokell.Data.Memory.Units
@@ -38,6 +39,7 @@ library
                      , base >= 4.8
                      , base64-bytestring
                      , bytestring
+                     , cereal
                      , clock
                      , directory
                      , either
