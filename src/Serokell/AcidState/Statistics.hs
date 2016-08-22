@@ -4,7 +4,7 @@
 -- | Collect statistics about acid-state database.
 
 module Serokell.AcidState.Statistics
-       ( StoragePart
+       ( StoragePart (..)
 
        , estimateMemoryUsage
        ) where
