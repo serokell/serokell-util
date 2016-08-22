@@ -8,6 +8,7 @@ module Serokell.Util.Text
        , FPFormat (..)
        , showFloat
        , showFloat'
+       , showFixedPretty'
        , showDecimal
        , showDecimal'
        , pairBuilder
@@ -38,6 +39,7 @@ import qualified Data.Text.Lazy.Builder.Int       as B
 import           Data.Text.Lazy.Builder.RealFloat (FPFormat (Exponent, Fixed, Generic))
 import qualified Data.Text.Lazy.Builder.RealFloat as B
 import qualified Data.Text.Read                   as T
+import           Formatting                       (fixed, sformat)
 import           Prelude                          hiding (show, showList)
 
 show :: Buildable a
@@ -47,6 +49,15 @@ show = B.toLazyText . build
 show' :: Buildable a
       => a -> T.Text
 show' = LT.toStrict . show
+
+-- | Render a floating point number using normal notation, with the
+-- given number of decimal places. This function also truncates
+-- redundant terminating zeros.
+showFixedPretty'
+    :: Real a
+    => Int -> a -> T.Text
+showFixedPretty' prec =
+    T.dropWhileEnd (== '.') . T.dropWhileEnd (== '0') . sformat (fixed prec)
 
 showFloat
   :: (RealFloat a)
