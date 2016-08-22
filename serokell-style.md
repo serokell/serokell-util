@@ -222,7 +222,7 @@ and third party libraries. Try to use `qualified` imports only if import list is
 big enought or there are conflicts in names. This makes the code more robust
 against changes in these libraries. Exceptions: 
 1. _The Prelude_.
-2. Modules that only reexports stuff from other modules
+2. Modules that only reexport stuff from other modules
 
 If `import` is unqualified then put _11 spaces_ between `import` keyword and
 module name (e.g. length of `qualified` + 2).
