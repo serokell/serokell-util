@@ -206,9 +206,10 @@ Some clarifications:
 
 Imports should be grouped in the following order:
 
-1. Standard library imports
-2. Related third party imports
-3. Local application/library specific imports
+1. Everything from hackage packages
+2. Everything from your packages outside current project
+3. Everything from current project
+4. Everything from current target (like `Bench.*` or `Test.*`)
 
 Put a blank line between each group of imports. It is also okay to put blank
 lines between `Data` and `Control` section of std imports because these sections
@@ -219,7 +220,9 @@ The imports in each group should be sorted alphabetically, by module name.
 Always use explicit import lists or `qualified` imports for standard
 and third party libraries. Try to use `qualified` imports only if import list is
 big enought or there are conflicts in names. This makes the code more robust
-against changes in these libraries. Exception: _The Prelude_.
+against changes in these libraries. Exceptions: 
+1. _The Prelude_.
+2. Modules that only reexports stuff from other modules
 
 If `import` is unqualified then put _11 spaces_ between `import` keyword and
 module name (e.g. length of `qualified` + 2).
