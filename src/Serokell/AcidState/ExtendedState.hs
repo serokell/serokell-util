@@ -55,8 +55,8 @@ updateExtended st = update' (extendedStateToAcid st)
 openLocalExtendedState
     :: (IsAcidic st, Typeable st, MonadIO m)
     => Bool -> FilePath -> st -> m (ExtendedState st)
-openLocalExtendedState dirExists fp st = do
-    if dirExists
+openLocalExtendedState deleteIfExists fp st = do
+    if deleteIfExists
         then liftIO $ removeDirectoryRecursive fp
         else return ()
     liftIO $ flip ESLocal fp <$> openLocalStateFrom fp st
