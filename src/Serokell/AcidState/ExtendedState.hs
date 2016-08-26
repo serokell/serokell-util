@@ -22,6 +22,8 @@ import           Data.Acid.Advanced      (query', update')
 import           Data.Acid.Memory        (openMemoryState)
 import           Data.Typeable           (Typeable)
 
+import           System.Directory        (removeDirectoryRecursive)
+
 import           Serokell.AcidState.Util (tidyLocalState)
 
 -- | ExtendedState is like usual AcidState, but also stores
@@ -52,8 +54,11 @@ updateExtended st = update' (extendedStateToAcid st)
 -- in MonadIO.
 openLocalExtendedState
     :: (IsAcidic st, Typeable st, MonadIO m)
-    => FilePath -> st -> m (ExtendedState st)
-openLocalExtendedState fp st =
+    => Bool -> FilePath -> st -> m (ExtendedState st)
+openLocalExtendedState dirExists fp st = do
+    if dirExists
+        then liftIO $ removeDirectoryRecursive fp
+        else return ()
     liftIO $ flip ESLocal fp <$> openLocalStateFrom fp st
 
 -- | Like openMemoryState, but returns ExtendedState and operates in
