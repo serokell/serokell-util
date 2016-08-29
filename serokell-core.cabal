@@ -23,6 +23,7 @@ library
                        Serokell.AcidState.Util
                        Serokell.Aeson.Options
                        Serokell.Data.Memory.Units
+                       Serokell.Data.Variant
                        Serokell.Util
                        Serokell.Util.Base16
                        Serokell.Util.Base64
@@ -35,6 +36,9 @@ library
                        Serokell.Util.StaticAssert
                        Serokell.Util.Text
                        Serokell.Util.Verify
+  other-modules:       Serokell.Data.Variant.Helpers
+                       Serokell.Data.Variant.Serialization
+                       Serokell.Data.Variant.Variant
   build-depends:       acid-state
                      , aeson
                      , base >= 4.8
@@ -53,12 +57,14 @@ library
                      , mtl
                      , optparse-applicative
                      , safecopy >= 0.9.0.1
+                     , scientific
                      , template-haskell
                      , text
                      , text-format
                      , time-units
                      , transformers
                      , unordered-containers >= 0.2.7.0
+                     , vector
   hs-source-dirs:      src
   default-language:    Haskell2010
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N -Wall -fno-warn-orphans
