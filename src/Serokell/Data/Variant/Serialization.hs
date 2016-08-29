@@ -12,6 +12,7 @@ import           Data.Bifunctor                (bimap)
 import           Data.Hashable                 (Hashable)
 import           Data.HashMap.Strict           (HashMap)
 import qualified Data.HashMap.Strict           as HM hiding (HashMap)
+import           Data.MessagePack              (MessagePack (fromObject, toObject))
 import           Data.SafeCopy                 (SafeCopy)
 import           Data.Scientific               (floatingOrInteger)
 import qualified Data.Serialize                as Cereal
@@ -121,3 +122,7 @@ instance Cereal.Serialize Variant where
 instance SafeCopy Variant
 
 -- TODO: msgpack, binary, whatever else…
+
+instance MessagePack Variant where
+    toObject = undefined
+    fromObject = undefined

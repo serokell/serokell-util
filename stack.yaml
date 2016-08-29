@@ -3,6 +3,12 @@ resolver: lts-6.1
 # Local packages, usually specified by relative directory name
 packages:
 - '.'
+- location:
+    git: https://github.com/serokell/msgpack-haskell.git
+    commit: c84c868a37446ee0671b3c641a6155af142e6d78
+  extra-dep: true
+  subdirs:
+    - msgpack
 
 nix:
     enable: false
