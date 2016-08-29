@@ -46,10 +46,12 @@ library
                      , base64-bytestring
                      , bytestring
                      , cereal
+                     , cereal-vector
                      , clock
                      , directory
                      , either
                      , exceptions
+                     , fail
                      , filepath
                      , formatting
                      , hashable >= 1.2.4.0

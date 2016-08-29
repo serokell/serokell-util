@@ -6,10 +6,19 @@ module Serokell.Data.Variant.Serialization
        (
        ) where
 
+import qualified Control.Monad.Fail            as Fail (MonadFail (fail))
 import qualified Data.Aeson                    as Aeson
 import           Data.Bifunctor                (bimap)
+import           Data.Hashable                 (Hashable)
+import           Data.HashMap.Strict           (HashMap)
 import qualified Data.HashMap.Strict           as HM hiding (HashMap)
+import           Data.SafeCopy                 (SafeCopy)
 import           Data.Scientific               (floatingOrInteger)
+import qualified Data.Serialize                as Cereal
+import           Data.Text                     (Text)
+import qualified Data.Text.Encoding            as TE
+import           Data.Vector.Serialize         ()
+import           Data.Word                     (Word8)
 
 import           Serokell.Data.Variant.Variant (VarMap, Variant (..))
 import           Serokell.Util.Base64          (JsonByteString (JsonByteString))
@@ -72,4 +81,44 @@ instance Aeson.FromJSON Variant where
         HM.toList $
         v
 
--- TODO: msgpack, binary, cereal, safecopy, whatever else…
+--  —————————Cereal and SafeCopy serialization————————— --
+-- This serialization is very simple: first byte is tag followed by actual value.
+-- `decode . encode` should be `id`.
+
+-- TODO: move it somewhere??
+instance Cereal.Serialize Text where
+    put = Cereal.put . TE.encodeUtf8
+    get = TE.decodeUtf8 <$> Cereal.get
+
+instance (Eq a, Hashable a, Cereal.Serialize a, Cereal.Serialize b) =>
+         Cereal.Serialize (HashMap a b) where
+    put = Cereal.put . HM.toList
+    get = HM.fromList <$> Cereal.get
+
+instance Cereal.Serialize Variant where
+    put VarNone       = Cereal.putWord8 0
+    put (VarBool v)   = Cereal.putWord8 1 >> Cereal.put v
+    put (VarInt v)    = Cereal.putWord8 2 >> Cereal.put v
+    put (VarUInt v)   = Cereal.putWord8 3 >> Cereal.put v
+    put (VarFloat v)  = Cereal.putWord8 4 >> Cereal.put v
+    put (VarBytes v)  = Cereal.putWord8 5 >> Cereal.put v
+    put (VarString v) = Cereal.putWord8 6 >> Cereal.put v
+    put (VarList v)   = Cereal.putWord8 7 >> Cereal.put v
+    put (VarMap v)    = Cereal.putWord8 8 >> Cereal.put v
+    get = do
+        tag <- Cereal.get
+        case tag :: Word8 of
+            0   -> pure VarNone
+            1   -> VarBool <$> Cereal.get
+            2   -> VarInt <$> Cereal.get
+            3   -> VarUInt <$> Cereal.get
+            4   -> VarFloat <$> Cereal.get
+            5   -> VarBytes <$> Cereal.get
+            6   -> VarString <$> Cereal.get
+            7   -> VarList <$> Cereal.get
+            8   -> VarMap <$> Cereal.get
+            bad -> Fail.fail $ "bad tag " ++ show bad
+
+instance SafeCopy Variant
+
+-- TODO: msgpack, binary, whatever else…
