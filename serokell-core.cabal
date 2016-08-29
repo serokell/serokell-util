@@ -24,6 +24,7 @@ library
                        Serokell.Aeson.Options
                        Serokell.Data.Memory.Units
                        Serokell.Util
+                       Serokell.Util.Base16
                        Serokell.Util.Base64
                        Serokell.Util.Bench
                        Serokell.Util.Common
@@ -37,6 +38,7 @@ library
   build-depends:       acid-state
                      , aeson
                      , base >= 4.8
+                     , base16-bytestring
                      , base64-bytestring
                      , bytestring
                      , cereal
