@@ -18,7 +18,6 @@ import qualified Data.Serialize                as Cereal
 import           Data.Text                     (Text)
 import qualified Data.Text.Encoding            as TE
 import           Data.Vector.Serialize         ()
-import           Data.Word                     (Word8)
 
 import           Serokell.Data.Variant.Variant (VarMap, Variant (..))
 import           Serokell.Util.Base64          (JsonByteString (JsonByteString))
@@ -106,8 +105,8 @@ instance Cereal.Serialize Variant where
     put (VarList v)   = Cereal.putWord8 7 >> Cereal.put v
     put (VarMap v)    = Cereal.putWord8 8 >> Cereal.put v
     get = do
-        tag <- Cereal.get
-        case tag :: Word8 of
+        tag <- Cereal.getWord8
+        case tag of
             0   -> pure VarNone
             1   -> VarBool <$> Cereal.get
             2   -> VarInt <$> Cereal.get
