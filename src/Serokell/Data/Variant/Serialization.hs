@@ -7,6 +7,7 @@ module Serokell.Data.Variant.Serialization
        (
        ) where
 
+import           Control.Monad                 (mzero)
 import qualified Data.Aeson                    as Aeson
 import           Data.Bifunctor                (bimap)
 import           Data.Binary                   (Binary)
@@ -14,12 +15,13 @@ import           Data.Binary.Orphans           ()
 import           Data.Hashable                 (Hashable)
 import           Data.HashMap.Strict           (HashMap)
 import qualified Data.HashMap.Strict           as HM hiding (HashMap)
-import           Data.MessagePack              (MessagePack (fromObject, toObject))
+import qualified Data.MessagePack              as MP
 import           Data.SafeCopy                 (SafeCopy)
 import           Data.Scientific               (floatingOrInteger)
 import qualified Data.Serialize                as Cereal
 import           Data.Text                     (Text)
 import qualified Data.Text.Encoding            as TE
+import qualified Data.Vector                   as V
 import           Data.Vector.Serialize         ()
 
 import           Serokell.Data.Variant.Variant (VarMap, Variant (..))
@@ -102,11 +104,43 @@ instance Cereal.Serialize Variant
 instance SafeCopy Variant
 
 --  —————————MessagePack serialization————————— --
--- Not implemented.
+-- MessagePack data structure is very close to Variant. However, note that:
+-- 1. We are using strange library where Object type doesn't cover all
+--    possible objects. For example, there is only `Int` for integers.
+--    So every integer number is converted to `Int` (which may be inprecise).
+--    Decoding checks sign of input (like JSON).
+-- 2. MessagePack distinguishes between Float and Double while we don't.
+-- 3. ObjectExt can't be decoded.
 
-instance MessagePack Variant where
-    toObject = undefined
-    fromObject = undefined
+instance MP.MessagePack Variant where
+    toObject VarNone = MP.ObjectNil
+    toObject (VarBool v) = MP.ObjectBool v
+    toObject (VarInt v) = MP.ObjectInt $ fromIntegral v
+    toObject (VarUInt v) = MP.ObjectInt $ fromIntegral v
+    toObject (VarFloat v) = MP.ObjectDouble v
+    toObject (VarBytes v) = MP.ObjectBin v
+    toObject (VarString v) = MP.ObjectStr v
+    toObject (VarList v) = MP.ObjectArray . fmap MP.toObject $ v
+    toObject (VarMap v) =
+        MP.ObjectMap .
+        V.fromList . fmap (bimap MP.toObject MP.toObject) . HM.toList $
+        v
+    fromObject MP.ObjectNil = pure VarNone
+    fromObject (MP.ObjectBool v) = pure . VarBool $ v
+    fromObject (MP.ObjectInt v) | v < 0 = pure . VarInt . fromIntegral $ v
+                                | otherwise = pure . VarUInt . fromIntegral $ v
+    fromObject (MP.ObjectFloat v) = pure . VarFloat . realToFrac $ v
+    fromObject (MP.ObjectDouble v) = pure . VarFloat $ v
+    fromObject (MP.ObjectStr v) = pure . VarString $ v
+    fromObject (MP.ObjectBin v) = pure . VarBytes $ v
+    fromObject (MP.ObjectArray v) = fmap VarList . mapM MP.fromObject $ v
+    fromObject (MP.ObjectMap v) =
+        fmap (VarMap . HM.fromList . V.toList) .
+        mapM
+            (\(a,b) ->
+                  (,) <$> MP.fromObject a <*> MP.fromObject b) $
+        v
+    fromObject (MP.ObjectExt _ _) = mzero
 
 --  —————————Binary serialization————————— --
 -- Here we use Generic support, it should be good enough.
