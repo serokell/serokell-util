@@ -7,7 +7,6 @@ module Serokell.Data.Variant.Serialization
        (
        ) where
 
-import qualified Control.Monad.Fail            as Fail (MonadFail (fail))
 import qualified Data.Aeson                    as Aeson
 import           Data.Bifunctor                (bimap)
 import           Data.Binary                   (Binary)
@@ -98,29 +97,7 @@ instance (Eq a, Hashable a, Cereal.Serialize a, Cereal.Serialize b) =>
     put = Cereal.put . HM.toList
     get = HM.fromList <$> Cereal.get
 
-instance Cereal.Serialize Variant where
-    put VarNone       = Cereal.putWord8 0
-    put (VarBool v)   = Cereal.putWord8 1 >> Cereal.put v
-    put (VarInt v)    = Cereal.putWord8 2 >> Cereal.put v
-    put (VarUInt v)   = Cereal.putWord8 3 >> Cereal.put v
-    put (VarFloat v)  = Cereal.putWord8 4 >> Cereal.put v
-    put (VarBytes v)  = Cereal.putWord8 5 >> Cereal.put v
-    put (VarString v) = Cereal.putWord8 6 >> Cereal.put v
-    put (VarList v)   = Cereal.putWord8 7 >> Cereal.put v
-    put (VarMap v)    = Cereal.putWord8 8 >> Cereal.put v
-    get = do
-        tag <- Cereal.getWord8
-        case tag of
-            0   -> pure VarNone
-            1   -> VarBool <$> Cereal.get
-            2   -> VarInt <$> Cereal.get
-            3   -> VarUInt <$> Cereal.get
-            4   -> VarFloat <$> Cereal.get
-            5   -> VarBytes <$> Cereal.get
-            6   -> VarString <$> Cereal.get
-            7   -> VarList <$> Cereal.get
-            8   -> VarMap <$> Cereal.get
-            bad -> Fail.fail $ "bad tag " ++ show bad
+instance Cereal.Serialize Variant
 
 instance SafeCopy Variant
 

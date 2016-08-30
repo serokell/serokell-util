@@ -53,7 +53,6 @@ library
                      , directory
                      , either
                      , exceptions
-                     , fail
                      , filepath
                      , formatting
                      , hashable >= 1.2.4.0
