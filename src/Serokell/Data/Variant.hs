@@ -8,6 +8,7 @@ module Serokell.Data.Variant
          module Export
        ) where
 
+import           Serokell.Data.Variant.Class         as Export
 import           Serokell.Data.Variant.Helpers       as Export
 import           Serokell.Data.Variant.Serialization ()
 import           Serokell.Data.Variant.Variant       as Export
