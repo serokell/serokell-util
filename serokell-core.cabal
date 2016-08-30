@@ -44,6 +44,8 @@ library
                      , base >= 4.8
                      , base16-bytestring
                      , base64-bytestring
+                     , binary
+                     , binary-orphans
                      , bytestring
                      , cereal
                      , cereal-vector

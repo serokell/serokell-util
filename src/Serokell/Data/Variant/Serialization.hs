@@ -1,6 +1,7 @@
 {-# LANGUAGE TupleSections #-}
 
 -- | This module contains serialization logic for Variant type.
+-- Feel free to add serialization to/from other formats if you need it.
 
 module Serokell.Data.Variant.Serialization
        (
@@ -9,6 +10,8 @@ module Serokell.Data.Variant.Serialization
 import qualified Control.Monad.Fail            as Fail (MonadFail (fail))
 import qualified Data.Aeson                    as Aeson
 import           Data.Bifunctor                (bimap)
+import           Data.Binary                   (Binary)
+import           Data.Binary.Orphans           ()
 import           Data.Hashable                 (Hashable)
 import           Data.HashMap.Strict           (HashMap)
 import qualified Data.HashMap.Strict           as HM hiding (HashMap)
@@ -121,8 +124,13 @@ instance Cereal.Serialize Variant where
 
 instance SafeCopy Variant
 
--- TODO: msgpack, binary, whatever else…
+--  —————————MessagePack serialization————————— --
+-- Not implemented.
 
 instance MessagePack Variant where
     toObject = undefined
     fromObject = undefined
+
+--  —————————Binary serialization————————— --
+-- Here we use Generic support, it should be good enough.
+instance Binary Variant
