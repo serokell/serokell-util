@@ -36,7 +36,8 @@ library
                        Serokell.Util.StaticAssert
                        Serokell.Util.Text
                        Serokell.Util.Verify
-  other-modules:       Serokell.Data.Variant.Helpers
+  other-modules:       Serokell.Data.Variant.Class
+                       Serokell.Data.Variant.Helpers
                        Serokell.Data.Variant.Serialization
                        Serokell.Data.Variant.Variant
   build-depends:       acid-state
