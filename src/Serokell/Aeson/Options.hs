@@ -23,11 +23,6 @@ stripFieldPrefix = dropWhile (not . isUpper)
 dropPunctuation :: String -> String
 dropPunctuation = filter (not . isPunctuation)
 
-dropLensUnderscore :: String -> String
-dropLensUnderscore []       = []
-dropLensUnderscore ('_':xs) = xs
-dropLensUnderscore xs       = xs
-
 stripConstructorPrefix :: String -> String
 stripConstructorPrefix t =
     maybe t (flip drop t . decrementSafe) $ findIndex isLower t
@@ -61,5 +56,4 @@ defaultOptionsPS :: A.Options
 defaultOptionsPS =
     A.defaultOptions
     { A.constructorTagModifier = headToLower . stripConstructorPrefix
-    , A.fieldLabelModifier = dropLensUnderscore
     }
