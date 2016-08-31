@@ -60,5 +60,6 @@ leaveTagOptions = defaultOptions { A.constructorTagModifier = id }
 defaultOptionsPS :: A.Options
 defaultOptionsPS =
     A.defaultOptions
-    { A.constructorTagModifier = headToLower . stripConstructorPrefix . dropLensUnderscore
+    { A.constructorTagModifier = headToLower . stripConstructorPrefix
+    , A.fieldLabelModifier = dropLensUnderscore
     }
