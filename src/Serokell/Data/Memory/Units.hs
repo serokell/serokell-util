@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveGeneric       #-}
 {-# LANGUAGE FlexibleInstances   #-}
 {-# LANGUAGE Rank2Types          #-}
 {-# LANGUAGE ScopedTypeVariables #-}
@@ -24,11 +25,15 @@ module Serokell.Data.Memory.Units
        , convertUnit
        ) where
 
+import           Data.Binary            (Binary)
 import           Data.Proxy             (Proxy (Proxy))
+import           Data.SafeCopy          (SafeCopy)
+import           Data.Serialize         (Serialize)
 import           Data.Text.Lazy.Builder (Builder)
 import           Data.Typeable          (Typeable)
 import           Formatting             (bprint, stext, (%))
 import qualified Formatting             as Fmt
+import           GHC.Generics           (Generic)
 
 import           Serokell.Util.Text     (showFixedPretty')
 
@@ -84,14 +89,18 @@ pow10 = (10 ^)
 
 newtype Byte =
     Byte Integer
-    deriving (Show,Eq,Num,Typeable,Integral,Real,Enum,Ord)
+    deriving (Show,Eq,Num,Typeable,Integral,Real,Enum,Ord,Generic,Serialize,Binary)
+
+instance SafeCopy Byte
 
 instance MemoryUnit Byte where
     bytesMultiplier Proxy = pow10 0
 
 newtype Kilobyte =
     Kilobyte Integer
-    deriving (Show,Eq,Num,Typeable,Integral,Real,Enum,Ord)
+    deriving (Show,Eq,Num,Typeable,Integral,Real,Enum,Ord,Generic,Serialize,Binary)
+
+instance SafeCopy Kilobyte
 
 instance MemoryUnit Kilobyte where
     bytesMultiplier Proxy = pow10 3
