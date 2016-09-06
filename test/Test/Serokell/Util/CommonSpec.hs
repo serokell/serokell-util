@@ -1,16 +1,20 @@
-{-# LANGUAGE ViewPatterns #-}
+{-# LANGUAGE ExistentialQuantification #-}
+{-# LANGUAGE ViewPatterns              #-}
 
 module Test.Serokell.Util.CommonSpec
        ( spec
        ) where
 
-import           Data.Foldable         (toList)
-import           Data.List             (genericIndex, genericLength)
-import           Test.Hspec            (Spec, describe)
-import           Test.Hspec.QuickCheck (prop)
-import           Test.QuickCheck       (NonEmptyList (..))
+import           Data.Foldable             (toList)
+import           Data.List                 (genericIndex, genericLength)
+import           Data.Vector               (Vector)
+import           Test.Hspec                (Spec, describe)
+import           Test.Hspec.QuickCheck     (prop)
+import           Test.QuickCheck           (Arbitrary (..), Gen,
+                                            NonEmptyList (..), oneof)
+import           Test.QuickCheck.Instances ()
 
-import qualified Serokell.Util.Common  as C
+import qualified Serokell.Util.Common      as C
 
 spec :: Spec
 spec =
@@ -25,14 +29,31 @@ spec =
     description_indexModulo = "returns the element of the the list with " ++
       "given index modulo length of the list"
 
-enumerateCheckIndexes
-    :: (Traversable t, Show a, Show (t a))
-    => t a -> Bool
-enumerateCheckIndexes values =
+-- TODO: consider using `SomeValue` to generate different types of
+-- values.  I don't know how to add more than one quantifier to type
+-- definition. Also consider using GADTs to achieve it.
+type Value = Int
+
+data SomeTraversable =
+    forall t. (Traversable t, Show (t Value), Arbitrary (t Value)) =>
+              SomeTraversable (t Value)
+
+instance Show SomeTraversable where
+    show (SomeTraversable t) = show t
+
+instance Arbitrary SomeTraversable where
+    arbitrary =
+        oneof
+            [ SomeTraversable <$> (arbitrary :: Gen [Value])
+            , SomeTraversable <$> (arbitrary :: Gen (Vector Value))
+            ]
+
+enumerateCheckIndexes :: SomeTraversable -> Bool
+enumerateCheckIndexes (SomeTraversable values) =
     let indexedVals = C.enumerate values
         indexList   = toList $ fmap fst indexedVals
         indexNum    = genericLength indexList
-    in indexList == [0 .. indexNum-1]
+    in indexList == [0 :: Word .. indexNum-1]
 
 indexModuloCorrectIndex
     :: NonEmptyList Int -> Int -> Bool
