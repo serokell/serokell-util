@@ -82,7 +82,8 @@ test-suite serokell-test
   main-is:             Test.hs
   other-modules:       Test.Serokell.Util.CommonSpec
                        Test.Serokell.Util.BaseSpec
-                     , Spec
+                       Test.Serokell.Data.Memory.UnitsSpec
+                       Spec
   type:                exitcode-stdio-1.0
   build-depends:       aeson
                      , base >=4.8 && < 4.9

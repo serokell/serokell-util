@@ -15,13 +15,13 @@ import qualified Serokell.Util.Common  as C
 spec :: Spec
 spec =
     describe "Common" $ do
-{-        describe "enumerate" $
-            prop description_enumerateCheck enumerateCheckIndexes-}
+        describe "enumerate" $
+            prop description_enumerateCheck enumerateCheckIndexes
         describe "indexModulo" $
             prop description_indexModulo indexModuloCorrectIndex
   where
-{-    description_enumerateCheck = "enumerates a structure in sequence, " ++
-      "starting from index 0"-}
+    description_enumerateCheck = "enumerates a structure in sequence, " ++
+      "starting from index 0"
     description_indexModulo = "returns the element of the the list with " ++
       "given index modulo length of the list"
 
