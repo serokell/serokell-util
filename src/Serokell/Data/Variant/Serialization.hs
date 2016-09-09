@@ -25,7 +25,7 @@ import qualified Data.Vector                   as V
 import           Data.Vector.Serialize         ()
 
 import           Serokell.Data.Variant.Variant (VarMap, Variant (..))
-import           Serokell.Util.Base64          (JsonByteString (JsonByteString))
+import           Serokell.Util.Base64          (JsonByteStringTODO (JsonByteStringTODO))
 import           Serokell.Util.Text            (show')
 
 --  —————————JSON serialization————————— --
@@ -51,7 +51,7 @@ instance Aeson.ToJSON Variant where
     toJSON (VarInt v)    = Aeson.toJSON v
     toJSON (VarUInt v)   = Aeson.toJSON v
     toJSON (VarFloat v)  = Aeson.toJSON v
-    toJSON (VarBytes v)  = Aeson.toJSON . JsonByteString $ v
+    toJSON (VarBytes v)  = Aeson.toJSON . JsonByteStringTODO $ v
     toJSON (VarString v) = Aeson.toJSON v
     toJSON (VarList v)   = Aeson.toJSON v
     toJSON (VarMap v)    = Aeson.Object . varMapToObject $ v
@@ -60,7 +60,7 @@ instance Aeson.ToJSON Variant where
     toEncoding (VarInt v)    = Aeson.toEncoding v
     toEncoding (VarUInt v)   = Aeson.toEncoding v
     toEncoding (VarFloat v)  = Aeson.toEncoding v
-    toEncoding (VarBytes v)  = Aeson.toEncoding . JsonByteString $ v
+    toEncoding (VarBytes v)  = Aeson.toEncoding . JsonByteStringTODO $ v
     toEncoding (VarString v) = Aeson.toEncoding v
     toEncoding (VarList v)   = Aeson.toEncoding v
     toEncoding (VarMap v)    = Aeson.toEncoding . varMapToObject $ v
