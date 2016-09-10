@@ -4,19 +4,17 @@ module Test.Serokell.Data.Variant.VariantSpec
        ( spec
        ) where
 
-import           Data.Aeson             (decode, encode)
-import           Data.Maybe             (fromJust)
-import           Data.Scientific        (floatingOrInteger, fromFloatDigits)
-import           Data.Text.Buildable    (build)
-import           Data.Text.Lazy         (toStrict)
-import           Data.Text.Lazy.Builder (toLazyText)
-import           Test.Hspec             (Spec, describe)
-import           Test.Hspec.QuickCheck  (prop)
-import           Test.QuickCheck        ((===))
+import           Data.Aeson            (decode, encode)
+import           Data.Maybe            (fromJust)
+import           Data.Scientific       (floatingOrInteger, fromFloatDigits)
+import           Test.Hspec            (Spec, describe)
+import           Test.Hspec.QuickCheck (prop)
+import           Test.QuickCheck       ((===))
 
-import           Serokell.Arbitrary     ()
-import qualified Serokell.Data.Variant  as S
-import qualified Serokell.Util.Base64   as S
+import           Serokell.Arbitrary    ()
+import qualified Serokell.Data.Variant as S
+import qualified Serokell.Util.Base64  as S
+import           Serokell.Util.Text    (show')
 
 spec :: Spec
 spec = describe "Variant" $ do
@@ -51,8 +49,8 @@ floatFun (S.VarFloat f) =
                                 else S.VarUInt $ fromIntegral int
 floatFun _ = error "[floatFun:] called with Variant that was not VarFloat"
 
-{-toStr :: S.Variant -> S.Variant
-toStr var       = stringVar var
+toStr :: S.Variant -> S.Variant
+toStr var = stringVar var
 
-stringVar = S.VarString . toStrict . toLazyText . build
--}
+stringVar :: S.Variant -> S.Variant
+stringVar = S.VarString . show'

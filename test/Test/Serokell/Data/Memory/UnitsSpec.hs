@@ -8,7 +8,7 @@ module Test.Serokell.Data.Memory.UnitsSpec
 
 import           Test.Hspec                 (Spec, describe)
 import           Test.Hspec.QuickCheck      (prop)
-import           Test.QuickCheck            (Arbitrary (..), Gen, oneof, (===))
+import           Test.QuickCheck            ((===))
 
 import           Serokell.Arbitrary         ()
 import qualified Serokell.Data.Memory.Units as S
