@@ -18,7 +18,7 @@ instance Arbitrary S.Variant where
         oneof
             [ pure S.VarNone
             , S.VarBool <$> arbitrary
-      --      , S.VarInt <$> arbitrary
+            , S.VarInt <$> arbitrary
             , S.VarUInt <$> arbitrary
             , S.VarFloat <$> arbitrary
             , S.VarBytes <$> arbitrary
