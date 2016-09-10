@@ -60,4 +60,4 @@ indexedSubList
     => (i, i) -> [a] -> [(i, a)]
 indexedSubList (lo, hi)
     | hi <= lo = const []
-    | otherwise = zip [lo .. hi - 1] . genericTake (hi - lo) . genericDrop lo
+    | otherwise = zip [max 0 lo .. hi - 1] . genericTake (hi - lo) . genericDrop lo

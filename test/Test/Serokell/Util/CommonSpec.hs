@@ -6,7 +6,8 @@ module Test.Serokell.Util.CommonSpec
        ) where
 
 import           Data.Foldable             (toList)
-import           Data.List                 (genericIndex, genericLength)
+import           Data.List                 (genericIndex, genericLength,
+                                            intersect)
 import           Data.Vector               (Vector)
 import           Test.Hspec                (Spec, describe)
 import           Test.Hspec.QuickCheck     (prop)
@@ -23,11 +24,18 @@ spec =
             prop description_enumerateCheck enumerateCheckIndexes
         describe "indexModulo" $
             prop description_indexModulo indexModuloCorrectIndex
+        describe "indexedSubList" $
+            prop description_indexedSubListNeg indexedSublistWhenNegative
   where
-    description_enumerateCheck = "enumerates a structure in sequence, " ++
+    description_enumerateCheck =
+      "enumerates a structure in sequence, " ++
       "starting from index 0"
-    description_indexModulo = "returns the element of the the list with " ++
+    description_indexModulo =
+      "returns the element of the the list with " ++
       "given index modulo length of the list"
+    description_indexedSubListNeg =
+      "negative indices, given that the lower " ++
+      "bound is lesser than the upper bound, result in valid indexation"
 
 -- TODO: consider using `SomeValue` to generate different types of
 -- values.  I don't know how to add more than one quantifier to type
@@ -53,7 +61,7 @@ enumerateCheckIndexes (SomeTraversable values) =
     let indexedVals = C.enumerate values
         indexList   = toList $ fmap fst indexedVals
         indexNum    = genericLength indexList
-    in indexList == [0 :: Word .. indexNum-1]
+    in null values || indexList == [0 :: Word .. indexNum-1]
 
 indexModuloCorrectIndex
     :: NonEmptyList Int -> Int -> Bool
@@ -62,11 +70,14 @@ indexModuloCorrectIndex (getNonEmpty -> list) ind =
         atModuloIndex = list `genericIndex` (ind `mod` len)
     in atModuloIndex == C.indexModulo list ind
 
-indexedSublistCheckIndexes
+indexedSublistWhenNegative
     :: (Int, Int) -> [Int] -> Bool
-indexedSublistCheckIndexes (lo, hi) list
-    | hi <= lo = indexList == []
-    | otherwise = [lo .. hi - 1] == indexList
-
+indexedSublistWhenNegative (lo, hi) list
+    | hi <= lo = indexList lo hi == []
+    | hi <= 0 = indexList lo hi == []
+    | len -1 < lo = indexList lo hi == []
+    | otherwise = testIndexes lo hi == indexList lo hi
   where
-    indexList = map fst $ C.indexedSubList (lo, hi) list
+    len = length list
+    indexList l h = map fst $ C.indexedSubList (l, h) list
+    testIndexes l h = intersect [l .. h - 1] [0 .. len - 1]

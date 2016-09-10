@@ -107,7 +107,7 @@ instance SafeCopy Variant
 -- MessagePack data structure is very close to Variant. However, note that:
 -- 1. We are using strange library where Object type doesn't cover all
 --    possible objects. For example, there is only `Int` for integers.
---    So every integer number is converted to `Int` (which may be inprecise).
+--    So every integer number is converted to `Int` (which may be imprecise).
 --    Decoding checks sign of input (like JSON).
 -- 2. MessagePack distinguishes between Float and Double while we don't.
 -- 3. ObjectExt can't be decoded.
