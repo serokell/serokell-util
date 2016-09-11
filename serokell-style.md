@@ -225,7 +225,7 @@ against changes in these libraries. Exceptions:
 2. Modules that only reexport stuff from other modules
 
 If `import` is unqualified then put _11 spaces_ between `import` keyword and
-module name (e.g. length of `qualified` + 2).
+module name (i.e. length of `qualified` + 2).
 
 Unqualified types (i.e. `Map` vs. `M.Map`) look pretty good and not so ugly.
 Prefer two-line imports for such standard containers.
