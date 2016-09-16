@@ -6,7 +6,7 @@ module Serokell.AcidState.Instances where
 import           Control.Exception   (throw)
 import           Control.Monad.Catch (MonadThrow (throwM))
 
-import           Data.Acid           (Update)
+import           Data.Acid           (Query, Update)
 import           Data.Hashable       (Hashable)
 import           Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HM hiding (HashMap)
@@ -14,6 +14,10 @@ import           Data.HashSet        (HashSet)
 import qualified Data.HashSet        as HS hiding (HashSet)
 import           Data.SafeCopy       (SafeCopy (getCopy, putCopy), contain,
                                       safeGet, safePut)
+
+-- | Usually Queries shouldn't throw anything. This is a dirty hack.
+instance MonadThrow (Query s) where
+    throwM = throw
 
 instance MonadThrow (Update s) where
     throwM = throw
