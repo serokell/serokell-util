@@ -5,6 +5,7 @@ module Serokell.Util.Common
        , indexModulo
        , indexModuloMay
        , indexedSubList
+       , subList
        ) where
 
 import           Control.Monad.State (evalState, get, modify)
@@ -65,3 +66,7 @@ indexedSubList
 indexedSubList (lo, hi)
     | hi <= lo = const []
     | otherwise = zip [max 0 lo .. hi - 1] . genericTake (hi - lo) . genericDrop lo
+
+-- | Like indexedSubList, but not indexed :)
+subList :: Integral i => (i, i) -> [a] -> [a]
+subList range = map snd . indexedSubList range

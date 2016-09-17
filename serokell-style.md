@@ -1,11 +1,11 @@
 Serokell Haskell Style Guide
 ============================
-> This style guide is mostly copy of [Johan Tibell guide](https://github.com/tibbe/haskell-style-guide/blob/master/haskell-style.md)
-> with some restructurization, ellaboration on some topics and some additions.
-> This style guide aims code beautiness, readability and understandability.
+> This style guide is mostly a copy of [Johan Tibell's guide](https://github.com/tibbe/haskell-style-guide/blob/master/haskell-style.md)
+> with some restructurization, elaboration on some topics and some additions.
+> This style guide's aims are code beauty, readability and understandability.
 
-You can find other our formatting utilites which expands style of writing code:
-* [.stylisth-haskell.yaml](https://github.com/serokell/serokell-core/blob/master/.stylish-haskell.yaml) config
+You can find our other formatting utilites which expand the code style:
+* [.stylish-haskell.yaml](https://github.com/serokell/serokell-core/blob/master/.stylish-haskell.yaml) config
 * TODO: custom _HLint_ rules
 * TODO: custom _hindent_ rules
 * TODO: custom _Prelude_
@@ -17,20 +17,20 @@ General guide lines
 Maximum line length is *80 characters* or *100 characters* if necessary.
 
 Modern screens have high definition and big width.
-But with some tiling managers and two terminals on screen you are not able to
+But with some tiling managers and two terminals on one screen you are not able to
 see many characters on one line.
-On the other hand restricting line size to very small number like 80 leads to
+On the other hand, restricting line size to a very small number like 80 leads to
 some crazy indentation despite the fact that
 shorter lines should force you to write well structured code.
-That's why *100* is reasonable compromize.
+That's why *100* is a reasonable compromize.
 
 
 ### Indentation
 
 Tabs are illegal.  Use spaces for indenting.  Indent your code blocks
-with *4 spaces*.  Indent the `where` keyword two spaces to set it
+with *4 spaces*.  Indent the `where` keyword with two spaces to set it
 apart from the rest of the code and indent the definitions in a
-`where` clause 2 spaces.  Some examples:
+`where` clause with 2 spaces.  Some examples:
 
 ```haskell
 sayHello :: IO ()
@@ -52,14 +52,14 @@ filter p (x:xs)
 One blank line between top-level definitions. No blank lines between
 type signatures and function definitions. Add one blank line between
 functions in a type class instance declaration if the function bodies
-are large. You can add blank lines inside big `do` block to separate logical
-parts of it. You can also separate with blank line definitions inside `where`
+are large. You can add blank lines inside a big `do` block to separate logical
+parts of it. You can also use blank lines to separate definitions inside `where`
 clause. And finally you can separate `imports`'s into logical blocks by prefix.
 
 ### Whitespace
 
-Surround binary operators with a single space on either side.  In case of
-currying add one space between argument and operation.
+Surround binary operators with a single space on either side. In case of
+currying add one space between the argument and the operation.
 
 Use some tool to remove trailing spaces.
 
@@ -70,7 +70,7 @@ Casing:
 + **_UpperCamelCase_** for types.
 + TODO: some convention for global constants?
 
-Don't use short names like `n`, `sk`, `f` until their meaning is not clear from
+Don't use short names like `n`, `sk`, `f` unless their meaning is clear from
 context (function name, types, other variables, etc.).
 
 For readability reasons, don't capitalize all letters when using an
@@ -91,16 +91,16 @@ and provide a type signature; use Haddock syntax in the comments.
 Comment every exported data type.  Function example:
 
 ```haskell
--- | Send a message on a socket.  The socket must be in a connected
--- state.  Returns the number of bytes sent.  Applications are
+-- | Send a message on a socket. The socket must be in a connected
+-- state. Returns the number of bytes sent. Applications are
 -- responsible for ensuring that all data has been sent.
 send :: Socket      -- ^ Connected socket
      -> ByteString  -- ^ Data to send
      -> IO Int      -- ^ Bytes sent
 ```
 
-For functions the documentation should give enough information to
-apply the function without looking at the function's definition.
+For functions, the documentation should give enough information to
+apply the function without looking at its definition.
 
 Record example:
 
@@ -112,7 +112,7 @@ data Person = Person
     }
 ```
 
-For fields that require longer comments format them like so:
+For fields that require longer comments, format them this way:
 
 ```haskell
 data Record = Record
@@ -128,8 +128,8 @@ data Record = Record
 
 #### End-of-Line Comments
 
-Separate end-of-line comments from the code using 2 spaces.  Align
-comments for data type definitions.  Some examples:
+Separate end-of-line comments from the code with 2 spaces. Align
+comments for data type definitions. Some examples:
 
 ```haskell
 data Parser = Parser
@@ -145,12 +145,12 @@ foo n = salt * 32 + 9
 #### Links
 
 Use in-line links economically.  You are encouraged to add links for
-API names.  It is not necessary to add links for all API names in a
-Haddock comment.  We therefore recommend adding a link to an API name
+API names. It is not necessary to add links for all API names in a
+Haddock comment. We therefore recommend adding a link to an API name
 if:
 
 * The user might actually want to click on it for more information (in
-  your judgment), and
+  your opinion), and
 
 * Only for the first occurrence of each API name in the comment (don't
   bother repeating a link)
@@ -171,9 +171,9 @@ align by max width among them.
 
 ### Module name
 
-Use singular when naming modules e.g. use `Data.Map` and
+Use singular when naming modules (e.g. use `Data.Map` and
 `Data.ByteString.Internal` instead of `Data.Maps` and
-`Data.ByteString.Internals`. Sometimes it's acceptable to use plural
+`Data.ByteString.Internals`). Sometimes it's acceptable to use plural
 (e. g. `Types`, `Instances`).
 
 ### Export Lists
@@ -198,7 +198,7 @@ Some clarifications:
 1. Use 7 spaces indentation for export list (so that bracket is below
    the first letter in module name).
 2. You can split export list into sections or just write all as single section.
-3. It strongly adviced to sort each section alpabetically. However,
+3. It is strongly adviced to sort each section alpabetically. However,
    classes, data types and type aliases should be written before
    functions.
 
@@ -219,13 +219,13 @@ The imports in each group should be sorted alphabetically, by module name.
 
 Always use explicit import lists or `qualified` imports for standard
 and third party libraries. Try to use `qualified` imports only if import list is
-big enought or there are conflicts in names. This makes the code more robust
+big enough or there are conflicts in names. This makes the code more robust
 against changes in these libraries. Exceptions: 
 1. _The Prelude_.
 2. Modules that only reexport stuff from other modules
 
 If `import` is unqualified then put _11 spaces_ between `import` keyword and
-module name (e.g. length of `qualified` + 2).
+module name (i.e. length of `qualified` + 2).
 
 Unqualified types (i.e. `Map` vs. `M.Map`) look pretty good and not so ugly.
 Prefer two-line imports for such standard containers.
@@ -235,7 +235,7 @@ import           Data.Map (Map)
 import qualified Data.Map as M hiding (Map)
 ```
 
-Such tools like `stylish-haskell` can make your import section look very nice!
+Such tools as `stylish-haskell` can make your import section look very nice!
 
 ### Data Declarations
 
@@ -265,20 +265,20 @@ data Person = Person
 ```
 
 Type classes in `deriving` section should be always surrounded by
-parenthesis. Space between names is optional.
+parentheses. Space between names is optional.
 
 ### Function declaration
 
 All functions must have type signatures.
 
-Specialize function type signature for concrete types if you using this function
+Specialize function type signature for concrete types if you're using this function
 with only one type for each argument. Otherwize you should use more polymorphic
 version. Compiler can optimize specialized functions better
 (TODO: link to haskell manual) and meaning of this function may be clearer.
-Use this rule until you are library creator and want your library to be abstract
+Use this rule unless you are the library creator and want your library to be abstract
 as possible.
 
-It is allowed to omit parenthesis for only one type class constraint.
+It is allowed to omit parentheses for only one type class constraint.
 
 If function type signature is very long then place type of each argument under
 its own line with respect to alignment.
@@ -293,7 +293,7 @@ putValueInState
     -> m ()
 ```
 
-If line with argument names is too big then put each argument on its own line
+If the line with argument names is too big then put each argument on its own line
 and separate it somehow from body section.
 
 ```haskell
@@ -306,9 +306,9 @@ putValueInState
     <code goes here>
 ```
 
-On other cases place `=` sign on the same line where function definition is.
+In other cases place `=` sign on the same line where function definition is.
 
-Use `() <$` to  ignore result of function. It looks cool. If this is not possible
+Use `() <$` to  ignore the result of function. It looks cool. If this is not possible
 due to `$` then use either `_ <-` or `void $`.
 
 ```haskell
@@ -328,8 +328,8 @@ id x = x
 {-# INLINE id #-}
 ```
 
-In the case of data type definitions you must put the pragma before
-the type it applies to.  Example:
+In case of data type definitions you must put the pragma before
+the type it applies to. Example:
 
 ```haskell
 data Array e = Array
@@ -349,7 +349,7 @@ exceptions =
     ]
 ```
 
-Optionally, you can skip the first newline.  Use your judgement.
+Optionally, you can skip the first newline. Use your judgement.
 
 ```haskell
 directions = [ North
@@ -364,7 +364,7 @@ directions = [ North
 Don't insert a space after a lambda.
 
 You may or may not indent the code following a "hanging" lambda.  Use
-your judgement.  Some examples:
+your judgement. Some examples:
 
 ```haskell
 bar :: IO ()
@@ -384,7 +384,7 @@ Generally, guards and pattern matches should be preferred over _if-then-else_
 clauses, where possible.  Short cases should usually be put on a single line
 (when line length allows it).
 
-When writing non-monadic code (i.e. when not using `do`) and guards
+When writing non-monadic code (i.e. when not using `do`) where guards
 and pattern matches can't be used, you can align _if-then-else_ clauses
 like you would normal expressions:
 
@@ -437,7 +437,7 @@ Align the `->` arrows when it helps readability.
 
 ### let expressions
 
-Put `let` before each variable inside `do` block. But beware of name shadowing
+Put `let` before each variable inside a `do` block. But beware of name shadowing
 (though compiler can help with it).
 
 ```haskell
@@ -460,7 +460,7 @@ By default, use strict data types and lazy functions.
 ### Data types
 
 Constructor fields should be strict, unless there's an explicit reason
-to make them lazy.  This avoids many common pitfalls caused by too much
+to make them lazy.  This helps to avoid many common pitfalls caused by too much
 laziness and reduces the number of brain cycles the programmer has to
 spend thinking about evaluation order.
 
@@ -502,7 +502,7 @@ applied even if someone compiles the file using other means (i.e. the
 optimization is attached to the source code it belongs to).
 
 Note that `-funbox-strict-fields` applies to all strict fields, not
-just small fields (e.g. `Double` or `Int`).  If you're using GHC 7.4 or
+just small fields (e.g. `Double` or `Int`). If you're using GHC 7.4 or
 later you can use `NOUNPACK` to selectively opt-out for the unpacking
 enabled by `-funbox-strict-fields`.
 
