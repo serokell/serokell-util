@@ -33,7 +33,7 @@ instance Arbitrary SomeMemoryUnit where
 -}
 
 spec :: Spec
-spec = describe "Memory" $ do
+spec = describe "Unit conversion" $ do
            describe "Identity Properties" $ do
                prop "Byte" $
                    \(a :: S.Byte) -> a === bytesMid a

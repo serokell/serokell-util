@@ -49,12 +49,16 @@ indexModuloIndex [] _ = Nothing
 indexModuloIndex xs i = Just $ i `mod` genericLength xs
 
 -- | indexedSubList (lo, hi) returns sublist of given list with
--- indices in [lo, hi).
+-- indices in [max lo 0, hi). If the lower bound is negative,
+-- 0 will in its place. If both indices are negative, the empty list
+-- is returned.
 -- Examples:
 -- indexedSubList (2, 3) [0, 5, 10] = [(2, 10)]
 -- indexedSubList (0, 2) [0, 5, 10] = [(0, 0), (1, 5)]
 -- indexedSubList (0, 0) [0, 1, 11, 111] = []
 -- indexedSubList (2000, 1000) [55, 47, 0, 1, 11, 111] = []
+-- indexedSubList (-3, 3) [10, 11, 12, 13, 14] = [(0,10),(1,11),(2,12)]
+-- indexedSubList (-6, -1) [1,2,3] = []
 indexedSubList
     :: Integral i
     => (i, i) -> [a] -> [(i, a)]

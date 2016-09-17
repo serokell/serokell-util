@@ -22,7 +22,7 @@ deriving instance Show C64.JsonByteString
 
 spec :: Spec
 spec =
-    describe "Base16/Base64" $ do
+    describe "Serialization" $ do
         describe "Indentity Properties" $ do
             prop "Base16" $
                 \(a :: BS.ByteString) -> a === base16Mid a

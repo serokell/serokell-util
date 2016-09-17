@@ -84,12 +84,15 @@ test-suite serokell-test
                        Test.Serokell.Data.Variant.VariantSpec
                        Test.Serokell.Util.CommonSpec
                        Test.Serokell.Util.BaseSpec
+                       Test.Serokell.Util.TextSpec
                        Spec
   type:                exitcode-stdio-1.0
   build-depends:       aeson
                      , base >=4.8 && < 4.9
+                     , binary
                      , bytestring
                      , hspec >= 2.1.10
+                     , msgpack
                      , QuickCheck >= 2.8.1
                      , quickcheck-instances
                      , scientific
