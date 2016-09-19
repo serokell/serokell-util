@@ -10,6 +10,7 @@ module Serokell.Data.Variant.Variant
        , VarMap
        ) where
 
+import           Control.DeepSeq      (NFData)
 import           Data.ByteString      (ByteString)
 import           Data.Hashable        (Hashable (hashWithSalt))
 import           Data.HashMap.Strict  (HashMap)
@@ -68,3 +69,5 @@ instance IsList Variant where
     toList (VarList v) = toList v
     toList _           = error "toList: not a list"
     fromList = VarList . fromList
+
+instance NFData Variant
