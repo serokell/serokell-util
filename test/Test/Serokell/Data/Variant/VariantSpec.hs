@@ -27,7 +27,7 @@ spec = describe "Variant" $ do
                prop "MessagePack" $
                    \(a :: S.Variant) -> msgPkFun a === msgPackMid a-}
                prop "Binary" $
-                   \(a :: S.Variant) -> "TODO" === "TODO" --a === binMid a
+                   \(a :: S.Variant) -> a === binMid a
 {-
 variantMid a =
     let json = jsonFun a
