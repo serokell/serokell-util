@@ -44,9 +44,11 @@ instance Arbitrary Variant where
     shrink = genericShrink
 
 -- | Generate something with at most N constructors. Say how many constructors
--- actually are in the generated 'Variant'. Because 'VarBytes' JSON decoding
--- presents a problem, this generating function won't generate this constructor
--- unless given a true boolean flag.
+-- actually are in the generated 'Variant'. Because encoding 'VarBytes' into
+-- JSON and then decoding it presents a problem - it becomes a 'VarString',
+-- and it is difficult to tell whether it was decoded from a 'VarBytes' or
+-- another 'VarString' - this generating function won't generate this
+-- constructor unless given a true boolean flag.
 genVariant :: Bool -> Int -> Gen Variant
 genVariant b 1 = genFlatVariant b
 genVariant b n = do
