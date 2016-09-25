@@ -32,7 +32,7 @@ newtype VariantOnlyBytes = OnlyBytes
     } deriving (Show, Eq, Generic)
 
 instance Arbitrary VariantOnlyBytes where
-    arbitrary = OnlyBytes <$> oneof [VarBytes <$> arbitrary]
+    arbitrary = OnlyBytes . VarBytes <$> arbitrary
     shrink = genericShrink
 
 instance Arbitrary VariantNoBytes where
