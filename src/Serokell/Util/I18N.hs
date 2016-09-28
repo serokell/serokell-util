@@ -17,7 +17,8 @@ import           Data.Maybe             (fromMaybe)
 import           Data.String            (IsString)
 import           Data.ByteString              as BS
 import           Data.Text              as T
-import           Data.Yaml              (decode)
+import           Data.Yaml              (decodeEither)
+import           Formatting             (sformat, (%), build)
 import           GHC.Generics           (Generic, Rep)
 import           Serokell.Aeson.Options (defaultOptions)
 
@@ -32,7 +33,7 @@ type Translations lang token = M.Map lang (M.Map token T.Text)
 fromYaml :: (YamlMapKey lang, YamlMapKey token)
          => BS.ByteString
          -> Translations lang token
-fromYaml yamlStr = toLangMap $ fromMaybe (error "FATAL: failed to parse rscoin.yaml") $ decode yamlStr
+fromYaml yamlStr = toLangMap $ either (error . T.unpack . sformat ("Error during translation YAML parsing " % build)) id $ decodeEither yamlStr
   where
     toLangMap = fmap getMap . getMap
 
