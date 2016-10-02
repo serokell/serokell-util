@@ -61,6 +61,14 @@ clause. And finally you can separate `imports`'s into logical blocks by prefix.
 Surround binary operators with a single space on either side. In case of
 currying add one space between the argument and the operation.
 
+_Exception_: `%` operator for string formatting from `Formatting` library.
+You can ommit spaces if surrounding strings have spaces. It also helps in cases
+when formatted strings are too long. Compare:
+
+`("block with "%int%" entries")`
+
+`("block with " % int % " entries")`
+
 Use some tool to remove trailing spaces.
 
 ### Naming convention
