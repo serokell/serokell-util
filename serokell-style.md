@@ -281,6 +281,10 @@ data Person = Person
     } deriving (Eq, Show)
 ```
 
+Add `Show` deriving whenever possible. It helps debugging a lot.
+
+_TODO_: `NFData` deriving.
+
 Type classes in `deriving` section should be always surrounded by
 parentheses. Space between names is optional.
 
