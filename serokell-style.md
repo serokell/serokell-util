@@ -281,12 +281,15 @@ data Person = Person
     } deriving (Eq, Show)
 ```
 
-Add `Show` deriving whenever possible. It helps debugging a lot.
-
-_TODO_: `NFData` deriving.
-
 Type classes in `deriving` section should be always surrounded by
 parentheses. Space between names is optional.
+
+_WARNING_: try to avoid aggressive autoderiving. Deriving instances can
+slowdown compilation 
+(stated here: http://www.stephendiehl.com/posts/production.html)
+
+> Deriving instances of Read/Show/Data/Generic for largely recursive ADTs can
+> sometimes lead to quadratic memory behavior when the nesting gets deep.
 
 ### Function declaration
 
