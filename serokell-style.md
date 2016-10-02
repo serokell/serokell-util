@@ -85,6 +85,15 @@ For readability reasons, don't capitalize all letters when using an
 abbreviation.  For example, write `HttpServer` instead of
 `HTTPServer`.  Exception: two or three letter abbreviations, e.g. `IO`, `STM`.
 
+**Library specific convetions**
+
+Add `F` suffix to custom formatters to avoid name conflicts:
+
+```haskell
+nodeF :: Format r (NodeId -> r)
+nodeF = build
+```
+
 ### Comments
 
 #### Punctuation
