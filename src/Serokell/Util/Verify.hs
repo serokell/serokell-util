@@ -12,6 +12,12 @@ data VerificationRes
     | NotVerified ![T.Text]
     deriving (Show)
 
+instance Monoid VerificationRes where
+    mempty = Verified
+    mappend Verified a                        = a
+    mappend a Verified                        = a
+    mappend (NotVerified xs) (NotVerified ys) = NotVerified $ xs ++ ys
+
 -- | This function takes list of (predicate, message) pairs and checks
 -- each predicate.  If predicate is False it's considered an error.
 -- If there is at least one error this function returns NotVerified,
