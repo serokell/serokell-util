@@ -7,7 +7,6 @@ module Serokell.Data.Variant.Serialization
        (
        ) where
 
-import           Control.Monad                 (mzero)
 import qualified Data.Aeson                    as Aeson
 import           Data.Bifunctor                (bimap)
 import           Data.Binary                   (Binary)
@@ -120,10 +119,10 @@ instance MP.MessagePack Variant where
     toObject (VarFloat v) = MP.ObjectDouble v
     toObject (VarBytes v) = MP.ObjectBin v
     toObject (VarString v) = MP.ObjectStr v
-    toObject (VarList v) = MP.ObjectArray . fmap MP.toObject $ v
+    toObject (VarList v) = MP.ObjectArray . fmap MP.toObject . V.toList $ v
     toObject (VarMap v) =
         MP.ObjectMap .
-        V.fromList . fmap (bimap MP.toObject MP.toObject) . HM.toList $
+        fmap (bimap MP.toObject MP.toObject) . HM.toList $
         v
     fromObject MP.ObjectNil = pure VarNone
     fromObject (MP.ObjectBool v) = pure . VarBool $ v
@@ -133,14 +132,16 @@ instance MP.MessagePack Variant where
     fromObject (MP.ObjectDouble v) = pure . VarFloat $ v
     fromObject (MP.ObjectStr v) = pure . VarString $ v
     fromObject (MP.ObjectBin v) = pure . VarBytes $ v
-    fromObject (MP.ObjectArray v) = fmap VarList . mapM MP.fromObject $ v
+    fromObject (MP.ObjectArray v) = fmap (VarList . V.fromList)
+                                  . mapM MP.fromObject
+                                  $ v
     fromObject (MP.ObjectMap v) =
-        fmap (VarMap . HM.fromList . V.toList) .
+        fmap (VarMap . HM.fromList) .
         mapM
             (\(a,b) ->
                   (,) <$> MP.fromObject a <*> MP.fromObject b) $
         v
-    fromObject (MP.ObjectExt _ _) = mzero
+    fromObject (MP.ObjectExt _ _) = fail "Can't deserialize ObjectExt"
 
 --  —————————Binary serialization————————— --
 -- Here we use Generic support, it should be good enough.

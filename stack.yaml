@@ -4,11 +4,9 @@ resolver: lts-6.1
 packages:
 - '.'
 - location:
-    git: https://github.com/serokell/msgpack-haskell.git
-    commit: 20691fa4f85ef2a75c5808a5b2e69fd28fdaa159
+    git: https://github.com/TokTok/hs-msgpack.git
+    commit: d2b78df9d4b109d9a8b1fdbd1d374f50af0c34e1
   extra-dep: true
-  subdirs:
-    - msgpack
 
 nix:
     enable: false
