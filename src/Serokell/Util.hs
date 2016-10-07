@@ -6,6 +6,7 @@ module Serokell.Util
        ) where
 
 import           Serokell.Util.Bench        as Exports
+import           Serokell.Util.Binary       as Exports
 import           Serokell.Util.Common       as Exports
 import           Serokell.Util.Concurrent   as Exports
 import           Serokell.Util.Exceptions   as Exports

@@ -25,6 +25,7 @@ library
                        Serokell.Util.Base16
                        Serokell.Util.Base64
                        Serokell.Util.Bench
+                       Serokell.Util.Binary
                        Serokell.Util.Common
                        Serokell.Util.Concurrent
                        Serokell.Util.I18N
