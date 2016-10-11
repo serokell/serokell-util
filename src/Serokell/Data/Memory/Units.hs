@@ -14,6 +14,9 @@ module Serokell.Data.Memory.Units
          -- | Concrete types
        , Byte
        , Kilobyte
+       , Megabyte
+       , Gigabyte
+       , Terabyte
 
          -- | Pretty printing
        , unitBuilder
@@ -36,6 +39,8 @@ import qualified Formatting             as Fmt
 import           GHC.Generics           (Generic)
 
 import           Serokell.Util.Text     (showFixedPretty')
+
+import           Test.QuickCheck        (Arbitrary)
 
 class Integral unit => MemoryUnit unit  where
     -- | This value is n iff (1 :: unit) is n bytes.
@@ -89,7 +94,7 @@ pow10 = (10 ^)
 
 newtype Byte =
     Byte Integer
-    deriving (Show,Eq,Num,Typeable,Integral,Real,Enum,Ord,Generic,Serialize,Binary)
+    deriving (Show,Eq,Num,Typeable,Integral,Real,Enum,Ord,Generic,Serialize,Binary, Arbitrary)
 
 instance SafeCopy Byte
 
@@ -98,7 +103,7 @@ instance MemoryUnit Byte where
 
 newtype Kilobyte =
     Kilobyte Integer
-    deriving (Show,Eq,Num,Typeable,Integral,Real,Enum,Ord,Generic,Serialize,Binary)
+    deriving (Show,Eq,Num,Typeable,Integral,Real,Enum,Ord,Generic,Serialize,Arbitrary)
 
 instance SafeCopy Kilobyte
 
@@ -106,3 +111,30 @@ instance MemoryUnit Kilobyte where
     bytesMultiplier Proxy = pow10 3
 
 -- P. S. Feel free to add more.
+
+newtype Megabyte =
+    Megabyte Integer
+    deriving (Show,Eq,Num,Typeable,Integral,Real,Enum,Ord,Generic,Serialize,Arbitrary)
+
+instance SafeCopy Megabyte
+
+instance MemoryUnit Megabyte where
+    bytesMultiplier Proxy = pow10 6
+
+newtype Gigabyte =
+    Gigabyte Integer
+    deriving (Show,Eq,Num,Typeable,Integral,Real,Enum,Ord,Generic,Serialize,Arbitrary)
+
+instance SafeCopy Gigabyte
+
+instance MemoryUnit Gigabyte where
+    bytesMultiplier Proxy = pow10 9
+
+newtype Terabyte =
+    Terabyte Integer
+    deriving (Show,Eq,Num,Typeable,Integral,Real,Enum,Ord,Generic,Serialize,Arbitrary)
+
+instance SafeCopy Terabyte
+
+instance MemoryUnit Terabyte where
+    bytesMultiplier Proxy = pow10 12
