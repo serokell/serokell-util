@@ -5,7 +5,7 @@ packages:
 - '.'
 - location:
     git: https://github.com/TokTok/hs-msgpack.git
-    commit: d2b78df9d4b109d9a8b1fdbd1d374f50af0c34e1
+    commit: d4abb4a320250047f512f2b3860fa051f9b530ac
   extra-dep: true
 
 nix:
