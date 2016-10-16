@@ -89,7 +89,7 @@ test-suite serokell-test
   other-modules:       Test.Serokell.Data.Memory.UnitsSpec
                        Test.Serokell.Data.Variant.VariantSpec
                        Test.Serokell.Util.CommonSpec
-                       Test.Serokell.Util.BaseSpec
+                       Test.Serokell.Util.ByteStringSpec
                        Test.Serokell.Util.TextSpec
                        Spec
   type:                exitcode-stdio-1.0

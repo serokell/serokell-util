@@ -13,25 +13,6 @@ import           Test.QuickCheck            ((===))
 import           Serokell.Arbitrary         ()
 import qualified Serokell.Data.Memory.Units as S
 
-{-
-data SomeMemoryUnit =
-    forall u. (Arbitrary u, Eq u, Show u, S.MemoryUnit u) =>
-    Mem u
-
-instance Show SomeMemoryUnit where
-    show (Mem u) = show u
-
-instance Arbitrary SomeMemoryUnit where
-    arbitrary =
-        oneof
-            [ Mem <$> (arbitrary :: Gen S.Byte)
-            , Mem <$> (arbitrary :: Gen S.Kilobyte)
-            , Mem <$> (arbitrary :: Gen S.Megabyte)
-            , Mem <$> (arbitrary :: Gen S.Gigabyte)
-            , Mem <$> (arbitrary :: Gen S.Terabyte)
-            ]
--}
-
 spec :: Spec
 spec = describe "Unit conversion" $ do
            describe "Identity Properties" $ do

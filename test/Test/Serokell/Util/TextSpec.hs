@@ -32,14 +32,7 @@ spec =
                     \(a :: Int64) -> (Right a) === showReadIntegral a
                 prop "Word64" $
                     \(a :: Word64) -> (Right a) === showReadIntegral a
-            {-describe "readDouble . show'" $ do
-                prop "Double" $
-                    \(a :: Double) -> (Right a) === showReadDouble a-}
 
 showReadIntegral
     :: (Buildable a, Integral a) => a -> Either String a
 showReadIntegral = S.readDecimal . S.show'
-
-{-showReadDouble
-    :: Double -> Either String Double
-showReadDouble = S.readDouble . S.show'-}
