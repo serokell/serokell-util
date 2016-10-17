@@ -14,15 +14,16 @@ module Serokell.AcidState.ExtendedState
        , updateExtended
        ) where
 
+import           Control.Monad.Extra     (whenM)
 import           Control.Monad.Trans     (MonadIO (liftIO))
-import           Data.Acid               (AcidState, EventResult, EventState,
-                                          IsAcidic, QueryEvent, UpdateEvent,
-                                          closeAcidState, openLocalStateFrom)
+import           Data.Acid               (AcidState, EventResult, EventState, IsAcidic,
+                                          QueryEvent, UpdateEvent, closeAcidState,
+                                          openLocalStateFrom)
 import           Data.Acid.Advanced      (query', update')
 import           Data.Acid.Memory        (openMemoryState)
 import           Data.Typeable           (Typeable)
 
-import           System.Directory        (removeDirectoryRecursive)
+import           System.Directory        (doesDirectoryExist, removeDirectoryRecursive)
 
 import           Serokell.AcidState.Util (tidyLocalState)
 
@@ -56,9 +57,8 @@ openLocalExtendedState
     :: (IsAcidic st, Typeable st, MonadIO m)
     => Bool -> FilePath -> st -> m (ExtendedState st)
 openLocalExtendedState deleteIfExists fp st = do
-    if deleteIfExists
-        then liftIO $ removeDirectoryRecursive fp
-        else return ()
+    whenM ((deleteIfExists &&) <$> liftIO (doesDirectoryExist fp)) $
+        liftIO $ removeDirectoryRecursive fp
     liftIO $ flip ESLocal fp <$> openLocalStateFrom fp st
 
 -- | Like openMemoryState, but returns ExtendedState and operates in
