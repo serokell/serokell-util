@@ -8,7 +8,9 @@ module Serokell.Util.Verify
        , verifyGeneric
        ) where
 
-import qualified Data.Text as T
+import           Data.Semigroup (Semigroup)
+import qualified Data.Semigroup as Semigroup
+import qualified Data.Text      as T
 
 data VerificationRes
     = VerSuccess
@@ -23,15 +25,18 @@ isVerFailure :: VerificationRes -> Bool
 isVerFailure (VerFailure _) = True
 isVerFailure _              = False
 
-instance Monoid VerificationRes where
-    mempty = VerSuccess
-    mappend VerSuccess a = a
-    mappend (VerFailure xs) a =
+instance Semigroup VerificationRes where
+    VerSuccess <> a = a
+    VerFailure xs <> a =
         VerFailure $
         xs ++
         case a of
             VerSuccess    -> []
             VerFailure ys -> ys
+
+instance Monoid VerificationRes where
+    mempty = VerSuccess
+    mappend = (Semigroup.<>)
 
 -- | This function takes list of (predicate, message) pairs and checks
 -- each predicate.  If predicate is False it's considered an error.

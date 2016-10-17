@@ -69,6 +69,7 @@ library
                      , quickcheck-instances
                      , safecopy >= 0.9.0.1
                      , scientific
+                     , semigroups
                      , template-haskell
                      , text
                      , text-format
