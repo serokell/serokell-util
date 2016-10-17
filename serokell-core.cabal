@@ -63,7 +63,7 @@ library
                      , formatting
                      , hashable >= 1.2.4.0
                      , lens
-                     , msgpack
+                     , data-msgpack >= 0.0.4
                      , mtl
                      , optparse-applicative
                      , quickcheck-instances
