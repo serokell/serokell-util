@@ -238,6 +238,7 @@ Always use explicit import lists or `qualified` imports.
 Try to use `qualified` imports only if import list is
 big enough or there are conflicts in names. This makes the code more robust
 against changes in these libraries. Exceptions: 
+
 1. _The Prelude_ or any custom prelude (e.g. [Universum](https://github.com/serokell/universum))
 2. Modules that only reexport stuff from other modules
 
