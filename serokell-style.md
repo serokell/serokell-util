@@ -4,11 +4,11 @@ Serokell Haskell Style Guide
 > with some restructurization, elaboration on some topics and some additions.
 > This style guide's aims are code beauty, readability and understandability.
 
-You can find our other formatting utilites which expand the code style:
+You can find our other formatting utilites and guidelines which expand the code style:
 * [.stylish-haskell.yaml](https://github.com/serokell/serokell-core/blob/master/.stylish-haskell.yaml) config
+* [Universum](https://github.com/serokell/universum)
 * TODO: custom _HLint_ rules
 * TODO: custom _hindent_ rules
-* TODO: custom _Prelude_
 
 General guide lines
 -------------------
@@ -234,11 +234,11 @@ are usually big enough.
 
 The imports in each group should be sorted alphabetically, by module name.
 
-Always use explicit import lists or `qualified` imports for standard
-and third party libraries. Try to use `qualified` imports only if import list is
+Always use explicit import lists or `qualified` imports.
+Try to use `qualified` imports only if import list is
 big enough or there are conflicts in names. This makes the code more robust
 against changes in these libraries. Exceptions: 
-1. _The Prelude_.
+1. _The Prelude_ or any custom prelude (e.g. [Universum](https://github.com/serokell/universum))
 2. Modules that only reexport stuff from other modules
 
 If `import` is unqualified then put _11 spaces_ between `import` keyword and
