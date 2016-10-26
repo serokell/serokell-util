@@ -30,6 +30,7 @@ library
                        Serokell.Util.Common
                        Serokell.Util.Concurrent
                        Serokell.Util.I18N
+                       Serokell.Util.Parse
                        Serokell.Util.OptParse
                        Serokell.Util.Exceptions
                        Serokell.Util.Lens
@@ -40,6 +41,9 @@ library
                        Serokell.Data.Variant.Helpers
                        Serokell.Data.Variant.Serialization
                        Serokell.Data.Variant.Variant
+                       Serokell.Util.Parse.Base64
+                       Serokell.Util.Parse.Common
+                       Serokell.Util.Parse.Network
   build-depends:       QuickCheck >= 2.8.1
                      , acid-state
                      , aeson
@@ -66,6 +70,7 @@ library
                      , data-msgpack >= 0.0.4
                      , mtl
                      , optparse-applicative
+                     , parsec
                      , quickcheck-instances
                      , safecopy >= 0.9.0.1
                      , scientific
