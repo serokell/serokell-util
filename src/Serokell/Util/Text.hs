@@ -16,6 +16,8 @@ module Serokell.Util.Text
        , showDecimal'
 
        -- * Formatters
+       , pairF
+       , tripleF
        , listJson
        , listJsonIndent
        , listCsv
@@ -29,6 +31,7 @@ module Serokell.Util.Text
        , listBuilderJSONIndent
        , listBuilderCSV
        , mapBuilder
+       , mapBuilderJson
 
        -- * @text-format@ utilities
        , format
@@ -92,6 +95,12 @@ showDecimal = B.toLazyText . B.decimal
 showDecimal' :: (Integral a)
               => a -> T.Text
 showDecimal' = LT.toStrict . showDecimal
+
+pairF :: (Buildable a, Buildable b) => Format r ((a,b) -> r)
+pairF = later pairBuilder
+
+tripleF :: (Buildable a, Buildable b, Buildable c) => Format r ((a,b,c) -> r)
+tripleF = later tripleBuilder
 
 listJson :: (Foldable t, Buildable a) => Format r (t a -> r)
 listJson = later listBuilderJSON
