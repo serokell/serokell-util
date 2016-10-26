@@ -1,9 +1,12 @@
+{-# LANGUAGE GADTs #-}
+
 -- | Utility functions to work with `text` and `text-format`. Feel
 -- free to add more if you need. Some functions have two versions, `'`
 -- suffix means that function operates on strict Text.
 
 module Serokell.Util.Text
-       ( show
+       ( -- * @formatting@ utilities
+         show
        , show'
        , FPFormat (..)
        , showFloat
@@ -11,6 +14,14 @@ module Serokell.Util.Text
        , showFixedPretty'
        , showDecimal
        , showDecimal'
+
+       -- * Formatters
+       , listJson
+       , listJsonIndent
+       , listCsv
+       , mapJson
+
+       -- * Builders
        , pairBuilder
        , tripleBuilder
        , listBuilder
@@ -18,11 +29,15 @@ module Serokell.Util.Text
        , listBuilderJSONIndent
        , listBuilderCSV
        , mapBuilder
+
+       -- * @text-format@ utilities
        , format
        , format'
        , formatSingle
        , formatSingle'
        , buildSingle
+
+       -- * String readers
        , readFractional
        , readDouble
        , readDecimal
@@ -39,7 +54,8 @@ import qualified Data.Text.Lazy.Builder.Int       as B
 import           Data.Text.Lazy.Builder.RealFloat (FPFormat (Exponent, Fixed, Generic))
 import qualified Data.Text.Lazy.Builder.RealFloat as B
 import qualified Data.Text.Read                   as T
-import           Formatting                       (fixed, sformat)
+import           Formatting                       (fixed, sformat, later, Format)
+import           GHC.Exts                         (IsList(..))
 import           Prelude                          hiding (show, showList)
 
 show :: Buildable a
@@ -76,6 +92,19 @@ showDecimal = B.toLazyText . B.decimal
 showDecimal' :: (Integral a)
               => a -> T.Text
 showDecimal' = LT.toStrict . showDecimal
+
+listJson :: (Foldable t, Buildable a) => Format r (t a -> r)
+listJson = later listBuilderJSON
+
+listJsonIndent :: (Foldable t, Buildable a) => Word -> Format r (t a -> r)
+listJsonIndent = later . listBuilderJSONIndent
+
+listCsv :: (Foldable t, Buildable a) => Format r (t a -> r)
+listCsv = later listBuilderCSV
+
+mapJson :: (IsList t, Item t ~ (k, v), Buildable k, Buildable v)
+        => Format r (t -> r)
+mapJson = later mapBuilderJson
 
 -- | Prints pair (a, b) like "(a, b)"
 pairBuilder
@@ -136,11 +165,16 @@ listBuilderCSV = _listBuilder "" "," ""
 -- | There is no appropriate type class for map, but all reasonable maps
 -- provide something like `assocs` function.
 -- Map may be printed prettier (e. g. using JSON style), it's future task.
--- Haing at least one such function is still good anyway.
+-- Having at least one such function is still good anyway.
 mapBuilder
     :: (Traversable t, Buildable k, Buildable v)
     => t (k, v) -> B.Builder
 mapBuilder = listBuilderJSON . fmap pairBuilder
+
+mapBuilderJson
+    :: (IsList t, Item t ~ (k, v), Buildable k, Buildable v)
+    => t -> B.Builder
+mapBuilderJson = _listBuilder "{" ", " "}" . map (F.build "{}: {}") . toList
 
 {-# DEPRECATED format, format', formatSingle, formatSingle' "Not typesafe. Use formatting library instead" #-}
 
