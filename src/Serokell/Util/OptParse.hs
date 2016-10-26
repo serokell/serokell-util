@@ -6,6 +6,7 @@ module Serokell.Util.OptParse
        ( fromStr
        , strArgument
        , strOption
+       , fromParsec
        ) where
 
 import           Data.String         (IsString (fromString))
