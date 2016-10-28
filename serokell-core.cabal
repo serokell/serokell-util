@@ -106,7 +106,7 @@ test-suite serokell-test
                      , bytestring
                      , cereal
                      , hspec >= 2.1.10
-                     , msgpack
+                     , data-msgpack >= 0.0.4
                      , QuickCheck >= 2.8.1
                      , quickcheck-instances
                      , safecopy >= 0.9.0.1
