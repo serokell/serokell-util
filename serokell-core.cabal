@@ -101,7 +101,7 @@ test-suite serokell-test
                        Spec
   type:                exitcode-stdio-1.0
   build-depends:       aeson
-                     , base >=4.8 && < 4.9
+                     , base >=4.8
                      , binary
                      , bytestring
                      , cereal
