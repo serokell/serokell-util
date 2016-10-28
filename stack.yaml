@@ -1,22 +1,13 @@
-resolver: lts-6.1
-
-# Local packages, usually specified by relative directory name
+resolver: lts-7.1
 packages:
 - '.'
-- location:
-    git: https://github.com/TokTok/hs-msgpack.git
-    commit: d4abb4a320250047f512f2b3860fa051f9b530ac
-  extra-dep: true
-
 nix:
     enable: false
     packages: [openssh,git]
-
-# Packages to be pulled from upstream that are not in the resolver (e.g., acme-missiles-0.3)
-extra-deps: []
-
-# Override default flag values for local packages and extra-deps
+extra-deps: 
+- aeson-extra-0.4.0.0
+- time-units-1.0.0
+- recursion-schemes-5
+- data-msgpack-0.0.8
 flags: {}
-
-# Extra package databases containing global packages
 extra-package-dbs: []
