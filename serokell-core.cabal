@@ -58,6 +58,7 @@ library
                      , cereal-vector
                      , containers
                      , clock
+                     , data-msgpack >= 0.0.8
                      , deepseq
                      , directory
                      , either
@@ -67,7 +68,6 @@ library
                      , formatting
                      , hashable >= 1.2.4.0
                      , lens
-                     , data-msgpack >= 0.0.4
                      , mtl
                      , optparse-applicative
                      , parsec
@@ -85,7 +85,7 @@ library
                      , yaml
   hs-source-dirs:      src
   default-language:    Haskell2010
-  ghc-options:         -threaded -Wall -fno-warn-orphans
+  ghc-options:         -Wall -fno-warn-orphans
   default-extensions:  OverloadedStrings
                      , RecordWildCards
                      , DeriveDataTypeable
