@@ -2,7 +2,6 @@ resolver: lts-7.1
 packages:
 - '.'
 nix:
-    enable: false
     packages: [openssh,git]
 extra-deps: 
 - aeson-extra-0.4.0.0
