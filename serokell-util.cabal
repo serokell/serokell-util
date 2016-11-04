@@ -1,7 +1,7 @@
 name:                serokell-util
 version:             0.1.1
 synopsis:            General-purpose functions by Serokell
-homepage:            http://gitlab.serokell.io/serokell-team/serokell-util
+homepage:            https://github.com/serokell/serokell-util
 license:             MIT
 license-file:        LICENSE
 category:            Utils
