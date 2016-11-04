@@ -1,14 +1,20 @@
 name:                serokell-util
 version:             0.1.1
 synopsis:            General-purpose functions by Serokell
-
 homepage:            http://gitlab.serokell.io/serokell-team/serokell-util
 license:             MIT
 license-file:        LICENSE
-author:              Ante Kegalj, Ivan Gromakovsky, Jonn Mostovoy, Mikhail Volhov
-maintainer:          Jonn Mostovoy <jm@serokell.io>
-copyright:           Serokell
+category:            Utils
+author:              Serokell
+maintainer:          Serokell <hi@serokell.io>
+copyright:           2016 Serokell
 build-type:          Simple
+description:         Serokell-util is a library consisting of functions, which
+                     are not included in standard libraries, but are useful for
+                     multiple projects. This library was created when it was
+                     found that in new projects we need to use some utility
+                     functions from existing projects and don't want to
+                     copy-paste them.
 -- extra-source-files:
 cabal-version:       >=1.10
 
@@ -48,7 +54,7 @@ library
                      , acid-state
                      , aeson
                      , aeson-extra
-                     , base >= 4.8
+                     , base >= 4.8 && < 5
                      , base16-bytestring
                      , base64-bytestring
                      , binary
