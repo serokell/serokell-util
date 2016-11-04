@@ -1,8 +1,8 @@
-name:                serokell-core
+name:                serokell-util
 version:             0.1.0.0
 synopsis:            General-purpose functions by Serokell
 
-homepage:            http://gitlab.serokell.io/serokell-team/serokell-core
+homepage:            http://gitlab.serokell.io/serokell-team/serokell-util
 license:             MIT
 license-file:        LICENSE
 author:              Ante Kegalj, Ivan Gromakovsky, Jonn Mostovoy, Mikhail Volhov
@@ -111,7 +111,7 @@ test-suite serokell-test
                      , quickcheck-instances
                      , safecopy >= 0.9.0.1
                      , scientific
-                     , serokell-core
+                     , serokell-util
                      , text
                      , text-format
                      , unordered-containers >= 0.2.7.0
