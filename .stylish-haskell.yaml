@@ -84,7 +84,9 @@ newline: native
 # These are exactly the same extensions which we enable in .cabal file
 # Some of them shouldn't affect stylish-haskell, but let them be
 language_extensions:
-  - OverloadedStrings
-  - RecordWildCards
   - DeriveDataTypeable
   - GeneralizedNewtypeDeriving
+  - NoImplicitPrelude
+  - OverloadedStrings
+  - RecordWildCards
+  - TypeApplications
