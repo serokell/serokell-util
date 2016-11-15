@@ -81,12 +81,27 @@ columns: 90
 # Default: native.
 newline: native
 
-# These are exactly the same extensions which we enable in .cabal file
-# Some of them shouldn't affect stylish-haskell, but let them be
+# These syntax-affecting language extensions are enabled so that
+# stylish-haskell wouldn't fail with parsing errors when processing files
+# in projects that have those extensions enabled in the .cabal file
+# rather than locally.
+#
+# To my best knowledge, no harm should result from enabling an extension
+# that isn't actually used in the file/project. —@neongreen
 language_extensions:
+  - DefaultSignatures
   - DeriveDataTypeable
+  - DeriveGeneric
+  - FunctionalDependencies
+  - GADTs
   - GeneralizedNewtypeDeriving
+  - MultiParamTypeClasses
   - NoImplicitPrelude
   - OverloadedStrings
   - RecordWildCards
+  - ScopedTypeVariables
+  - StandaloneDeriving
+  - TupleSections
   - TypeApplications
+  - TypeFamilies
+  - ViewPatterns
