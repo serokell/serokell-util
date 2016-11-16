@@ -52,8 +52,8 @@ library
                        Serokell.Util.Parse.Network
   build-depends:       QuickCheck >= 2.8.1
                      , acid-state
-                     , aeson
-                     , aeson-extra
+                     , aeson >= 0.11.0.0 && <= 1.0.0.0
+                     , aeson-extra >= 0.4.0.0
                      , base >= 4.8 && < 5
                      , base16-bytestring
                      , base64-bytestring
@@ -106,7 +106,7 @@ test-suite serokell-test
                        Test.Serokell.Util.TextSpec
                        Spec
   type:                exitcode-stdio-1.0
-  build-depends:       aeson
+  build-depends:       aeson >= 0.11.0.0 && <= 1.0.0.0
                      , base >=4.8
                      , binary
                      , bytestring
