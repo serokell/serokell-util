@@ -199,8 +199,7 @@ Format export lists as follows:
 
 ```haskell
 module Data.Set
-       (
-         -- * The @Set@ type
+       ( -- * The @Set@ type
          Set
        , empty
        , singleton
