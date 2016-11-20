@@ -53,7 +53,7 @@ instance (Ord a, Eq a, Generic a, AT.GToJSON (Rep a)) => ToReplaceToken a where
   toReplaceToken = (\(AT.String s) -> s) . genericToJSON defaultOptions
 
 replaceTranslations
-    :: (ToReplaceToken token, Eq lang, Ord lang)
+    :: (ToReplaceToken token, Ord lang)
     => Translations lang token -> lang -> T.Text -> Maybe T.Text
 replaceTranslations translations lang text =
     M.foldrWithKey
