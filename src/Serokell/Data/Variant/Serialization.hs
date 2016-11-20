@@ -104,12 +104,8 @@ instance SafeCopy Variant
 
 --  —————————MessagePack serialization————————— --
 -- MessagePack data structure is very close to Variant. However, note that:
--- 1. We are using strange library where Object type doesn't cover all
---    possible objects. For example, there is only `Int` for integers.
---    So every integer number is converted to `Int` (which may be imprecise).
---    Decoding checks sign of input (like JSON).
--- 2. MessagePack distinguishes between Float and Double while we don't.
--- 3. ObjectExt can't be decoded.
+-- 1. MessagePack distinguishes between Float and Double while we don't.
+-- 2. ObjectExt can't be decoded.
 
 instance MP.MessagePack Variant where
     toObject VarNone = MP.ObjectNil
@@ -126,8 +122,8 @@ instance MP.MessagePack Variant where
         v
     fromObject MP.ObjectNil = pure VarNone
     fromObject (MP.ObjectBool v) = pure . VarBool $ v
-    fromObject (MP.ObjectInt v) | v < 0 = pure . VarInt . fromIntegral $ v
-                                | otherwise = pure . VarUInt . fromIntegral $ v
+    fromObject (MP.ObjectInt v) = pure . VarInt $ v
+    fromObject (MP.ObjectWord v) = pure . VarUInt $ v
     fromObject (MP.ObjectFloat v) = pure . VarFloat . realToFrac $ v
     fromObject (MP.ObjectDouble v) = pure . VarFloat $ v
     fromObject (MP.ObjectStr v) = pure . VarString $ v
