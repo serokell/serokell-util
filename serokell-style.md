@@ -222,10 +222,9 @@ Some clarifications:
 
 Imports should be grouped in the following order:
 
-1. Everything from hackage packages
-2. Everything from your packages outside current project
-3. Everything from current project
-4. Everything from current target (like `Bench.*` or `Test.*`)
+1. Everything from hackage packages or from your packages outside current project.
+2. Everything from current project.
+3. Everything from current target (like `Bench.*` or `Test.*`).
 
 Put a blank line between each group of imports. It is also okay to put blank
 lines between `Data` and `Control` section of std imports because these sections
@@ -236,7 +235,7 @@ The imports in each group should be sorted alphabetically, by module name.
 Always use explicit import lists or `qualified` imports.
 Try to use `qualified` imports only if import list is
 big enough or there are conflicts in names. This makes the code more robust
-against changes in these libraries. Exceptions: 
+against changes in these libraries. Exceptions:
 
 1. _The Prelude_ or any custom prelude (e.g. [Universum](https://github.com/serokell/universum))
 2. Modules that only reexport stuff from other modules
@@ -285,7 +284,7 @@ Type classes in `deriving` section should be always surrounded by
 parentheses. Space between names is optional.
 
 _WARNING_: try to avoid aggressive autoderiving. Deriving instances can
-slowdown compilation 
+slowdown compilation
 (stated here: http://www.stephendiehl.com/posts/production.html)
 
 > Deriving instances of Read/Show/Data/Generic for largely recursive ADTs can
