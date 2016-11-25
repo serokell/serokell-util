@@ -111,7 +111,7 @@ instance MP.MessagePack Variant where
     toObject VarNone = MP.ObjectNil
     toObject (VarBool v) = MP.ObjectBool v
     toObject (VarInt v) = MP.ObjectInt $ fromIntegral v
-    toObject (VarUInt v) = MP.ObjectInt $ fromIntegral v
+    toObject (VarUInt v) = MP.ObjectWord $ fromIntegral v
     toObject (VarFloat v) = MP.ObjectDouble v
     toObject (VarBytes v) = MP.ObjectBin v
     toObject (VarString v) = MP.ObjectStr v

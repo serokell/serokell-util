@@ -80,12 +80,6 @@ msgPkFixer (S.VarMap m) = let ks = map msgPkFixer $ HM.keys m
                               m' = HM.fromList $ zip ks vs
                           in S.VarMap m'
 msgPkFixer (S.VarList l) = S.VarList $ V.map msgPkFixer l
-msgPkFixer v@(S.VarInt i) =
-    if i < 0 then v
-             else (S.VarUInt $ fromIntegral i)
-msgPkFixer v@(S.VarUInt i) =
-    if i >= 0 then v
-             else (S.VarInt $ fromIntegral i)
 msgPkFixer v = v
 
 msgPkMid :: S.Variant -> S.Variant
