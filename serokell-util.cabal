@@ -29,6 +29,7 @@ library
                        Serokell.Data.Memory.Units
                        Serokell.Data.Variant
                        Serokell.Util
+                       Serokell.Util.Base
                        Serokell.Util.Base16
                        Serokell.Util.Base64
                        Serokell.Util.Bench
@@ -74,6 +75,7 @@ library
                      , formatting
                      , hashable >= 1.2.4.0
                      , lens
+                     , monad-control
                      , mtl
                      , optparse-applicative
                      , parsec
