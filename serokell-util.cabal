@@ -81,6 +81,7 @@ library
                      , safecopy >= 0.9.0.1
                      , scientific
                      , semigroups
+                     , stm >= 2.4.4
                      , template-haskell
                      , text
                      , text-format
