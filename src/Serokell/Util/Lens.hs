@@ -1,4 +1,5 @@
-{-# LANGUAGE Rank2Types #-}
+{-# LANGUAGE Rank2Types   #-}
+{-# LANGUAGE TypeFamilies #-}
 
 -- | Extra operators on Lens
 module Serokell.Util.Lens
@@ -25,3 +26,11 @@ infix 4 %%=
 infix 4 %?=
 (%?=) :: L.Lens' s a -> ExceptT t (State a) b -> ExceptT t (State s) b
 (%?=) l = mapExceptT (l %%=)
+
+-- | Similar to `Wrapped`, but for `Monad`s.
+class Monad m => WrappedM m where
+    type UnwrappedM m :: * -> *
+    _WrappedM :: L.Iso' (m a) (UnwrappedM m a)
+
+_UnwrappedM :: WrappedM m => L.Iso' (UnwrappedM m a) (m a)
+_UnwrappedM = L.from _WrappedM
