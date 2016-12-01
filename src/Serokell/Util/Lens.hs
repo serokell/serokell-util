@@ -5,6 +5,8 @@
 module Serokell.Util.Lens
        ( (%%=)
        , (%?=)
+       , WrappedM (..)
+       , _UnwrappedM
        ) where
 
 import qualified Control.Lens               as L
