@@ -92,6 +92,8 @@ language_extensions:
   - DefaultSignatures
   - DeriveDataTypeable
   - DeriveGeneric
+  - FlexibleContexts
+  - FlexibleInstances
   - FunctionalDependencies
   - GADTs
   - GeneralizedNewtypeDeriving
