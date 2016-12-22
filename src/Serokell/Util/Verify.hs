@@ -4,24 +4,31 @@
 
 module Serokell.Util.Verify
        ( VerificationRes (..)
+
+       -- * Helpers
        , isVerFailure
        , isVerSuccess
+       , verResToMonadError
+
+       -- * Verification
+       , verifyGeneric
 
        -- * Prety printing
        , buildVerResFull
        , buildVerResSingle
+       , formatAllErrors
+       , formatFirstError
        , verResFullF
        , verResSingleF
-
-       , verifyGeneric
        ) where
 
+import           Control.Monad.Except   (MonadError, throwError)
 import           Data.Semigroup         (Semigroup)
 import qualified Data.Semigroup         as Semigroup
 import           Data.Text              (Text)
 import qualified Data.Text              as T
 import qualified Data.Text.Lazy.Builder as B
-import           Formatting             (Format, later)
+import           Formatting             (Format, later, sformat)
 
 import           Serokell.Util.Text     (listBuilder)
 
@@ -93,3 +100,23 @@ verResFullF = later buildVerResFull
 -- | Formatter based on buildVerResSingle.
 verResSingleF :: Format r (VerificationRes -> r)
 verResSingleF = later buildVerResSingle
+
+-- These two functions can have more general type.
+
+-- | Pretty printer for errors from VerFailure, all errors are printed.
+formatAllErrors :: [Text] -> Text
+formatAllErrors = sformat verResFullF . VerFailure
+
+-- | Pretty printer for errors from VerFailure, only first error is printed.
+formatFirstError :: [Text] -> Text
+formatFirstError = sformat verResSingleF . VerFailure
+
+----------------------------------------------------------------------------
+-- Conversion to MonadError (including Either)
+----------------------------------------------------------------------------
+
+verResToMonadError
+    :: MonadError e m
+    => ([Text] -> e) -> VerificationRes -> m ()
+verResToMonadError _ VerSuccess          = pure ()
+verResToMonadError f (VerFailure errors) = throwError $ f errors
