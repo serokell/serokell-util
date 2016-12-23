@@ -315,6 +315,30 @@ slowdown compilation
 > Deriving instances of Read/Show/Data/Generic for largely recursive ADTs can
 > sometimes lead to quadratic memory behavior when the nesting gets deep.
 
+If you have record with multiple constructors (which is generally bad idea
+because you getters become partial functions but okay if you use 
+`-XRecordWildCards`) then align curly braces with
+shift to the constructor name but } should go in the end of last field.
+
+```haskell
+data Address
+   = PubKeyAddress
+         { addrKeyHash :: !(AddressHash PublicKey) }
+   | ScriptAddress
+         { addrScriptHash   :: !(AddressHash Script)
+         , addrDistribution :: ![(AddressHash PublicKey, Coin)] }
+   deriving (Show, Eq)
+```
+
+If there is only one field for every constructor more compact style is allowed.
+
+```haskell
+data Address
+   = PubKeyAddress { addrKeyHash    :: !(AddressHash PublicKey) }
+   | ScriptAddress { addrScriptHash :: !(AddressHash Script)    }
+   deriving (Show, Eq)
+```
+
 ### Function declaration
 
 All functions must have type signatures.
