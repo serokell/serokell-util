@@ -85,6 +85,31 @@ For readability reasons, don't capitalize all letters when using an
 abbreviation.  For example, write `HttpServer` instead of
 `HTTPServer`.  Exception: two or three letter abbreviations, e.g. `IO`, `STM`.
 
+**Records name conventions**
+
+If data type has only one constructor then this data type name should be same
+as constructor name (also applies to `newtype`).
+
+```haskell
+data User = User Int String
+```
+
+Field name for `newtype` should start with `get` prefix followed by type name.
+
+```haskell
+newtype Coin = Coin { getCoin :: Int }
+```
+
+Field names for record data type should start with every capital letter in type
+name.
+
+```haskell
+data NetworkConfig = NetworkConfig
+    { ncDelay :: Microsecond  -- `nc` corresponds to `_N_etwork_C_onfig`
+    , ncPort  :: Word
+    }
+```
+
 **Library specific conventions**
 
 Add `F` suffix to custom formatters to avoid name conflicts:
