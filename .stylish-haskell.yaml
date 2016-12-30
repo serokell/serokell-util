@@ -97,7 +97,9 @@ language_extensions:
   - FunctionalDependencies
   - GADTs
   - GeneralizedNewtypeDeriving
+  - LambdaCase
   - MultiParamTypeClasses
+  - MultiWayIf
   - NoImplicitPrelude
   - OverloadedStrings
   - RecordWildCards
