@@ -11,9 +11,11 @@ module Serokell.Util.Parse.Network
        , host'
        , connection
        , connection'
+       , recipient
        ) where
 
 import           Control.Monad                      (liftM, void)
+import           Data.Monoid                        ((<>))
 import           Data.Word                          (Word16)
 import           Serokell.Util.Parse.Common         (Parser, asciiAlphaNum, byte,
                                                      countMinMax, limitedInt)
@@ -105,9 +107,6 @@ host' = (IPv6Address <$> try ipv6str)
         void $ char ']'
         return ipv6
 
-connection :: Parser (String, Maybe Word16)
-connection = (\(h, p) -> (hostAddress h, p)) <$> connection'
-
 connection' :: Parser (Host, Maybe Word16)
 connection' = do
     addr <- host'
@@ -115,3 +114,13 @@ connection' = do
     return (addr, p)
   where
     maybePort = option Nothing $ char ':' >> Just <$> port
+
+connection :: Parser (String, Maybe Word16)
+connection = (\(h, p) -> (hostAddress h, p)) <$> connection'
+
+-- | 'Parser' for host with both hostname and port.
+-- Example: 54.122.0.255:9999
+recipient :: Parser (String, Word16)
+recipient = connection >>= \(h, mp) -> case mp of
+              Just p -> pure (h, p)
+              _      -> fail $ "No port specified for host " <> h
