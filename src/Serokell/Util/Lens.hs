@@ -34,7 +34,15 @@ infix 4 %?=
 -- | Similar to `Wrapped`, but for `Monad`s.
 class Monad m => WrappedM m where
     type UnwrappedM m :: * -> *
+
     _WrappedM :: L.Iso' (m a) (UnwrappedM m a)
+    _WrappedM = L.iso packM unpackM
+
+    packM :: m a -> UnwrappedM m a
+    packM = L.view _WrappedM
+
+    unpackM :: UnwrappedM m a -> m a
+    unpackM = L.view _UnwrappedM
 
 _UnwrappedM :: WrappedM m => L.Iso' (UnwrappedM m a) (m a)
 _UnwrappedM = L.from _WrappedM
