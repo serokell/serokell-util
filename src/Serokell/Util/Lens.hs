@@ -10,8 +10,10 @@ module Serokell.Util.Lens
        ) where
 
 import qualified Control.Lens               as L
+import           Control.Monad.Reader       (ReaderT)
 import           Control.Monad.State        (State, get, runState)
 import           Control.Monad.Trans.Except (ExceptT, mapExceptT)
+import           System.Wlog                (LoggerName, LoggerNameBox (..))
 
 -- I don't know how to call these operators
 
@@ -36,3 +38,7 @@ class Monad m => WrappedM m where
 
 _UnwrappedM :: WrappedM m => L.Iso' (UnwrappedM m a) (m a)
 _UnwrappedM = L.from _WrappedM
+
+instance Monad m => WrappedM (LoggerNameBox m) where
+    type UnwrappedM (LoggerNameBox m) = ReaderT LoggerName m
+    _WrappedM = L.iso loggerNameBoxEntry LoggerNameBox

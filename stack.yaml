@@ -1,12 +1,16 @@
-resolver: lts-7.1
+resolver: lts-7.15
+
 packages:
 - '.'
 nix:
     packages: [openssh,git]
-extra-deps: 
+
+extra-deps:
 - aeson-extra-0.4.0.0
 - time-units-1.0.0
 - recursion-schemes-5
 - data-msgpack-0.0.8
+- log-warper-0.2.1
+
 flags: {}
 extra-package-dbs: []
