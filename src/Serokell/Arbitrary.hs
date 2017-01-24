@@ -19,6 +19,11 @@ import           Test.QuickCheck.Instances     ()
 
 import           Serokell.Data.Variant.Variant (Variant (..))
 import qualified Serokell.Util.Base64          as S
+import qualified Serokell.Util.Verify          as V
+
+------------------------------------------------------------------------------------------
+-- Serokell.Data.Variant
+------------------------------------------------------------------------------------------
 
 instance Arbitrary S.JsonByteString where
     arbitrary = S.JsonByteString <$> (arbitrary :: Gen BS.ByteString)
@@ -89,3 +94,13 @@ genMapVariant n = do
     -- Lengths of keys and vals may not match and so we would get less
     -- constructors due to truncation, but we don't care.
     return $ VarMap $ H.fromList $ zip keys vals
+
+------------------------------------------------------------------------------------------
+-- Serokell.Util.Verify
+------------------------------------------------------------------------------------------
+
+instance Arbitrary V.VerificationRes where
+    arbitrary = oneof $
+        [ pure V.VerSuccess
+        , V.VerFailure <$> arbitrary
+        ]

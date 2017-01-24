@@ -35,7 +35,7 @@ import           Serokell.Util.Text     (listBuilder)
 data VerificationRes
     = VerSuccess
     | VerFailure ![T.Text]
-    deriving (Show)
+    deriving (Eq, Show)
 
 isVerSuccess :: VerificationRes -> Bool
 isVerSuccess VerSuccess = True
