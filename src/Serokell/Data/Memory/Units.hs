@@ -28,6 +28,7 @@ module Serokell.Data.Memory.Units
        , convertUnit
        ) where
 
+import           Control.DeepSeq        (NFData)
 import           Data.Binary            (Binary)
 import           Data.Proxy             (Proxy (Proxy))
 import           Data.SafeCopy          (SafeCopy)
@@ -96,8 +97,8 @@ newtype Byte =
     Byte Integer
     deriving (Show,Eq,Num,Typeable,Integral,Real,Enum,Ord,Generic,Serialize,Binary, Arbitrary)
 
+instance NFData Byte
 instance SafeCopy Byte
-
 instance MemoryUnit Byte where
     bytesMultiplier Proxy = pow10 0
 
@@ -105,19 +106,19 @@ newtype Kilobyte =
     Kilobyte Integer
     deriving (Show,Eq,Num,Typeable,Integral,Real,Enum,Ord,Generic,Serialize,Arbitrary)
 
+instance NFData Kilobyte
 instance SafeCopy Kilobyte
-
 instance MemoryUnit Kilobyte where
     bytesMultiplier Proxy = pow10 3
 
--- P. S. Feel free to add more.
+-- P.S. Feel free to add more.
 
 newtype Megabyte =
     Megabyte Integer
     deriving (Show,Eq,Num,Typeable,Integral,Real,Enum,Ord,Generic,Serialize,Arbitrary)
 
+instance NFData Megabyte
 instance SafeCopy Megabyte
-
 instance MemoryUnit Megabyte where
     bytesMultiplier Proxy = pow10 6
 
@@ -125,8 +126,8 @@ newtype Gigabyte =
     Gigabyte Integer
     deriving (Show,Eq,Num,Typeable,Integral,Real,Enum,Ord,Generic,Serialize,Arbitrary)
 
+instance NFData Gigabyte
 instance SafeCopy Gigabyte
-
 instance MemoryUnit Gigabyte where
     bytesMultiplier Proxy = pow10 9
 
@@ -134,7 +135,7 @@ newtype Terabyte =
     Terabyte Integer
     deriving (Show,Eq,Num,Typeable,Integral,Real,Enum,Ord,Generic,Serialize,Arbitrary)
 
+instance NFData Terabyte
 instance SafeCopy Terabyte
-
 instance MemoryUnit Terabyte where
     bytesMultiplier Proxy = pow10 12
