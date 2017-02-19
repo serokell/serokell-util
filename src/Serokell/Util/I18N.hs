@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP                  #-}
 {-# LANGUAGE FlexibleContexts     #-}
 {-# LANGUAGE FlexibleInstances    #-}
 {-# LANGUAGE UndecidableInstances #-}
@@ -11,7 +12,6 @@ module Serokell.Util.I18N
        ) where
 
 import           Data.Aeson.Extra.Map   (FromJSONKey (..), getMap)
-import           Data.Aeson.Types       (genericParseJSON, genericToJSON)
 import qualified Data.Aeson.Types       as AT
 import           Data.ByteString        as BS
 import qualified Data.Map.Strict        as M
@@ -21,13 +21,26 @@ import           Formatting             (build, sformat, (%))
 import           GHC.Generics           (Generic, Rep)
 import           Serokell.Aeson.Options (defaultOptions)
 
+
+-- It's better to get rid of aeson-extra depricated things here, but
+-- aeson-1.0.0.0 structure of FromJSONKey requires fromJSONKeyList
+-- which is unobvious to implement.
 class (Eq a, Ord a, FromJSONKey a) => YamlMapKey a
 
+#if MIN_VERSION_aeson(1,0,0)
+instance (Generic a, AT.GFromJSON AT.Zero (Rep a)) =>
+#else
 instance (Generic a, AT.GFromJSON (Rep a)) =>
+#endif
          FromJSONKey a where
-    parseJSONKey l = genericParseJSON defaultOptions (AT.String l)
+    parseJSONKey l = AT.genericParseJSON defaultOptions (AT.String l)
 
+
+#if MIN_VERSION_aeson(1,0,0)
+instance (Eq a, Ord a, Generic a, AT.GFromJSON AT.Zero (Rep a)) =>
+#else
 instance (Eq a, Ord a, Generic a, AT.GFromJSON (Rep a)) =>
+#endif
          YamlMapKey a
 
 type Translations lang token = M.Map lang (M.Map token T.Text)
@@ -47,10 +60,15 @@ fromYaml yamlStr =
 
 
 class (Ord a, Eq a) => ToReplaceToken a where
-  toReplaceToken :: a -> T.Text
+    toReplaceToken :: a -> T.Text
 
+#if MIN_VERSION_aeson(1,0,0)
+instance (Ord a, Eq a, Generic a, AT.GToJSON AT.Zero (Rep a)) => ToReplaceToken a where
+    toReplaceToken = (\(AT.String s) -> s) . AT.genericToJSON defaultOptions
+#else
 instance (Ord a, Eq a, Generic a, AT.GToJSON (Rep a)) => ToReplaceToken a where
-  toReplaceToken = (\(AT.String s) -> s) . genericToJSON defaultOptions
+    toReplaceToken = (\(AT.String s) -> s) . AT.genericToJSON defaultOptions
+#endif
 
 replaceTranslations
     :: (ToReplaceToken token, Ord lang)
