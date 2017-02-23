@@ -10,8 +10,10 @@ module Serokell.Util.Parse.Common
        , limitedInt
        , byte
        , asciiAlphaNum
+       , parseIntegralSafe
        ) where
 
+import           Control.Applicative                (some)
 import           Text.Parsec                        (Parsec, ParsecT, Stream, option,
                                                      satisfy)
 import           Text.ParserCombinators.Parsec.Char (digit)
@@ -54,3 +56,12 @@ limitedInt x e = do
 byte :: CharParser Word
 byte = fromIntegral <$> limitedInt 255 "Value to large"
 
+parseIntegralSafe :: Integral a => CharParser a
+parseIntegralSafe = fromIntegerSafe . read =<< some digit
+  where
+    fromIntegerSafe :: Integral a => Integer -> CharParser a
+    fromIntegerSafe x =
+        let res = fromInteger x
+        in  if fromIntegral res == x
+            then return res
+            else fail ("Number is too large: " ++ show x)
