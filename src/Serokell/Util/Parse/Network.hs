@@ -16,14 +16,14 @@ module Serokell.Util.Parse.Network
        , recipient
        ) where
 
-import           Control.Monad                      (liftM, void)
-import           Data.Monoid                        ((<>))
-import           Data.Word                          (Word16)
-import           Serokell.Util.Parse.Common         (CharParser, asciiAlphaNum, byte,
-                                                     countMinMax, limitedInt)
-import           Text.Parsec                        (choice, count, many1, oneOf, option,
-                                                     try, (<?>), (<|>))
-import           Text.ParserCombinators.Parsec.Char (alphaNum, char, hexDigit, string)
+import           Control.Applicative        (some, (<|>))
+import           Control.Monad              (liftM, void)
+import           Data.Monoid                ((<>))
+import           Data.Word                  (Word16)
+import           Serokell.Util.Parse.Common (CharParser, asciiAlphaNum, byte, countMinMax,
+                                             limitedInt)
+import           Text.Parsec                (choice, count, oneOf, option, try, (<?>))
+import           Text.Parsec.Char           (alphaNum, char, hexDigit, string)
 
 data Host = IPv4Address { hostAddress :: String }
           | IPv6Address { hostAddress :: String }
@@ -90,10 +90,10 @@ ipv6address = do
 ipv6addressWithScope :: CharParser String
 ipv6addressWithScope = concatSequence [ipv6address, option "" scope]
   where
-    scope = concatSequence [string "%", many1 asciiAlphaNum]
+    scope = concatSequence [string "%", some asciiAlphaNum]
 
 hostname :: CharParser String
-hostname = many1 $ alphaNum <|> oneOf ".-_"
+hostname = some $ alphaNum <|> oneOf ".-_"
 
 host :: CharParser String
 host = hostAddress <$> host'
