@@ -5,6 +5,7 @@ module Serokell.Util
          module Exports
        ) where
 
+import           Serokell.Util.ANSI         as Exports
 import           Serokell.Util.Bench        as Exports
 import           Serokell.Util.Binary       as Exports
 import           Serokell.Util.Common       as Exports

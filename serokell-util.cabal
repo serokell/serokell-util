@@ -29,6 +29,7 @@ library
                        Serokell.Data.Memory.Units
                        Serokell.Data.Variant
                        Serokell.Util
+                       Serokell.Util.ANSI
                        Serokell.Util.Base
                        Serokell.Util.Base16
                        Serokell.Util.Base64
@@ -55,6 +56,7 @@ library
                      , acid-state
                      , aeson >= 0.11.0.0 && < 1.2.0.0
                      , aeson-extra >= 0.4.0.0
+                     , ansi-terminal
                      , base >= 4.8 && < 5
                      , base16-bytestring
                      , base64-bytestring
@@ -63,8 +65,8 @@ library
                      , bytestring
                      , cereal
                      , cereal-vector
-                     , containers
                      , clock
+                     , containers
                      , data-msgpack >= 0.0.8
                      , deepseq
                      , directory
