@@ -6,10 +6,11 @@ module Serokell.Util.Common
        , indexModuloMay
        , indexedSubList
        , subList
+       , allDistinct
        ) where
 
 import           Control.Monad.State (evalState, get, modify)
-import           Data.List           (genericDrop, genericIndex, genericLength,
+import           Data.List           (sort, genericDrop, genericIndex, genericLength,
                                       genericTake)
 import           Data.Maybe          (fromMaybe)
 
@@ -70,3 +71,19 @@ indexedSubList (lo, hi)
 -- | Like indexedSubList, but not indexed :)
 subList :: Integral i => (i, i) -> [a] -> [a]
 subList range = map snd . indexedSubList range
+
+-- | Determine whether all elements in a list are distinct.
+--
+-- >>> allDistinct [1,2,3]
+-- True
+-- >>> allDistinct [1,3,3]
+-- False
+--
+-- Naturally, all elements in an empty list are distinct:
+--
+-- >>> allDistinct []
+-- True
+allDistinct :: Ord a => [a] -> Bool
+allDistinct xs = and $ zipWith (/=) sorted (drop 1 sorted)
+  where
+    sorted = sort xs
