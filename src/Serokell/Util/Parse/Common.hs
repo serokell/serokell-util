@@ -1,9 +1,11 @@
+{-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE RankNTypes            #-}
 
 -- | Parsing common helpers
 
 module Serokell.Util.Parse.Common
-       ( Parser
+       ( CharParser
        , countMinMax
        , limitedInt
        , byte
@@ -14,7 +16,7 @@ import           Text.Parsec                        (Parsec, ParsecT, Stream, op
                                                      satisfy)
 import           Text.ParserCombinators.Parsec.Char (digit)
 
-type Parser = Parsec String ()
+type CharParser a = forall s u m. Stream s m Char => ParsecT s u m a
 
 isAsciiAlpha :: Char -> Bool
 isAsciiAlpha c = (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
@@ -25,7 +27,7 @@ isAsciiNum c = (c >= '0' && c <= '9')
 isAsciiAlphaNum :: Char -> Bool
 isAsciiAlphaNum c = isAsciiAlpha c || isAsciiNum c
 
-asciiAlphaNum :: Parser Char
+asciiAlphaNum :: CharParser Char
 asciiAlphaNum = satisfy isAsciiAlphaNum
 
 countMinMax :: (Stream s m t) => Int -> Int -> ParsecT s u m a -> ParsecT s u m [a]
@@ -40,7 +42,7 @@ countMinMax m x p
         end <- countMinMax 0 (x - 1) p
         return $ f : end
 
-limitedInt :: Int -> String -> Parser Int
+limitedInt :: Int -> String -> CharParser Int
 limitedInt x e = do
     b <- read <$> countMinMax 1 (intDigits x) digit
     if b > x
@@ -49,6 +51,6 @@ limitedInt x e = do
   where
     intDigits = length . show
 
-byte :: Parser Word
+byte :: CharParser Word
 byte = fromIntegral <$> limitedInt 255 "Value to large"
 
