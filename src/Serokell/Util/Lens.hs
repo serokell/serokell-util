@@ -7,11 +7,15 @@ module Serokell.Util.Lens
        , (%?=)
        , WrappedM (..)
        , _UnwrappedM
+       , zoom'
+       , magnify'
        ) where
 
 import qualified Control.Lens               as L
-import           Control.Monad.Reader       (ReaderT)
-import           Control.Monad.State        (State, get, runState)
+import           Control.Monad.Reader       (MonadReader, Reader, ReaderT, reader,
+                                             runReader)
+import           Control.Monad.State        (MonadState, State, StateT, get, runState,
+                                             state)
 import           Control.Monad.Trans.Except (ExceptT, mapExceptT)
 import           System.Wlog                (LoggerName, LoggerNameBox (..))
 
@@ -50,3 +54,23 @@ _UnwrappedM = L.from _WrappedM
 instance Monad m => WrappedM (LoggerNameBox m) where
     type UnwrappedM (LoggerNameBox m) = ReaderT LoggerName m
     _WrappedM = L.iso loggerNameBoxEntry LoggerNameBox
+
+-- | A 'zoom' which works in arbitrary 'MonadState'.
+--
+-- See <https://github.com/ekmett/lens/issues/580>. You might be surprised
+-- but actual 'zoom' doesn't work in any 'MonadState', it only works in a
+-- handful of state monads and their combinations defined by 'Zoom'.
+zoom'
+    :: MonadState s m
+    => L.LensLike' (L.Zoomed (State s) a) s t
+    -> StateT t L.Identity a
+    -> m a
+zoom' l = state . runState . L.zoom l
+
+-- | A 'magnify' which works in arbitrary 'MonadReader'.
+magnify'
+    :: MonadReader s m
+    => L.LensLike' (L.Magnified (Reader s) a) s t
+    -> ReaderT t L.Identity a
+    -> m a
+magnify' l = reader . runReader . L.magnify l
