@@ -92,6 +92,7 @@ library
                      , text-format
                      , time-units
                      , transformers
+                     , universum
                      , unordered-containers >= 0.2.7.0
                      , vector
                      , yaml

@@ -1,4 +1,4 @@
-resolver: lts-8.1
+resolver: lts-8.2
 packages:
 - '.'
 nix:
@@ -10,6 +10,7 @@ extra-deps:
 - recursion-schemes-5
 - data-msgpack-0.0.8
 - log-warper-0.2.1
+- universum-0.2.1
 
 flags: {}
 extra-package-dbs: []
