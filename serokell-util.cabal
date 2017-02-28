@@ -44,6 +44,7 @@ library
                        Serokell.Util.Lens
                        Serokell.Util.StaticAssert
                        Serokell.Util.Text
+                       Serokell.Util.Time
                        Serokell.Util.Verify
   other-modules:       Serokell.Data.Variant.Class
                        Serokell.Data.Variant.Helpers
