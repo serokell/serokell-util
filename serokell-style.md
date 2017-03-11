@@ -247,6 +247,7 @@ Some clarifications:
 
 Imports should be grouped in the following order:
 
+0. Implicit import of custom prelude (for example [`universum`](https://github.com/serokell/universum)) if used.
 1. Everything from hackage packages or from your packages outside current project.
 2. Everything from current project.
 3. Everything from current target (like `Bench.*` or `Test.*`).
@@ -316,7 +317,7 @@ slowdown compilation
 > sometimes lead to quadratic memory behavior when the nesting gets deep.
 
 If you have record with multiple constructors (which is generally bad idea
-because you getters become partial functions but okay if you use 
+because you getters become partial functions but okay if you use
 `-XRecordWildCards`) then align curly braces with
 shift to the constructor name but } should go in the end of last field.
 
