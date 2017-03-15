@@ -15,9 +15,12 @@ import           Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HM hiding (HashMap)
 import           Data.HashSet        (HashSet)
 import qualified Data.HashSet        as HS hiding (HashSet)
-import qualified Data.List.NonEmpty  as NE
 import           Data.SafeCopy       (SafeCopy (..), contain, safeGet,
                                       safePut)
+
+#if !MIN_VERSION_safecopy(0,9,3)
+import qualified Data.List.NonEmpty  as NE
+#endif
 
 -- | Usually Queries shouldn't throw anything. This is a dirty hack.
 instance MonadThrow (Query s) where
@@ -34,12 +37,7 @@ instance (Eq a, Hashable a, SafeCopy a, SafeCopy b) => SafeCopy (HashMap a b) wh
     putCopy = contain . safePut . HM.toList
     getCopy = contain $ HM.fromList <$> safeGet
 
--- [SRK-51]: we should try to get this one into safecopy itself though it's
--- unlikely that they will choose a different implementation (if they do
--- choose a different implementation we'll have to write a migration)
---
--- update: made a PR <https://github.com/acid-state/safecopy/pull/47>;
--- remove this instance when the pull request is merged
+#if !MIN_VERSION_safecopy(0,9,3)
 instance SafeCopy a => SafeCopy (NE.NonEmpty a) where
     getCopy = contain $ do
         xs <- safeGet
@@ -48,6 +46,7 @@ instance SafeCopy a => SafeCopy (NE.NonEmpty a) where
             Just xx -> return xx
     putCopy = contain . safePut . NE.toList
     errorTypeName _ = "NonEmpty"
+#endif
 
 #define SAFECOPY_TIME(T, TS)                     \
   instance SafeCopy T where {                    \
