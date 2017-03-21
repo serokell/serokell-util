@@ -12,8 +12,11 @@ module Serokell.Util.Base64
        ) where
 
 import           Control.Monad              ((>=>))
+import           Control.Monad.Fail         (MonadFail (fail))
 import           Data.Aeson                 (FromJSON (parseJSON), ToJSON (toJSON))
-import           Data.Aeson.Types           (ToJSONKey (..), toJSONKeyText)
+import           Data.Aeson.Types           (FromJSONKey (..),
+                                             FromJSONKeyFunction (FromJSONKeyTextParser),
+                                             ToJSONKey (..), toJSONKeyText)
 import qualified Data.ByteString            as BS
 import qualified Data.ByteString.Base64     as B64
 import qualified Data.ByteString.Base64.URL as B64url
@@ -22,6 +25,7 @@ import qualified Data.Text                  as T
 import           Data.Text.Encoding         (decodeUtf8, encodeUtf8)
 import           Data.Text.Lazy.Builder     (Builder, fromText)
 import           Formatting                 (Format, later)
+import           Prelude                    hiding (fail)
 
 -- | Apply base64 encoding to strict ByteString.
 encode :: BS.ByteString -> T.Text
@@ -47,6 +51,10 @@ formatBase64 = fromText . encode
 base64F :: Format r (BS.ByteString -> r)
 base64F = later formatBase64
 
+----------------------------------------------------------------------------
+-- Aeson helpers
+----------------------------------------------------------------------------
+
 -- | Wrapper on top of ByteString with JSON serialization (in base64
 -- encoding).
 newtype JsonByteString = JsonByteString
@@ -60,11 +68,18 @@ instance ToJSONKey JsonByteString where
     toJSONKey = toJSONKeyText (encode . getJsonByteString)
 
 instance FromJSON JsonByteString where
-    parseJSON =
-        parseJSON >=>
-        either (fail . T.unpack) (pure . JsonByteString) . decode
+    parseJSON = parseJSON >=> jsonBSParser
 
------------- Deprecated--------------
+instance FromJSONKey JsonByteString where
+    fromJSONKey = FromJSONKeyTextParser jsonBSParser
+
+jsonBSParser :: MonadFail m => T.Text -> m JsonByteString
+jsonBSParser = either (fail . T.unpack) (pure . JsonByteString) . decode
+
+----------------------------------------------------------------------------
+-- Deprecated
+----------------------------------------------------------------------------
+
 newtype JsonByteStringDeprecated = JsonByteStringDeprecated
     { getJsonByteStringDeprecated :: BS.ByteString
     }
