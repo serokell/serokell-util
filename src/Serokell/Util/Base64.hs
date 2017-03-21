@@ -13,6 +13,7 @@ module Serokell.Util.Base64
 
 import           Control.Monad              ((>=>))
 import           Data.Aeson                 (FromJSON (parseJSON), ToJSON (toJSON))
+import           Data.Aeson.Types           (ToJSONKey (..), toJSONKeyText)
 import qualified Data.ByteString            as BS
 import qualified Data.ByteString.Base64     as B64
 import qualified Data.ByteString.Base64.URL as B64url
@@ -54,6 +55,9 @@ newtype JsonByteString = JsonByteString
 
 instance ToJSON JsonByteString where
     toJSON = toJSON . encode . getJsonByteString
+
+instance ToJSONKey JsonByteString where
+    toJSONKey = toJSONKeyText (encode . getJsonByteString)
 
 instance FromJSON JsonByteString where
     parseJSON =
