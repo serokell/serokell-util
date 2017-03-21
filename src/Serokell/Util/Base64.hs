@@ -21,6 +21,7 @@ import qualified Data.ByteString            as BS
 import qualified Data.ByteString.Base64     as B64
 import qualified Data.ByteString.Base64.URL as B64url
 import           Data.Either.Combinators    (mapLeft)
+import           Data.Hashable              (Hashable)
 import qualified Data.Text                  as T
 import           Data.Text.Encoding         (decodeUtf8, encodeUtf8)
 import           Data.Text.Lazy.Builder     (Builder, fromText)
@@ -59,7 +60,7 @@ base64F = later formatBase64
 -- encoding).
 newtype JsonByteString = JsonByteString
     { getJsonByteString :: BS.ByteString
-    }
+    } deriving (Show, Eq, Ord, Hashable)
 
 instance ToJSON JsonByteString where
     toJSON = toJSON . encode . getJsonByteString
