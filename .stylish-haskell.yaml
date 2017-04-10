@@ -89,6 +89,7 @@ newline: native
 # To my best knowledge, no harm should result from enabling an extension
 # that isn't actually used in the file/project. —@neongreen
 language_extensions:
+  - BangPatterns
   - DefaultSignatures
   - DeriveDataTypeable
   - DeriveGeneric
@@ -105,6 +106,7 @@ language_extensions:
   - RecordWildCards
   - ScopedTypeVariables
   - StandaloneDeriving
+  - TemplateHaskell
   - TupleSections
   - TypeApplications
   - TypeFamilies
