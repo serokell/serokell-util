@@ -7,8 +7,7 @@ Serokell Haskell Style Guide
 You can find our other formatting utilites and guidelines which expand the code style:
 * [.stylish-haskell.yaml](https://github.com/serokell/serokell-core/blob/master/.stylish-haskell.yaml) config
 * [Universum](https://github.com/serokell/universum)
-* TODO: custom _HLint_ rules
-* TODO: custom _hindent_ rules
+* [Custom _HLint_ rules](https://github.com/input-output-hk/cardano-sl/blob/master/HLint.hs)
 
 General guide lines
 -------------------
