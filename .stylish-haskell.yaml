@@ -90,6 +90,7 @@ newline: native
 # that isn't actually used in the file/project. —@neongreen
 language_extensions:
   - BangPatterns
+  - ConstraintKinds
   - DataKinds
   - DefaultSignatures
   - DeriveDataTypeable
