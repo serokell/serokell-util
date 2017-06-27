@@ -178,7 +178,7 @@ data Parser = Parser
     !ByteString  -- Remaining input
 
 foo :: Int -> Int
-foo n = salt * 32 + 9
+foo n = salt * n + 9
   where
     salt = 453645243  -- Magic hash salt.
 ```
