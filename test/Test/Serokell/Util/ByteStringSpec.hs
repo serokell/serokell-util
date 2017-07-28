@@ -17,9 +17,6 @@ import           Serokell.Arbitrary        ()
 import qualified Serokell.Util.Base16      as C16
 import qualified Serokell.Util.Base64      as C64
 
-deriving instance Eq C64.JsonByteString
-deriving instance Show C64.JsonByteString
-
 spec :: Spec
 spec =
     describe "Serialization" $ do
