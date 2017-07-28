@@ -14,13 +14,11 @@ import           Data.Binary.Orphans           ()
 import           Data.Hashable                 (Hashable)
 import           Data.HashMap.Strict           (HashMap)
 import qualified Data.HashMap.Strict           as HM hiding (HashMap)
-import qualified Data.MessagePack              as MP
 import           Data.SafeCopy                 (SafeCopy)
 import           Data.Scientific               (floatingOrInteger)
 import qualified Data.Serialize                as Cereal
 import           Data.Text                     (Text)
 import qualified Data.Text.Encoding            as TE
-import qualified Data.Vector                   as V
 import           Data.Vector.Serialize         ()
 
 import           Serokell.Data.Variant.Variant (VarMap, Variant (..))
@@ -101,43 +99,6 @@ instance (Eq a, Hashable a, Cereal.Serialize a, Cereal.Serialize b) =>
 instance Cereal.Serialize Variant
 
 instance SafeCopy Variant
-
---  —————————MessagePack serialization————————— --
--- MessagePack data structure is very close to Variant. However, note that:
--- 1. MessagePack distinguishes between Float and Double while we don't.
--- 2. ObjectExt can't be decoded.
-
-instance MP.MessagePack Variant where
-    toObject VarNone = MP.ObjectNil
-    toObject (VarBool v) = MP.ObjectBool v
-    toObject (VarInt v) = MP.ObjectInt $ fromIntegral v
-    toObject (VarUInt v) = MP.ObjectWord $ fromIntegral v
-    toObject (VarFloat v) = MP.ObjectDouble v
-    toObject (VarBytes v) = MP.ObjectBin v
-    toObject (VarString v) = MP.ObjectStr v
-    toObject (VarList v) = MP.ObjectArray . fmap MP.toObject . V.toList $ v
-    toObject (VarMap v) =
-        MP.ObjectMap .
-        fmap (bimap MP.toObject MP.toObject) . HM.toList $
-        v
-    fromObject MP.ObjectNil = pure VarNone
-    fromObject (MP.ObjectBool v) = pure . VarBool $ v
-    fromObject (MP.ObjectInt v) = pure . VarInt $ v
-    fromObject (MP.ObjectWord v) = pure . VarUInt $ v
-    fromObject (MP.ObjectFloat v) = pure . VarFloat . realToFrac $ v
-    fromObject (MP.ObjectDouble v) = pure . VarFloat $ v
-    fromObject (MP.ObjectStr v) = pure . VarString $ v
-    fromObject (MP.ObjectBin v) = pure . VarBytes $ v
-    fromObject (MP.ObjectArray v) = fmap (VarList . V.fromList)
-                                  . mapM MP.fromObject
-                                  $ v
-    fromObject (MP.ObjectMap v) =
-        fmap (VarMap . HM.fromList) .
-        mapM
-            (\(a,b) ->
-                  (,) <$> MP.fromObject a <*> MP.fromObject b) $
-        v
-    fromObject (MP.ObjectExt _ _) = fail "Can't deserialize ObjectExt"
 
 --  —————————Binary serialization————————— --
 -- Here we use Generic support, it should be good enough.

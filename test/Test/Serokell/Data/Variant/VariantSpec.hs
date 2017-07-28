@@ -8,7 +8,6 @@ module Test.Serokell.Data.Variant.VariantSpec
 import qualified Data.Aeson            as A (decode, encode)
 import qualified Data.Binary           as B (decode, encode)
 import qualified Data.HashMap.Lazy     as HM (elems, fromList, keys)
-import           Data.MessagePack      (fromObject, toObject)
 import qualified Data.SafeCopy         as SC (safeGet, safePut)
 import           Data.Scientific       (floatingOrInteger, fromFloatDigits)
 import qualified Data.Serialize        as C (decode, encode, runGet, runPut)
@@ -18,8 +17,7 @@ import           Test.Hspec            (Spec, describe)
 import           Test.Hspec.QuickCheck (prop)
 import           Test.QuickCheck       ((===))
 
-import           Serokell.Arbitrary    (VariantNoBytes (..),
-                                        VariantOnlyBytes (..))
+import           Serokell.Arbitrary    (VariantNoBytes (..), VariantOnlyBytes (..))
 import qualified Serokell.Data.Variant as S
 import qualified Serokell.Util.Base64  as S
 import           Serokell.Util.Text    (show')
@@ -32,8 +30,6 @@ spec = describe "Variant" $ do
                        \(getVariant -> a) -> (jsonFixer a) === jsonMid a
                    prop "Variant (Only VarBytes)" $
                        \(getVarBytes -> a) -> a === (bytesFun $ jsonMid a)
-               prop "MessagePack" $
-                   \(a :: S.Variant) -> (msgPkFixer a) === msgPkMid a
                prop "Binary" $
                    \(a :: S.Variant) -> a === binMid a
                prop "SafeCopy" $
@@ -73,19 +69,6 @@ bytesFun (S.VarString s) = S.VarBytes right
   where
      right = either (error . unpack) id $ S.decode s
 bytesFun _ = error "[bytesFun:] called with Variant that was not VarBytes"
-
-msgPkFixer :: S.Variant -> S.Variant
-msgPkFixer (S.VarMap m) = let ks = map msgPkFixer $ HM.keys m
-                              vs = map msgPkFixer $ HM.elems m
-                              m' = HM.fromList $ zip ks vs
-                          in S.VarMap m'
-msgPkFixer (S.VarList l) = S.VarList $ V.map msgPkFixer l
-msgPkFixer v = v
-
-msgPkMid :: S.Variant -> S.Variant
-msgPkMid = maybe err id . fromObject . toObject
-  where
-    err = error "[VariantSpec] Failed MessagePack decoding"
 
 binMid :: S.Variant -> S.Variant
 binMid = B.decode . B.encode
