@@ -6,11 +6,8 @@ module Test.Serokell.Data.Variant.VariantSpec
        ) where
 
 import qualified Data.Aeson            as A (decode, encode)
-import qualified Data.Binary           as B (decode, encode)
 import qualified Data.HashMap.Lazy     as HM (elems, fromList, keys)
-import qualified Data.SafeCopy         as SC (safeGet, safePut)
 import           Data.Scientific       (floatingOrInteger, fromFloatDigits)
-import qualified Data.Serialize        as C (decode, encode, runGet, runPut)
 import           Data.Text             (unpack)
 import qualified Data.Vector           as V (map)
 import           Test.Hspec            (Spec, describe)
@@ -30,12 +27,6 @@ spec = describe "Variant" $ do
                        \(getVariant -> a) -> (jsonFixer a) === jsonMid a
                    prop "Variant (Only VarBytes)" $
                        \(getVarBytes -> a) -> a === (bytesFun $ jsonMid a)
-               prop "Binary" $
-                   \(a :: S.Variant) -> a === binMid a
-               prop "SafeCopy" $
-                   \(a :: S.Variant) -> a === safeCopyMid a
-               prop "Serialize" $
-                   \(a :: S.Variant) -> a === cerealMid a
 
 jsonFixer :: S.Variant -> S.Variant
 jsonFixer (S.VarMap m) = let ks = map toStr $ HM.keys m
@@ -69,12 +60,3 @@ bytesFun (S.VarString s) = S.VarBytes right
   where
      right = either (error . unpack) id $ S.decode s
 bytesFun _ = error "[bytesFun:] called with Variant that was not VarBytes"
-
-binMid :: S.Variant -> S.Variant
-binMid = B.decode . B.encode
-
-cerealMid :: S.Variant -> S.Variant
-cerealMid = either error id . C.decode . C.encode
-
-safeCopyMid :: S.Variant -> S.Variant
-safeCopyMid = either error id . C.runGet SC.safeGet . C.runPut . SC.safePut

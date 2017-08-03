@@ -17,6 +17,7 @@ import           Data.Aeson                 (FromJSON (parseJSON), ToJSON (toJSO
 import           Data.Aeson.Types           (FromJSONKey (..),
                                              FromJSONKeyFunction (FromJSONKeyTextParser),
                                              ToJSONKey (..), toJSONKeyText)
+import           Data.Bifunctor             (first)
 import qualified Data.ByteString            as BS
 import qualified Data.ByteString.Base64     as B64
 import qualified Data.ByteString.Base64.URL as B64url
@@ -33,7 +34,7 @@ encode = decodeUtf8 . B64.encode
 
 -- | Decode base64-encoded ByteString.
 decode :: T.Text -> Either T.Text BS.ByteString
-decode = mapLeft T.pack . B64.decode . encodeUtf8
+decode = first T.pack . B64.decode . encodeUtf8
 
 -- | Apply base64url encoding to strict ByteString.
 encodeUrl :: BS.ByteString -> T.Text
@@ -41,7 +42,7 @@ encodeUrl = decodeUtf8 . B64url.encode
 
 -- | Decode base64url-encoded ByteString.
 decodeUrl :: T.Text -> Either T.Text BS.ByteString
-decodeUrl = mapLeft T.pack . B64url.decode . encodeUtf8
+decodeUrl = first T.pack . B64url.decode . encodeUtf8
 
 -- | Construct Builder from bytestring formatting it in Base64.
 formatBase64 :: BS.ByteString -> Builder
@@ -91,11 +92,3 @@ instance FromJSON JsonByteStringDeprecated where
     parseJSON =
         parseJSON >=>
         either (fail . T.unpack) (pure . JsonByteStringDeprecated) . decodeUrl
-
-----------------------------------------------------------------------------
--- Decoding helpers
-----------------------------------------------------------------------------
-
-mapLeft :: (a -> c) -> Either a b -> Either c b
-mapLeft f (Left x) = Left (f x)
-mapLeft _ (Right x) = Right x
