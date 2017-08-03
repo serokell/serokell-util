@@ -11,8 +11,7 @@ module Serokell.Util.I18N
        , ToReplaceToken(..)
        ) where
 
-import           Data.Aeson.Extra.Map   (FromJSONKey (..), getMap)
-import qualified Data.Aeson.Types       as AT
+import qualified Data.Aeson             as AT
 import           Data.ByteString        as BS
 import qualified Data.Map.Strict        as M
 import           Data.Text              as T
@@ -25,19 +24,15 @@ import           Serokell.Aeson.Options (defaultOptions)
 -- It's better to get rid of aeson-extra depricated things here, but
 -- aeson-1.0.0.0 structure of FromJSONKey requires fromJSONKeyList
 -- which is unobvious to implement.
-class (Eq a, Ord a, FromJSONKey a) => YamlMapKey a
+class (Eq a, Ord a, AT.FromJSONKey a, AT.FromJSON a) => YamlMapKey a
 
 #if MIN_VERSION_aeson(1,0,0)
-instance (Generic a, AT.GFromJSON AT.Zero (Rep a)) =>
-#else
-instance (Generic a, AT.GFromJSON (Rep a)) =>
-#endif
-         FromJSONKey a where
-    parseJSONKey l = AT.genericParseJSON defaultOptions (AT.String l)
-
-
-#if MIN_VERSION_aeson(1,0,0)
-instance (Eq a, Ord a, Generic a, AT.GFromJSON AT.Zero (Rep a)) =>
+instance (Eq a,
+          Ord a,
+          Generic a,
+          AT.GFromJSON AT.Zero (Rep a),
+          AT.FromJSONKey a,
+          AT.FromJSON a) =>
 #else
 instance (Eq a, Ord a, Generic a, AT.GFromJSON (Rep a)) =>
 #endif
@@ -49,15 +44,11 @@ fromYaml :: (YamlMapKey lang, YamlMapKey token)
          => BS.ByteString
          -> Translations lang token
 fromYaml yamlStr =
-    toLangMap $
     either
         (error .
          T.unpack . sformat ("Error during translation YAML parsing " % build))
         id $
     decodeEither yamlStr
-  where
-    toLangMap = fmap getMap . getMap
-
 
 class (Ord a, Eq a) => ToReplaceToken a where
     toReplaceToken :: a -> T.Text

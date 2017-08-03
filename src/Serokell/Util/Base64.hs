@@ -20,7 +20,6 @@ import           Data.Aeson.Types           (FromJSONKey (..),
 import qualified Data.ByteString            as BS
 import qualified Data.ByteString.Base64     as B64
 import qualified Data.ByteString.Base64.URL as B64url
-import           Data.Either.Combinators    (mapLeft)
 import           Data.Hashable              (Hashable)
 import qualified Data.Text                  as T
 import           Data.Text.Encoding         (decodeUtf8, encodeUtf8)
@@ -92,3 +91,11 @@ instance FromJSON JsonByteStringDeprecated where
     parseJSON =
         parseJSON >=>
         either (fail . T.unpack) (pure . JsonByteStringDeprecated) . decodeUrl
+
+----------------------------------------------------------------------------
+-- Decoding helpers
+----------------------------------------------------------------------------
+
+mapLeft :: (a -> c) -> Either a b -> Either c b
+mapLeft f (Left x) = Left (f x)
+mapLeft _ (Right x) = Right x
