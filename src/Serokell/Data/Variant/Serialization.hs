@@ -9,17 +9,8 @@ module Serokell.Data.Variant.Serialization
 
 import qualified Data.Aeson                    as Aeson
 import           Data.Bifunctor                (bimap)
-import           Data.Binary                   (Binary)
-import           Data.Binary.Orphans           ()
-import           Data.Hashable                 (Hashable)
-import           Data.HashMap.Strict           (HashMap)
 import qualified Data.HashMap.Strict           as HM hiding (HashMap)
-import           Data.SafeCopy                 (SafeCopy)
 import           Data.Scientific               (floatingOrInteger)
-import qualified Data.Serialize                as Cereal
-import           Data.Text                     (Text)
-import qualified Data.Text.Encoding            as TE
-import           Data.Vector.Serialize         ()
 
 import           Serokell.Data.Variant.Variant (VarMap, Variant (..))
 import           Serokell.Util.Base64          (JsonByteString (JsonByteString))
@@ -81,25 +72,3 @@ instance Aeson.FromJSON Variant where
                   (VarString key, ) <$> Aeson.parseJSON val) .
         HM.toList $
         v
-
---  —————————Cereal and SafeCopy serialization————————— --
--- This serialization is very simple: first byte is tag followed by actual value.
--- `decode . encode` should be `id`.
-
--- TODO: move it somewhere??
-instance Cereal.Serialize Text where
-    put = Cereal.put . TE.encodeUtf8
-    get = TE.decodeUtf8 <$> Cereal.get
-
-instance (Eq a, Hashable a, Cereal.Serialize a, Cereal.Serialize b) =>
-         Cereal.Serialize (HashMap a b) where
-    put = Cereal.put . HM.toList
-    get = HM.fromList <$> Cereal.get
-
-instance Cereal.Serialize Variant
-
-instance SafeCopy Variant
-
---  —————————Binary serialization————————— --
--- Here we use Generic support, it should be good enough.
-instance Binary Variant
