@@ -15,4 +15,5 @@ import           Serokell.Util.OptParse     as Exports
 import           Serokell.Util.StaticAssert as Exports
 import           Serokell.Util.Text         as Exports
 import           Serokell.Util.Time         as Exports
+import           Serokell.Util.Trace        as Exports
 import           Serokell.Util.Verify       as Exports
