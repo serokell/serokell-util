@@ -1,5 +1,5 @@
 name:                serokell-util
-version:             0.3
+version:             0.3.1
 synopsis:            General-purpose functions by Serokell
 homepage:            https://github.com/serokell/serokell-util
 license:             MIT
@@ -43,6 +43,7 @@ library
                        Serokell.Util.StaticAssert
                        Serokell.Util.Text
                        Serokell.Util.Time
+                       Serokell.Util.Trace
                        Serokell.Util.Verify
   other-modules:       Serokell.Data.Variant.Class
                        Serokell.Data.Variant.Helpers
@@ -66,7 +67,7 @@ library
                      , exceptions
                      , extra
                      , filepath
-                     , formatting
+                     , formatting >= 6.2.0
                      , hashable >= 1.2.4.0
                      , lens
                      , log-warper
