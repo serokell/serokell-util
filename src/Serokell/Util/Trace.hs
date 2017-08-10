@@ -31,6 +31,7 @@ instance VarArgTrace fmt f => VarArgTrace (a -> fmt) (a -> f) where
 -- Accepts formatter as first parameter, and then multiple arguments to print.
 --
 -- Examples:
+--
 -- >>> traceIdF F.ords 1
 -- 1st
 -- 1
