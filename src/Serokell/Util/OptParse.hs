@@ -1,4 +1,5 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE NoImplicitPrelude     #-}
 
 -- | Some useful helper for optparse-applicative library
 
@@ -8,6 +9,8 @@ module Serokell.Util.OptParse
        , strOption
        , fromParsec
        ) where
+
+import           Universum
 
 import           Data.String         (IsString (fromString))
 import           Options.Applicative (ArgumentFields, Mod, OptionFields, Parser, ReadM,
@@ -26,5 +29,6 @@ strArgument = argument fromStr
 strOption :: IsString s => Mod OptionFields s -> Parser s
 strOption = option fromStr
 
-fromParsec :: Parsec String () a -> ReadM a
-fromParsec parser = eitherReader $ either (Left . show) Right . parse parser "<CLI options>"
+fromParsec :: Parsec Text () a -> ReadM a
+fromParsec parser =
+    eitherReader $ first show . parse parser "<CLI options>" . toText
