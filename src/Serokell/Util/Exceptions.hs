@@ -1,5 +1,6 @@
-{-# LANGUAGE TypeFamilies  #-}
-{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE TypeFamilies      #-}
+{-# LANGUAGE TypeOperators     #-}
 
 -- | Bitgram's general-purpose exceptions.
 -- They may be useful when you need a simple instance of Exception (e. g. in MonadThrow context)
@@ -12,19 +13,21 @@ module Serokell.Util.Exceptions
        , eitherToFail
        ) where
 
-import           Control.Exception      (Exception, SomeException,
-                                         fromException)
-import           Control.Monad.Catch    (MonadThrow, throwM)
-import           Data.Text              (Text)
-import           Data.Text.Buildable    (Buildable (build))
-import qualified Data.Text.Format       as F
-import           Data.Text.Lazy.Builder (Builder)
-import           Data.Typeable          (Typeable)
+import           Universum
+
+import           Control.Exception   (Exception (..), SomeException)
+import qualified Control.Monad       as Monad
+import           Data.Text           (Text)
+import qualified Data.Text.Buildable
+import qualified Data.Text.Format    as F
+import           Data.Typeable       (Typeable)
+import           Formatting          (bprint, stext, string, (%))
 
 instance Buildable SomeException where
     build e =
-        maybe (build $ F.Shown e) (build :: TextException -> Builder) $
-        fromException e
+        case fromException e of
+            Nothing                  -> bprint string (displayException e)
+            Just (TextException msg) -> bprint ("TextException: " %stext) msg
 
 -- | Use this type if you are sure that text description is enough to represent error
 newtype TextException = TextException
@@ -53,4 +56,4 @@ throwEmpty = throwM EmptyException
 -- error Useful when you have `MonadThrow` and want to use it in
 -- another monad context which uses `fail` for errors
 eitherToFail :: (Monad m, e ~ SomeException) => Either e a -> m a
-eitherToFail = either (fail . show) return
+eitherToFail = either (Monad.fail . show) return
