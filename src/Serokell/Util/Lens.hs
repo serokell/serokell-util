@@ -9,6 +9,7 @@ module Serokell.Util.Lens
        , _UnwrappedM
        , zoom'
        , magnify'
+       , listL
        ) where
 
 import qualified Control.Lens               as L
@@ -17,6 +18,7 @@ import           Control.Monad.Reader       (MonadReader, Reader, ReaderT, reade
 import           Control.Monad.State        (MonadState, State, StateT, get, runState,
                                              state)
 import           Control.Monad.Trans.Except (ExceptT, mapExceptT)
+import           GHC.Exts                   (IsList (..))
 import           System.Wlog                (LoggerName, LoggerNameBox (..))
 
 -- I don't know how to call these operators
@@ -74,3 +76,7 @@ magnify'
     -> ReaderT t L.Identity a
     -> m a
 magnify' l = reader . runReader . L.magnify l
+
+-- | This isomorphism can be used to convert to or from an instance of 'IsList'.
+listL :: IsList l => L.Iso' l [Item l]
+listL = L.iso toList fromList
