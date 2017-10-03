@@ -322,21 +322,21 @@ shift to the constructor name but } should go in the end of last field.
 
 ```haskell
 data Address
-   = PubKeyAddress
-         { addrKeyHash :: !(AddressHash PublicKey) }
-   | ScriptAddress
-         { addrScriptHash   :: !(AddressHash Script)
-         , addrDistribution :: ![(AddressHash PublicKey, Coin)] }
-   deriving (Show, Eq)
+    = PubKeyAddress
+        { addrKeyHash :: !(AddressHash PublicKey) }
+    | ScriptAddress
+        { addrScriptHash   :: !(AddressHash Script)
+        , addrDistribution :: ![(AddressHash PublicKey, Coin)] }
+    deriving (Show, Eq)
 ```
 
 If there is only one field for every constructor more compact style is allowed.
 
 ```haskell
 data Address
-   = PubKeyAddress { addrKeyHash    :: !(AddressHash PublicKey) }
-   | ScriptAddress { addrScriptHash :: !(AddressHash Script)    }
-   deriving (Show, Eq)
+    = PubKeyAddress { addrKeyHash    :: !(AddressHash PublicKey) }
+    | ScriptAddress { addrScriptHash :: !(AddressHash Script)    }
+    deriving (Show, Eq)
 ```
 
 ### Function declaration
