@@ -82,7 +82,10 @@ steps:
       #   >                                           init, last, length)
       #
       # Default: true
-      pad_module_names: true
+      #
+      # Note: we intentionally disable it to make diffs smaller and reduce
+      # number of merge conflicts.
+      pad_module_names: false
 
       # Long list align style takes effect when import is too long. This is
       # determined by 'columns' setting.
@@ -191,7 +194,10 @@ steps:
 
 # A common setting is the number of columns (parts of) code will be wrapped
 # to. Different steps take this into account. Default: 80.
-columns: 90
+#
+# Note: we set it to very big number because it reduces verbosity of diffs and
+# number of conflicts when we merge something.
+columns: 100500
 
 # By default, line endings are converted according to the OS. You can override
 # preferred format here.
