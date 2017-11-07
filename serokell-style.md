@@ -250,6 +250,7 @@ Imports should be grouped in the following order:
 1. Everything from hackage packages or from your packages outside current project.
 2. Everything from current project.
 3. Everything from current target (like `Bench.*` or `Test.*`).
+4. Qualified imports
 
 Put a blank line between each group of imports. It is also okay to put blank
 lines between `Data` and `Control` section of std imports because these sections
@@ -265,14 +266,12 @@ against changes in these libraries. Exceptions:
 1. _The Prelude_ or any custom prelude (e.g. [Universum](https://github.com/serokell/universum))
 2. Modules that only reexport stuff from other modules
 
-If `import` is unqualified then put _11 spaces_ between `import` keyword and
-module name (i.e. length of `qualified` + 2).
-
 Unqualified types (i.e. `Map` vs. `M.Map`) look pretty good and not so ugly.
 Prefer two-line imports for such standard containers.
 
 ```haskell
-import           Data.Map (Map)
+import Data.Map (Map)
+
 import qualified Data.Map as M hiding (Map)
 ```
 
