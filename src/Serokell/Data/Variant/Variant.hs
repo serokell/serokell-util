@@ -10,23 +10,23 @@ module Serokell.Data.Variant.Variant
        , VarMap
        ) where
 
-import           Control.DeepSeq      (NFData)
-import           Data.ByteString      (ByteString)
-import           Data.Hashable        (Hashable (hashWithSalt))
-import           Data.HashMap.Strict  (HashMap)
-import qualified Data.HashMap.Strict  as HM hiding (HashMap)
-import           Data.Int             (Int64)
-import           Data.String          (IsString (fromString))
-import           Data.Text            (Text)
-import           Data.Text.Buildable  (Buildable (build))
-import           Data.Vector          (Vector)
-import qualified Data.Vector          as V hiding (Vector)
-import           Data.Word            (Word64)
-import           GHC.Exts             (IsList (..))
-import           GHC.Generics         (Generic)
+import Control.DeepSeq (NFData)
+import Data.ByteString (ByteString)
+import Data.Hashable (Hashable (hashWithSalt))
+import Data.HashMap.Strict (HashMap)
+import qualified Data.HashMap.Strict as HM hiding (HashMap)
+import Data.Int (Int64)
+import Data.String (IsString (fromString))
+import Data.Text (Text)
+import Data.Text.Buildable (Buildable (build))
+import Data.Vector (Vector)
+import qualified Data.Vector as V hiding (Vector)
+import Data.Word (Word64)
+import GHC.Exts (IsList (..))
+import GHC.Generics (Generic)
 
 import qualified Serokell.Util.Base16 as B16
-import           Serokell.Util.Text   (listBuilderJSONIndent, mapBuilder)
+import Serokell.Util.Text (listBuilderJSONIndent, mapBuilder)
 
 type VarList = Vector Variant
 type VarMap = HashMap Variant Variant

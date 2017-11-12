@@ -7,12 +7,12 @@ module Serokell.Util.Base16
        , base16F
        ) where
 
-import qualified Data.ByteString        as BS
+import qualified Data.ByteString as BS
 import qualified Data.ByteString.Base16 as B16
-import qualified Data.Text              as T
-import qualified Data.Text.Encoding     as TE
-import           Data.Text.Lazy.Builder (Builder, fromText)
-import           Formatting             (Format, later, sformat, stext, (%))
+import qualified Data.Text as T
+import qualified Data.Text.Encoding as TE
+import Data.Text.Lazy.Builder (Builder, fromText)
+import Formatting (Format, later, sformat, stext, (%))
 
 -- | Apply base16 encoding to strict ByteString.
 encode :: BS.ByteString -> T.Text

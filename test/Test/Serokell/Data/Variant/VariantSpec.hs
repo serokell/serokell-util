@@ -5,19 +5,19 @@ module Test.Serokell.Data.Variant.VariantSpec
        ( spec
        ) where
 
-import qualified Data.Aeson            as A (decode, encode)
-import qualified Data.HashMap.Lazy     as HM (elems, fromList, keys)
-import           Data.Scientific       (floatingOrInteger, fromFloatDigits)
-import           Data.Text             (unpack)
-import qualified Data.Vector           as V (map)
-import           Test.Hspec            (Spec, describe)
-import           Test.Hspec.QuickCheck (prop)
-import           Test.QuickCheck       ((===))
+import qualified Data.Aeson as A (decode, encode)
+import qualified Data.HashMap.Lazy as HM (elems, fromList, keys)
+import Data.Scientific (floatingOrInteger, fromFloatDigits)
+import Data.Text (unpack)
+import qualified Data.Vector as V (map)
+import Test.Hspec (Spec, describe)
+import Test.Hspec.QuickCheck (prop)
+import Test.QuickCheck ((===))
 
-import           Serokell.Arbitrary    (VariantNoBytes (..), VariantOnlyBytes (..))
+import Serokell.Arbitrary (VariantNoBytes (..), VariantOnlyBytes (..))
 import qualified Serokell.Data.Variant as S
-import qualified Serokell.Util.Base64  as S
-import           Serokell.Util.Text    (show')
+import qualified Serokell.Util.Base64 as S
+import Serokell.Util.Text (show')
 
 spec :: Spec
 spec = describe "Variant" $ do

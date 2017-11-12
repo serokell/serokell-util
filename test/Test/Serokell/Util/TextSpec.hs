@@ -6,16 +6,16 @@ module Test.Serokell.Util.TextSpec
        ( spec
        ) where
 
-import           Data.Int                  (Int64)
-import           Data.Text.Buildable       (Buildable)
-import           Data.Word                 (Word64)
+import Data.Int (Int64)
+import Data.Text.Buildable (Buildable)
+import Data.Word (Word64)
 
-import           Test.Hspec                (Spec, describe)
-import           Test.Hspec.QuickCheck     (prop)
-import           Test.QuickCheck           ((===))
-import           Test.QuickCheck.Instances ()
+import Test.Hspec (Spec, describe)
+import Test.Hspec.QuickCheck (prop)
+import Test.QuickCheck ((===))
+import Test.QuickCheck.Instances ()
 
-import qualified Serokell.Util.Text        as S
+import qualified Serokell.Util.Text as S
 
 spec :: Spec
 spec =

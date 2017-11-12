@@ -5,21 +5,20 @@
 
 module Serokell.AcidState.Instances where
 
-import           Control.Exception   (throw)
-import           Control.Monad.Catch (MonadThrow (throwM))
+import Control.Exception (throw)
+import Control.Monad.Catch (MonadThrow (throwM))
 
-import qualified Data.Time.Units     as Time
-import           Data.Acid           (Query, Update)
-import           Data.Hashable       (Hashable)
-import           Data.HashMap.Strict (HashMap)
+import Data.Acid (Query, Update)
+import Data.Hashable (Hashable)
+import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HM hiding (HashMap)
-import           Data.HashSet        (HashSet)
-import qualified Data.HashSet        as HS hiding (HashSet)
-import           Data.SafeCopy       (SafeCopy (..), contain, safeGet,
-                                      safePut)
+import Data.HashSet (HashSet)
+import qualified Data.HashSet as HS hiding (HashSet)
+import Data.SafeCopy (SafeCopy (..), contain, safeGet, safePut)
+import qualified Data.Time.Units as Time
 
 #if !MIN_VERSION_safecopy(0,9,3)
-import qualified Data.List.NonEmpty  as NE
+import qualified Data.List.NonEmpty as NE
 #endif
 
 -- | Usually Queries shouldn't throw anything. This is a dirty hack.

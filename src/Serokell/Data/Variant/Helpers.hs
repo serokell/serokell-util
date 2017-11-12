@@ -6,10 +6,10 @@ module Serokell.Data.Variant.Helpers
        , varMap
        ) where
 
-import           Data.Foldable                 (Foldable (toList))
-import qualified Data.HashMap.Strict           as HM hiding (HashMap)
+import Data.Foldable (Foldable (toList))
+import qualified Data.HashMap.Strict as HM hiding (HashMap)
 
-import           Serokell.Data.Variant.Variant (Variant (..))
+import Serokell.Data.Variant.Variant (Variant (..))
 
 -- | Shorter alias for VarNone.
 none :: Variant

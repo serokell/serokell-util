@@ -16,14 +16,13 @@ module Serokell.Util.Parse.Network
        , recipient
        ) where
 
-import           Control.Applicative        (some, (<|>))
-import           Control.Monad              (liftM, void)
-import           Data.Monoid                ((<>))
-import           Data.Word                  (Word16)
-import           Serokell.Util.Parse.Common (CharParser, asciiAlphaNum, byte, countMinMax,
-                                             limitedInt)
-import           Text.Parsec                (choice, count, oneOf, option, try, (<?>))
-import           Text.Parsec.Char           (alphaNum, char, hexDigit, string)
+import Control.Applicative (some, (<|>))
+import Control.Monad (liftM, void)
+import Data.Monoid ((<>))
+import Data.Word (Word16)
+import Serokell.Util.Parse.Common (CharParser, asciiAlphaNum, byte, countMinMax, limitedInt)
+import Text.Parsec (choice, count, oneOf, option, try, (<?>))
+import Text.Parsec.Char (alphaNum, char, hexDigit, string)
 
 data Host = IPv4Address { hostAddress :: String }
           | IPv6Address { hostAddress :: String }

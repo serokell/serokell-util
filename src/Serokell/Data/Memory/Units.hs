@@ -28,17 +28,17 @@ module Serokell.Data.Memory.Units
        , convertUnit
        ) where
 
-import           Control.DeepSeq        (NFData)
-import           Data.Proxy             (Proxy (Proxy))
-import           Data.Text.Lazy.Builder (Builder)
-import           Data.Typeable          (Typeable)
-import           Formatting             (bprint, stext, (%))
-import qualified Formatting             as Fmt
-import           GHC.Generics           (Generic)
+import Control.DeepSeq (NFData)
+import Data.Proxy (Proxy (Proxy))
+import Data.Text.Lazy.Builder (Builder)
+import Data.Typeable (Typeable)
+import Formatting (bprint, stext, (%))
+import qualified Formatting as Fmt
+import GHC.Generics (Generic)
 
-import           Serokell.Util.Text     (showFixedPretty')
+import Serokell.Util.Text (showFixedPretty')
 
-import           Test.QuickCheck        (Arbitrary)
+import Test.QuickCheck (Arbitrary)
 
 class Integral unit => MemoryUnit unit  where
     -- | This value is n iff (1 :: unit) is n bytes.

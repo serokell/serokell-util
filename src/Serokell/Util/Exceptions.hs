@@ -13,15 +13,15 @@ module Serokell.Util.Exceptions
        , eitherToFail
        ) where
 
-import           Universum
+import Universum
 
-import           Control.Exception   (Exception (..), SomeException)
-import qualified Control.Monad       as Monad
-import           Data.Text           (Text)
+import Control.Exception (Exception (..), SomeException)
+import qualified Control.Monad as Monad
+import Data.Text (Text)
 import qualified Data.Text.Buildable
-import qualified Data.Text.Format    as F
-import           Data.Typeable       (Typeable)
-import           Formatting          (bprint, stext, string, (%))
+import qualified Data.Text.Format as F
+import Data.Typeable (Typeable)
+import Formatting (bprint, stext, string, (%))
 
 instance Buildable SomeException where
     build e =

@@ -13,9 +13,9 @@ module Serokell.Util.Parse.Common
        , parseIntegralSafe
        ) where
 
-import           Control.Applicative (some)
-import           Text.Parsec         (ParsecT, Stream, option, satisfy)
-import           Text.Parsec.Char    (digit)
+import Control.Applicative (some)
+import Text.Parsec (ParsecT, Stream, option, satisfy)
+import Text.Parsec.Char (digit)
 
 type CharParser a = forall s u m. Stream s m Char => ParsecT s u m a
 

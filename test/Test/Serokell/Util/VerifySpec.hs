@@ -2,16 +2,16 @@ module Test.Serokell.Util.VerifySpec
        ( spec
        ) where
 
-import           Test.Hspec                (Expectation, Spec, describe, it, shouldBe)
-import           Test.Hspec.QuickCheck     (prop)
-import           Test.QuickCheck           (Property, (===), (==>))
-import           Test.QuickCheck.Instances ()
+import Test.Hspec (Expectation, Spec, describe, it, shouldBe)
+import Test.Hspec.QuickCheck (prop)
+import Test.QuickCheck (Property, (===), (==>))
+import Test.QuickCheck.Instances ()
 
-import           Data.Semigroup            ((<>))
-import qualified Data.Text                 as T (Text)
+import Data.Semigroup ((<>))
+import qualified Data.Text as T (Text)
 
-import           Serokell.Arbitrary         ()
-import qualified Serokell.Util.Verify      as V
+import Serokell.Arbitrary ()
+import qualified Serokell.Util.Verify as V
 
 spec :: Spec
 spec =
