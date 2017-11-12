@@ -14,18 +14,17 @@ module Serokell.AcidState.ExtendedState
        , updateExtended
        ) where
 
-import           Control.Monad.Extra     (whenM)
-import           Control.Monad.Trans     (MonadIO (liftIO))
-import           Data.Acid               (AcidState, EventResult, EventState, IsAcidic,
-                                          QueryEvent, UpdateEvent, closeAcidState,
-                                          openLocalStateFrom)
-import           Data.Acid.Advanced      (query', update')
-import           Data.Acid.Memory        (openMemoryState)
-import           Data.Typeable           (Typeable)
+import Control.Monad.Extra (whenM)
+import Control.Monad.Trans (MonadIO (liftIO))
+import Data.Acid (AcidState, EventResult, EventState, IsAcidic, QueryEvent, UpdateEvent,
+                  closeAcidState, openLocalStateFrom)
+import Data.Acid.Advanced (query', update')
+import Data.Acid.Memory (openMemoryState)
+import Data.Typeable (Typeable)
 
-import           System.Directory        (doesDirectoryExist, removeDirectoryRecursive)
+import System.Directory (doesDirectoryExist, removeDirectoryRecursive)
 
-import           Serokell.AcidState.Util (tidyLocalState)
+import Serokell.AcidState.Util (tidyLocalState)
 
 -- | ExtendedState is like usual AcidState, but also stores
 -- information about FilePath (unless it's in memory).

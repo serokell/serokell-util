@@ -22,15 +22,15 @@ module Serokell.Util.Verify
        , verResSingleF
        ) where
 
-import           Control.Monad.Except   (MonadError, throwError)
-import           Data.Semigroup         (Semigroup)
-import qualified Data.Semigroup         as Semigroup
-import           Data.Text              (Text)
-import qualified Data.Text              as T
+import Control.Monad.Except (MonadError, throwError)
+import Data.Semigroup (Semigroup)
+import qualified Data.Semigroup as Semigroup
+import Data.Text (Text)
+import qualified Data.Text as T
 import qualified Data.Text.Lazy.Builder as B
-import           Formatting             (Format, later, sformat)
+import Formatting (Format, later, sformat)
 
-import           Serokell.Util.Text     (listBuilder)
+import Serokell.Util.Text (listBuilder)
 
 data VerificationRes
     = VerSuccess

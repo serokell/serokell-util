@@ -9,12 +9,11 @@ module Serokell.Util.Bench
        , perSecond
        ) where
 
-import           Control.Monad.Trans (MonadIO (liftIO))
-import           Data.Text.Buildable (Buildable (build))
-import           Data.Time.Units     (Nanosecond, TimeUnit, convertUnit)
-import           Formatting          (bprint, shown, (%))
-import           System.Clock        (Clock (..), TimeSpec, diffTimeSpec,
-                                      getTime, toNanoSecs)
+import Control.Monad.Trans (MonadIO (liftIO))
+import Data.Text.Buildable (Buildable (build))
+import Data.Time.Units (Nanosecond, TimeUnit, convertUnit)
+import Formatting (bprint, shown, (%))
+import System.Clock (Clock (..), TimeSpec, diffTimeSpec, getTime, toNanoSecs)
 
 -- | Get current wall-clock time as any time unit.
 getWallTime :: (MonadIO m, TimeUnit a) => m a

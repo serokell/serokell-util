@@ -12,14 +12,12 @@ module Serokell.Util.Lens
        , listL
        ) where
 
-import qualified Control.Lens               as L
-import           Control.Monad.Reader       (MonadReader, Reader, ReaderT, reader,
-                                             runReader)
-import           Control.Monad.State        (MonadState, State, StateT, get, runState,
-                                             state)
-import           Control.Monad.Trans.Except (ExceptT, mapExceptT)
-import           GHC.Exts                   (IsList (..))
-import           System.Wlog                (LoggerName, LoggerNameBox (..))
+import qualified Control.Lens as L
+import Control.Monad.Reader (MonadReader, Reader, ReaderT, reader, runReader)
+import Control.Monad.State (MonadState, State, StateT, get, runState, state)
+import Control.Monad.Trans.Except (ExceptT, mapExceptT)
+import GHC.Exts (IsList (..))
+import System.Wlog (LoggerName, LoggerNameBox (..))
 
 -- I don't know how to call these operators
 

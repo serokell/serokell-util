@@ -5,17 +5,17 @@ module Test.Serokell.Util.ByteStringSpec
        ( spec
        ) where
 
-import           Data.Aeson                (decode, encode)
-import qualified Data.ByteString           as BS
-import           Data.Maybe                (fromJust)
-import           Test.Hspec                (Spec, describe)
-import           Test.Hspec.QuickCheck     (prop)
-import           Test.QuickCheck           ((===))
-import           Test.QuickCheck.Instances ()
+import Data.Aeson (decode, encode)
+import qualified Data.ByteString as BS
+import Data.Maybe (fromJust)
+import Test.Hspec (Spec, describe)
+import Test.Hspec.QuickCheck (prop)
+import Test.QuickCheck ((===))
+import Test.QuickCheck.Instances ()
 
-import           Serokell.Arbitrary        ()
-import qualified Serokell.Util.Base16      as C16
-import qualified Serokell.Util.Base64      as C64
+import Serokell.Arbitrary ()
+import qualified Serokell.Util.Base16 as C16
+import qualified Serokell.Util.Base64 as C64
 
 spec :: Spec
 spec =

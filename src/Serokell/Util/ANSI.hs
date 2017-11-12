@@ -7,10 +7,9 @@ module Serokell.Util.ANSI
        , withColoredMessages
        ) where
 
-import           System.Console.ANSI (Color (..), ColorIntensity (Vivid),
-                                      ConsoleLayer (Foreground), SGR (Reset, SetColor),
-                                      setSGRCode)
-import           Universum
+import System.Console.ANSI (Color (..), ColorIntensity (Vivid), ConsoleLayer (Foreground),
+                            SGR (Reset, SetColor), setSGRCode)
+import Universum
 
 -- | Prettify 'Text' message with 'Vivid' color.
 colorize :: Color -> Text -> Text

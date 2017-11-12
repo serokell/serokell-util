@@ -5,10 +5,10 @@ module Serokell.Util.Concurrent
        , modifyTVarS
        ) where
 
-import           Universum
+import Universum
 
 import qualified Control.Concurrent as Concurrent
-import           Data.Time.Units    (TimeUnit (toMicroseconds))
+import Data.Time.Units (TimeUnit (toMicroseconds))
 
 -- | Convenient version of Control.Concurrent.threadDelay which takes
 -- any time-unit and operates in any MonadIO

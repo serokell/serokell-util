@@ -6,11 +6,11 @@ module Test.Serokell.Data.Memory.UnitsSpec
        ( spec
        ) where
 
-import           Test.Hspec                 (Spec, describe)
-import           Test.Hspec.QuickCheck      (prop)
-import           Test.QuickCheck            ((===))
+import Test.Hspec (Spec, describe)
+import Test.Hspec.QuickCheck (prop)
+import Test.QuickCheck ((===))
 
-import           Serokell.Arbitrary         ()
+import Serokell.Arbitrary ()
 import qualified Serokell.Data.Memory.Units as S
 
 spec :: Spec

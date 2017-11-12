@@ -10,11 +10,11 @@ module Serokell.Util.Trace
     ( traceIdF
     ) where
 
-import           Universum
+import Universum
 
-import           Data.Text           (Text)
-import           Formatting          (Format, now, sformat)
-import           Formatting.Internal (runFormat)
+import Data.Text (Text)
+import Formatting (Format, now, sformat)
+import Formatting.Internal (runFormat)
 
 -- | Class for supplying various variable-arguments traces
 class VarArgTrace fmt f | fmt -> f where

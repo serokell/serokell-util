@@ -9,8 +9,8 @@ module Serokell.Util.Time
        , hour
        ) where
 
-import           Data.Time.Units (Microsecond, fromMicroseconds)
-import           Universum
+import Data.Time.Units (Microsecond, fromMicroseconds)
+import Universum
 
 -- | Converts a specified time to 'Microsecond'.
 mcs, ms, sec, minute, hour :: Int -> Microsecond

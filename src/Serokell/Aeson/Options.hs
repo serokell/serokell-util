@@ -10,8 +10,8 @@ module Serokell.Aeson.Options
        ) where
 
 import qualified Data.Aeson.TH as A
-import           Data.Char     (isLower, isPunctuation, isUpper, toLower)
-import           Data.List     (findIndex)
+import Data.Char (isLower, isPunctuation, isUpper, toLower)
+import Data.List (findIndex)
 
 headToLower :: String -> String
 headToLower []     = undefined

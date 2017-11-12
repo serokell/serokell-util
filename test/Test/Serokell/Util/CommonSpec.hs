@@ -5,17 +5,15 @@ module Test.Serokell.Util.CommonSpec
        ( spec
        ) where
 
-import           Data.Foldable             (toList)
-import           Data.List                 (genericIndex, genericLength,
-                                            intersect)
-import           Data.Vector               (Vector)
-import           Test.Hspec                (Spec, describe)
-import           Test.Hspec.QuickCheck     (prop)
-import           Test.QuickCheck           (Arbitrary (..), Gen,
-                                            NonEmptyList (..), oneof)
-import           Test.QuickCheck.Instances ()
+import Data.Foldable (toList)
+import Data.List (genericIndex, genericLength, intersect)
+import Data.Vector (Vector)
+import Test.Hspec (Spec, describe)
+import Test.Hspec.QuickCheck (prop)
+import Test.QuickCheck (Arbitrary (..), Gen, NonEmptyList (..), oneof)
+import Test.QuickCheck.Instances ()
 
-import qualified Serokell.Util.Common      as C
+import qualified Serokell.Util.Common as C
 
 spec :: Spec
 spec =

@@ -8,18 +8,16 @@ module Serokell.Arbitrary
        , VariantOnlyBytes (..)
        ) where
 
-import           Data.ByteString               as BS hiding (zip)
-import qualified Data.HashMap.Lazy             as H (fromList)
-import           Data.Vector                   (fromList)
-import           GHC.Generics                  (Generic)
-import           Test.QuickCheck               (Arbitrary (..), Gen, choose,
-                                                genericShrink, frequency, oneof,
-                                                sized)
-import           Test.QuickCheck.Instances     ()
+import Data.ByteString as BS hiding (zip)
+import qualified Data.HashMap.Lazy as H (fromList)
+import Data.Vector (fromList)
+import GHC.Generics (Generic)
+import Test.QuickCheck (Arbitrary (..), Gen, choose, frequency, genericShrink, oneof, sized)
+import Test.QuickCheck.Instances ()
 
-import           Serokell.Data.Variant.Variant (Variant (..))
-import qualified Serokell.Util.Base64          as S
-import qualified Serokell.Util.Verify          as V
+import Serokell.Data.Variant.Variant (Variant (..))
+import qualified Serokell.Util.Base64 as S
+import qualified Serokell.Util.Verify as V
 
 ------------------------------------------------------------------------------------------
 -- Serokell.Data.Variant
