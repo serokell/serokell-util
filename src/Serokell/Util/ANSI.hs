@@ -4,18 +4,29 @@
 module Serokell.Util.ANSI
        ( Color(..)
        , colorize
+       , colorizeDull
        , withColoredMessages
        ) where
 
-import           System.Console.ANSI (Color (..), ColorIntensity (Vivid),
-                                      ConsoleLayer (Foreground), SGR (Reset, SetColor),
-                                      setSGRCode)
-import           Universum
+import Universum
+
+import System.Console.ANSI (Color (..), ConsoleLayer (Foreground), SGR (Reset, SetColor),
+                            setSGRCode)
+
+import qualified System.Console.ANSI as ANSI
 
 -- | Prettify 'Text' message with 'Vivid' color.
 colorize :: Color -> Text -> Text
-colorize color msg =
-    toText (setSGRCode [SetColor Foreground Vivid color]) <>
+colorize = colorizeImpl ANSI.Vivid
+
+-- | Colorize text using 'ANSI.Dull' palete (in contrast to 'colorize'
+-- which uses 'ANSI.Vivid' palete)
+colorizeDull :: Color -> Text -> Text
+colorizeDull = colorizeImpl ANSI.Dull
+
+colorizeImpl :: ANSI.ColorIntensity -> Color -> Text -> Text
+colorizeImpl palete color msg =
+    toText (setSGRCode [SetColor Foreground palete color]) <>
     msg <>
     toText (setSGRCode [Reset])
 
