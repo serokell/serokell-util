@@ -19,6 +19,7 @@ module Serokell.Util.Text
        , pairF
        , tripleF
        , listJson
+       , listMapTuple
        , listJsonIndent
        , listCsv
        , mapJson
@@ -47,19 +48,19 @@ module Serokell.Util.Text
        , readUnsignedDecimal
        ) where
 
-import qualified Data.Text                        as T
-import           Data.Text.Buildable              (Buildable (build))
-import qualified Data.Text.Format                 as F
-import           Data.Text.Format.Params          (Params)
-import qualified Data.Text.Lazy                   as LT
-import qualified Data.Text.Lazy.Builder           as B
-import qualified Data.Text.Lazy.Builder.Int       as B
-import           Data.Text.Lazy.Builder.RealFloat (FPFormat (Exponent, Fixed, Generic))
+import qualified Data.Text as T
+import Data.Text.Buildable (Buildable (build))
+import qualified Data.Text.Format as F
+import Data.Text.Format.Params (Params)
+import qualified Data.Text.Lazy as LT
+import qualified Data.Text.Lazy.Builder as B
+import qualified Data.Text.Lazy.Builder.Int as B
+import Data.Text.Lazy.Builder.RealFloat (FPFormat (Exponent, Fixed, Generic))
 import qualified Data.Text.Lazy.Builder.RealFloat as B
-import qualified Data.Text.Read                   as T
-import           Formatting                       (fixed, sformat, later, Format)
-import           GHC.Exts                         (IsList(..))
-import           Prelude                          hiding (show, showList)
+import qualified Data.Text.Read as T
+import Formatting (Format, fixed, later, sformat)
+import GHC.Exts (IsList (..))
+import Prelude hiding (show, showList)
 
 show :: Buildable a
      => a -> LT.Text
@@ -104,6 +105,9 @@ tripleF = later tripleBuilder
 
 listJson :: (Foldable t, Buildable a) => Format r (t a -> r)
 listJson = later listBuilderJSON
+
+listMapTuple :: (Traversable t, Buildable a, Buildable b) => Format r (t (a, b) -> r)
+listMapTuple = later mapBuilder
 
 listJsonIndent :: (Foldable t, Buildable a) => Word -> Format r (t a -> r)
 listJsonIndent = later . listBuilderJSONIndent
