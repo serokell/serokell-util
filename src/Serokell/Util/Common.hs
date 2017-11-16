@@ -7,12 +7,14 @@ module Serokell.Util.Common
        , indexedSubList
        , subList
        , allDistinct
+       , chunksOf
        ) where
 
 import           Control.Monad.State (evalState, get, modify)
-import           Data.List           (sort, genericDrop, genericIndex, genericLength,
-                                      genericTake)
+import           Data.List           (genericDrop, genericIndex, genericLength,
+                                      genericTake, sort)
 import           Data.Maybe          (fromMaybe)
+import           GHC.Exts            (build)
 
 -- | Enumerate function is analogous to python's enumerate. It
 -- takes sequences of values and returns sequence of pairs where the
@@ -87,3 +89,20 @@ allDistinct :: Ord a => [a] -> Bool
 allDistinct xs = and $ zipWith (/=) sorted (drop 1 sorted)
   where
     sorted = sort xs
+
+-- | @'chunksOf' n@ splits a list into length-n pieces.  The last
+--   piece will be shorter if @n@ does not evenly divide the length of
+--   the list.  If @n <= 0@, @'chunksOf' n l@ returns an infinite list
+--   of empty lists.  For example:
+--
+-- >>> chunksOf 3 [1..7]
+-- [[1,2,3],[4,5,6],[7]]
+--
+-- >>> chunksOf 3 []
+-- []
+chunksOf :: Int -> [e] -> [[e]]
+chunksOf i ls = map (take i) (build (splitter ls))
+  where
+    splitter :: [e] -> ([e] -> a -> a) -> a -> a
+    splitter [] _ n = n
+    splitter l c n  = l `c` splitter (drop i l) c n

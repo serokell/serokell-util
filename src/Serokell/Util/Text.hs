@@ -1,4 +1,5 @@
-{-# LANGUAGE GADTs #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE GADTs            #-}
 
 -- | Utility functions to work with `text` and `text-format`. Feel
 -- free to add more if you need. Some functions have two versions, `'`
@@ -20,6 +21,7 @@ module Serokell.Util.Text
        , tripleF
        , listJson
        , listJsonIndent
+       , listChunkedJson
        , listCsv
        , mapJson
 
@@ -29,6 +31,7 @@ module Serokell.Util.Text
        , listBuilder
        , listBuilderJSON
        , listBuilderJSONIndent
+       , listChunkedBuilderJson
        , listBuilderCSV
        , mapBuilder
        , mapBuilderJson
@@ -47,6 +50,8 @@ module Serokell.Util.Text
        , readUnsignedDecimal
        ) where
 
+import qualified Universum                        as U
+
 import qualified Data.Text                        as T
 import           Data.Text.Buildable              (Buildable (build))
 import qualified Data.Text.Format                 as F
@@ -57,9 +62,10 @@ import qualified Data.Text.Lazy.Builder.Int       as B
 import           Data.Text.Lazy.Builder.RealFloat (FPFormat (Exponent, Fixed, Generic))
 import qualified Data.Text.Lazy.Builder.RealFloat as B
 import qualified Data.Text.Read                   as T
-import           Formatting                       (fixed, sformat, later, Format)
-import           GHC.Exts                         (IsList(..))
+import           Formatting                       (Format, fixed, later, sformat)
+import           GHC.Exts                         (IsList (..))
 import           Prelude                          hiding (show, showList)
+import           Serokell.Util.Common             (chunksOf)
 
 show :: Buildable a
      => a -> LT.Text
@@ -107,6 +113,11 @@ listJson = later listBuilderJSON
 
 listJsonIndent :: (Foldable t, Buildable a) => Word -> Format r (t a -> r)
 listJsonIndent = later . listBuilderJSONIndent
+
+listChunkedJson
+    :: (U.Container l, Buildable (U.Element l))
+    => Int -> Format r (l -> r)
+listChunkedJson chunkSize = later $ listChunkedBuilderJson chunkSize
 
 listCsv :: (Foldable t, Buildable a) => Format r (t a -> r)
 listCsv = later listBuilderCSV
@@ -164,6 +175,19 @@ listBuilderJSONIndent indent as
           LT.replicate (fromIntegral indent)
                        " "
         delimiter = ",\n" `LT.append` spaces
+
+-- | Like listBuilderJSON. but prints per @chunkSize@ elements on a line.
+listChunkedBuilderJson
+    :: (U.Container l, Buildable (U.Element l))
+    => Int -> l -> B.Builder
+listChunkedBuilderJson chunkSize values
+    | U.null values = "[]"
+    | otherwise =
+        _listBuilder "[" "" (newline U.<> "]") $
+        _listBuilder newline ", " "" <$>
+        chunksOf chunkSize (U.toList values)
+  where
+    newline = "\n    "
 
 -- | Prints comma separated values
 listBuilderCSV
