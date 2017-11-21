@@ -20,6 +20,7 @@ module Serokell.Util.Text
        , pairF
        , tripleF
        , listJson
+       , listMap
        , listJsonIndent
        , listChunkedJson
        , listCsv
@@ -110,6 +111,9 @@ tripleF = later tripleBuilder
 
 listJson :: (Foldable t, Buildable a) => Format r (t a -> r)
 listJson = later listBuilderJSON
+
+listMap :: (Traversable t, Buildable a, Buildable b) => Format r (t (a, b) -> r)
+listMap = later mapBuilder
 
 listJsonIndent :: (Foldable t, Buildable a) => Word -> Format r (t a -> r)
 listJsonIndent = later . listBuilderJSONIndent
