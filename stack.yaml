@@ -11,10 +11,12 @@ nix:
 
 extra-deps:
 - aeson-extra-0.4.0.0
+- containers-0.5.10.2
+- fmt-0.5.0.0
+- log-warper-1.7.1
 - time-units-1.0.0
 - recursion-schemes-5
-- log-warper-1.2.0
-- universum-0.6.1
+- universum-0.8.0
 
 flags: {}
 extra-package-dbs: []

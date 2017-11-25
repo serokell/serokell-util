@@ -1,5 +1,5 @@
 name:                serokell-util
-version:             0.5.2
+version:             0.5.3
 synopsis:            General-purpose functions by Serokell
 homepage:            https://github.com/serokell/serokell-util
 license:             MIT
@@ -61,7 +61,7 @@ library
                      , base64-bytestring
                      , bytestring
                      , clock
-                     , containers
+                     , containers >= 0.5.10
                      , deepseq
                      , directory
                      , exceptions
@@ -70,7 +70,7 @@ library
                      , formatting >= 6.2.0
                      , hashable >= 1.2.4.0
                      , lens
-                     , log-warper
+                     , log-warper >= 1.7.1
                      , monad-control
                      , mtl
                      , optparse-applicative
@@ -85,7 +85,7 @@ library
                      , text-format
                      , time-units
                      , transformers
-                     , universum
+                     , universum >= 0.8.0
                      , unordered-containers >= 0.2.7.0
                      , vector
                      , yaml

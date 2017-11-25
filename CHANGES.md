@@ -1,3 +1,8 @@
+0.5.3
+=====
+
+* Bump to the newest versions, fix the haddock build.
+
 0.5.2
 =====
 
@@ -7,4 +12,3 @@
 =====
 
 * Added `colorizeDull`.
-
