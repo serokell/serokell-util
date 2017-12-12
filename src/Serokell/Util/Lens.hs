@@ -12,14 +12,12 @@ module Serokell.Util.Lens
        , listL
        ) where
 
-import qualified Control.Lens               as L
-import           Control.Monad.Reader       (MonadReader, Reader, ReaderT, reader,
-                                             runReader)
-import           Control.Monad.State        (MonadState, State, StateT, get, runState,
-                                             state)
-import           Control.Monad.Trans.Except (ExceptT, mapExceptT)
-import           GHC.Exts                   (IsList (..))
-import           System.Wlog                (LoggerName, LoggerNameBox (..))
+import qualified Control.Lens as L
+import Control.Monad.Reader (MonadReader, Reader, ReaderT, reader, runReader)
+import Control.Monad.State (MonadState, State, StateT, get, runState, state)
+import Control.Monad.Trans.Except (ExceptT, mapExceptT)
+import GHC.Exts (IsList (..))
+import System.Wlog (LoggerName, LoggerNameBox (..))
 
 -- I don't know how to call these operators
 
@@ -78,5 +76,12 @@ magnify'
 magnify' l = reader . runReader . L.magnify l
 
 -- | This isomorphism can be used to convert to or from an instance of 'IsList'.
-listL :: IsList l => L.Iso' l [Item l]
+--
+-- Note that this function is quite general but doesn't allow to switch
+-- container - in most cases such behavious eliminates need in specifing
+-- container type manually.
+listL
+    :: (IsList (t a), IsList (t b))
+    => L.Iso (t a) (t b) [Item (t a)] [Item (t b)]
 listL = L.iso toList fromList
+

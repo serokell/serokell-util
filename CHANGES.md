@@ -1,3 +1,9 @@
+0.5.4
+=====
+
+* Generalize `listL`.
+* TODO
+
 0.5.3
 =====
 
