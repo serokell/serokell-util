@@ -1,10 +1,5 @@
 resolver: lts-9.2
-packages:
-- '.'
-- location:
-    git: https://github.com/serokell/acid-state.git
-    commit: 95fce1dbada62020a0b2d6aa2dd7e88eadd7214b
-  extra-dep: true
+packages: [.]
 
 nix:
     packages: [openssh,git]
