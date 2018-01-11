@@ -19,32 +19,30 @@ description:         Serokell-util is a library consisting of functions, which
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     Serokell.AcidState
-                       Serokell.AcidState.ExtendedState
-                       Serokell.AcidState.Instances
-                       Serokell.AcidState.Util
-                       Serokell.Arbitrary
+  exposed-modules:     Serokell.Arbitrary
                        Serokell.Aeson.Options
                        Serokell.Data.Memory.Units
                        Serokell.Data.Variant
+
                        Serokell.Util
-                       Serokell.Util.ANSI
-                       Serokell.Util.Base
-                       Serokell.Util.Base16
-                       Serokell.Util.Base64
-                       Serokell.Util.Bench
-                       Serokell.Util.Common
-                       Serokell.Util.Concurrent
-                       Serokell.Util.I18N
-                       Serokell.Util.Parse
-                       Serokell.Util.OptParse
-                       Serokell.Util.Exceptions
-                       Serokell.Util.Lens
-                       Serokell.Util.StaticAssert
-                       Serokell.Util.Text
-                       Serokell.Util.Time
-                       Serokell.Util.Trace
-                       Serokell.Util.Verify
+                           Serokell.Util.ANSI
+                           Serokell.Util.Base
+                           Serokell.Util.Base16
+                           Serokell.Util.Base64
+                           Serokell.Util.Bench
+                           Serokell.Util.Common
+                           Serokell.Util.Concurrent
+                           Serokell.Util.I18N
+                           Serokell.Util.Parse
+                           Serokell.Util.OptParse
+                           Serokell.Util.Exceptions
+                           Serokell.Util.Lens
+                           Serokell.Util.StaticAssert
+                           Serokell.Util.Text
+                           Serokell.Util.Time
+                           Serokell.Util.Trace
+                           Serokell.Util.Verify
+
   other-modules:       Serokell.Data.Variant.Class
                        Serokell.Data.Variant.Helpers
                        Serokell.Data.Variant.Serialization
@@ -52,8 +50,8 @@ library
                        Serokell.Util.Parse.Base64
                        Serokell.Util.Parse.Common
                        Serokell.Util.Parse.Network
+
   build-depends:       QuickCheck >= 2.8.1
-                     , acid-state
                      , aeson >= 0.11.0.0 && < 1.2.0.0
                      , ansi-terminal
                      , base >= 4.8 && < 5
@@ -76,7 +74,6 @@ library
                      , optparse-applicative
                      , parsec
                      , quickcheck-instances
-                     , safecopy >= 0.9.0.1
                      , scientific
                      , semigroups
                      , stm >= 2.4.4
