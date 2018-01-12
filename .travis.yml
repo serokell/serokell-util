@@ -65,3 +65,11 @@ script:
     else
       stack build --test --bench --no-terminal
     fi
+
+notifications:
+  email: false
+  slack:
+    rooms:
+      - serokell:uMIv04MagaYHz0jlBa9jaiVy
+    on_success: change
+    on_failure: always

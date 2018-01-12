@@ -15,7 +15,7 @@ description:         Serokell-util is a library consisting of functions, which
                      found that in new projects we need to use some utility
                      functions from existing projects and don't want to
                      copy-paste them.
-cabal-version:       >=1.10
+cabal-version:       >=2.0
 
 library
   hs-source-dirs:      src
@@ -106,6 +106,8 @@ test-suite serokell-test
                        Test.Serokell.Util.VerifySpec
                        Spec
   type:                exitcode-stdio-1.0
+
+  build-tool-depends:  hspec-discover:hspec-discover
   build-depends:       aeson >= 1.0 && < 1.4
                      , base >=4.8
                      , bytestring
