@@ -1,3 +1,9 @@
+0.6.1
+=====
+
+* [#28](https://github.com/serokell/serokell-util/issues/28):
+  Use `NonEmpty` list in `VerificationRes` instead of ordinary list.
+
 0.6.0
 =====
 

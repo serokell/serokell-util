@@ -1,4 +1,5 @@
-{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE TypeApplications  #-}
 
 -- | General-purpose utility functions
 
@@ -14,27 +15,23 @@ module Serokell.Util.Verify
        , verifyGeneric
 
        -- * Prety printing
-       , buildVerResFull
-       , buildVerResSingle
        , formatAllErrors
        , formatFirstError
        , verResFullF
        , verResSingleF
        ) where
 
-import           Control.Monad.Except   (MonadError, throwError)
-import           Data.Semigroup         (Semigroup)
-import qualified Data.Semigroup         as Semigroup
-import           Data.Text              (Text)
-import qualified Data.Text              as T
-import qualified Data.Text.Lazy.Builder as B
-import           Formatting             (Format, later, sformat)
+import Universum
 
-import           Serokell.Util.Text     (listBuilder)
+import Control.Monad.Except (MonadError, throwError)
+
+import Serokell.Util.Text (listBuilder)
+
+import qualified Data.Text.Lazy.Builder as B
 
 data VerificationRes
     = VerSuccess
-    | VerFailure ![T.Text]
+    | VerFailure !(NonEmpty Text)
     deriving (Eq, Show)
 
 isVerSuccess :: VerificationRes -> Bool
@@ -46,17 +43,13 @@ isVerFailure (VerFailure _) = True
 isVerFailure _              = False
 
 instance Semigroup VerificationRes where
-    VerSuccess <> a = a
-    VerFailure xs <> a =
-        VerFailure $
-        xs ++
-        case a of
-            VerSuccess    -> []
-            VerFailure ys -> ys
+    VerSuccess    <> a             = a
+    a             <> VerSuccess    = a
+    VerFailure xs <> VerFailure ys = VerFailure $ xs <> ys
 
 instance Monoid VerificationRes where
     mempty = VerSuccess
-    mappend = (Semigroup.<>)
+    mappend = (<>)
 
 -- | This function takes list of (predicate, message) pairs and checks
 -- each predicate.  If predicate is False it's considered an error.
@@ -64,10 +57,10 @@ instance Monoid VerificationRes where
 -- otherwise VerSuccess is returned.  It's useful to verify some data
 -- before using it.
 -- Example usage: `verifyGeneric [(checkA, "A is bad"), (checkB, "B is bad")]`
-verifyGeneric :: [(Bool, T.Text)] -> VerificationRes
-verifyGeneric errors
-    | null messages = VerSuccess
-    | otherwise = VerFailure messages
+verifyGeneric :: [(Bool, Text)] -> VerificationRes
+verifyGeneric errors = case messages of
+    []     -> VerSuccess
+    (x:xs) -> VerFailure $ x :| xs
   where
     messages = map snd . filter (not . fst) $ errors
 
@@ -77,39 +70,29 @@ verifyGeneric errors
 
 -- | Format VerificationRes in a pretty way using all errors messages
 -- for VerFailure.
-buildVerResFull :: VerificationRes -> B.Builder
-buildVerResFull VerSuccess          = buildVerResImpl Nothing
-buildVerResFull (VerFailure errors) = buildVerResImpl $ Just errors
+verResFullF :: VerificationRes -> B.Builder
+verResFullF VerSuccess          = "success"
+verResFullF (VerFailure errors) = buildVerResImpl errors
 
 -- | Format VerificationRes in a pretty way using only first message
 -- for VerFailure.
-buildVerResSingle :: VerificationRes -> B.Builder
-buildVerResSingle VerSuccess          = buildVerResImpl Nothing
--- [SU-1] Use NonEmpty instead of unsafe head.
-buildVerResSingle (VerFailure errors) = buildVerResImpl $ Just $ [head errors]
+verResSingleF :: VerificationRes -> B.Builder
+verResSingleF VerSuccess          = "success"
+verResSingleF (VerFailure errors) = buildVerResImpl $ one $ head errors
 
-buildVerResImpl :: Maybe [T.Text] -> B.Builder
-buildVerResImpl Nothing       = "success"
-buildVerResImpl (Just errors) =
-    "failure: " `mappend` listBuilder @Text @Text @Text "[" "; " "]" errors
-
--- | Formatter based on buildVerResFull.
-verResFullF :: Format r (VerificationRes -> r)
-verResFullF = later buildVerResFull
-
--- | Formatter based on buildVerResSingle.
-verResSingleF :: Format r (VerificationRes -> r)
-verResSingleF = later buildVerResSingle
+buildVerResImpl :: NonEmpty Text -> B.Builder
+buildVerResImpl errors =
+    "failure: " <> listBuilder @Text @Text @Text "[" "; " "]" errors
 
 -- These two functions can have more general type.
 
 -- | Pretty printer for errors from VerFailure, all errors are printed.
-formatAllErrors :: [Text] -> Text
-formatAllErrors = sformat verResFullF . VerFailure
+formatAllErrors :: NonEmpty Text -> B.Builder
+formatAllErrors = verResFullF . VerFailure
 
 -- | Pretty printer for errors from VerFailure, only first error is printed.
-formatFirstError :: [Text] -> Text
-formatFirstError = sformat verResSingleF . VerFailure
+formatFirstError :: NonEmpty Text -> B.Builder
+formatFirstError = verResSingleF . VerFailure
 
 ----------------------------------------------------------------------------
 -- Conversion to MonadError (including Either)
@@ -117,6 +100,6 @@ formatFirstError = sformat verResSingleF . VerFailure
 
 verResToMonadError
     :: MonadError e m
-    => ([Text] -> e) -> VerificationRes -> m ()
+    => (NonEmpty Text -> e) -> VerificationRes -> m ()
 verResToMonadError _ VerSuccess          = pure ()
 verResToMonadError f (VerFailure errors) = throwError $ f errors

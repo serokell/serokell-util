@@ -1,17 +1,21 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 module Test.Serokell.Util.VerifySpec
        ( spec
        ) where
 
-import           Test.Hspec                (Expectation, Spec, describe, it, shouldBe)
-import           Test.Hspec.QuickCheck     (prop)
-import           Test.QuickCheck           (Property, (===), (==>))
-import           Test.QuickCheck.Instances ()
+import Universum
 
-import           Data.Semigroup            ((<>))
-import qualified Data.Text                 as T (Text)
+import Test.Hspec (Expectation, Spec, describe, it, shouldBe)
+import Test.Hspec.QuickCheck (prop)
+import Test.QuickCheck (Property, (===), (==>))
+import Test.QuickCheck.Instances ()
 
-import           Serokell.Arbitrary         ()
-import qualified Serokell.Util.Verify      as V
+import Data.List.NonEmpty (fromList)
+
+import Serokell.Arbitrary ()
+
+import qualified Serokell.Util.Verify as V
 
 spec :: Spec
 spec =
@@ -74,7 +78,7 @@ verificationResIsMonoid v1 v2 v3 =
 -- (any (not . fst) l :: [(Bool, a)]) iff (isVerFailure . verifyGeneric) l
 -- (all (identity . fst) l :: [(Bool, a)]) iff (isVerSuccess . verifyGeneric) l
 
-verifyGenericWorks :: [(Bool, T.Text)] -> Bool
+verifyGenericWorks :: [(Bool, Text)] -> Bool
 verifyGenericWorks l =
     let someFailure  = any (not . fst) l
         allSuccess   = not someFailure
@@ -84,11 +88,11 @@ verifyGenericWorks l =
 -- | This property checks that the error messages in a list of predicates are collected
 -- from left to right.
 
-verifyGenericMessageOrder :: [(Bool, T.Text)] -> Property
+verifyGenericMessageOrder :: [(Bool, Text)] -> Property
 verifyGenericMessageOrder l =
     let someFailure  = any (not . fst) l
         msgList = foldr (\(b, err) accList ->
                             if not b then err : accList
                                   else accList) [] l
     in someFailure ==>
-       ((V.VerFailure msgList) == V.verifyGeneric l)
+       ((V.VerFailure $ fromList msgList) == V.verifyGeneric l)
