@@ -1,19 +1,10 @@
 -- | Convenient versions of some functions from `Control.Concurrent`
 
 module Serokell.Util.Concurrent
-       ( threadDelay
-       , modifyTVarS
+       ( modifyTVarS
        ) where
 
-import           Universum
-
-import qualified Control.Concurrent as Concurrent
-import           Data.Time.Units    (TimeUnit (toMicroseconds))
-
--- | Convenient version of Control.Concurrent.threadDelay which takes
--- any time-unit and operates in any MonadIO
-threadDelay :: (MonadIO m, TimeUnit unit) => unit -> m ()
-threadDelay = liftIO . Concurrent.threadDelay . fromIntegral . toMicroseconds
+import Universum
 
 -- | Atomically modifies given `TVar`, associating state of given `StateT` with
 -- `TVar` entry.

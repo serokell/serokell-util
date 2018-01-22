@@ -1,8 +1,12 @@
-0.6.1
+0.7.0
 =====
 
 * [#28](https://github.com/serokell/serokell-util/issues/28):
   Use `NonEmpty` list in `VerificationRes` instead of ordinary list.
+* [#22](https://github.com/serokell/serokell-util/issues/22):
+  Remove `Util.Time` module, remove `threadDelay` function.
+  Move to `o-clock` from `time-units` in `Util.Bench` module.
+  `Util.Bench` now is not supported in `ghc` `< 8.2.2`.
 
 0.6.0
 =====
