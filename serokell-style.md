@@ -5,7 +5,7 @@ Serokell Haskell Style Guide
 > This style guide's aims are code beauty, readability and understandability.
 
 You can find our other formatting utilites and guidelines which expand the code style:
-* [.stylish-haskell.yaml](https://github.com/serokell/serokell-core/blob/master/.stylish-haskell.yaml) config
+* [.stylish-haskell.yaml](https://github.com/serokell/serokell-util/blob/master/.stylish-haskell.yaml)
 * [Universum](https://github.com/serokell/universum)
 * [Custom _HLint_ rules](https://github.com/input-output-hk/cardano-sl/blob/master/HLint.hs)
 
@@ -53,22 +53,31 @@ type signatures and function definitions. Add one blank line between
 functions in a type class instance declaration if the function bodies
 are large. You can add blank lines inside a big `do` block to separate logical
 parts of it. You can also use blank lines to separate definitions inside `where`
-clause. And finally you can separate `imports`'s into logical blocks by prefix.
+clause.
 
 ### Whitespace
 
 Surround binary operators with a single space on either side. In case of
 currying add one space between the argument and the operation.
 
-_Exception_: `%` operator for string formatting from `Formatting` library.
-You can omit spaces if surrounding strings have spaces. It also helps in cases
-when formatted strings are too long. Compare:
+_Exceptions (where you're allowed to not follow this rule)_:
 
-`("block with "%int%" entries")`
+1. `%` operator for string formatting from `Formatting` library. Compare:
 
-`("block with " % int % " entries")`
+`("block with "%int%" entries") cnt`
 
-Use some tool to remove trailing spaces.
+`("block with " % int % " entries") cnt`
+
+2. `+|`-like operators from [`fmt`](http://hackage.haskell.org/package/fmt) library. Compare
+
+`"block with "+|cnt|+" entries"`
+
+`"block with " +| cnt |+ " entries"`
+
+So, you can omit spaces if surrounding strings have spaces. It also helps in
+cases when formatted strings are too long.
+
+Use some tool to remove trailing spaces!
 
 ### Naming convention
 
@@ -93,10 +102,16 @@ as constructor name (also applies to `newtype`).
 data User = User Int String
 ```
 
-Field name for `newtype` should start with `get` prefix followed by type name.
+Field name for `newtype` should start with `un` or `run` prefix followed by type name.
+
+* `run` for wrappers with monadic semantic.
+* `un` for wrappers introduced for type safety.
+
+Motivated by [this discussion](https://www.reddit.com/r/haskell/comments/7rl9hx/newtype_field_naming_getx_vs_runx/).
 
 ```haskell
-newtype Coin = Coin { getCoin :: Int }
+newtype Coin = Coin { unCoin :: Int }
+newtype PureDHT a = PureDHT { runPureDHT :: State (Set NodeId) a }
 ```
 
 Field names for record data type should start with every capital letter in type
@@ -109,12 +124,16 @@ data NetworkConfig = NetworkConfig
     }
 ```
 
+TODO: consider remove this rule? GHC has `-XOverloadedRecordFields` with
+[`HasField`](https://www.stackage.org/haddock/lts-10.4/base-4.10.1.0/GHC-Records.html#t:HasField)
+type class.
+
 **Library specific conventions**
 
 Add `F` suffix to custom formatters to avoid name conflicts:
 
 ```haskell
-nodeF :: Format r (NodeId -> r)
+nodeF :: NodeId -> Builder
 nodeF = build
 ```
 
@@ -252,9 +271,7 @@ Imports should be grouped in the following order:
 3. Everything from current target (like `Bench.*` or `Test.*`).
 4. Qualified imports
 
-Put a blank line between each group of imports. It is also okay to put blank
-lines between `Data` and `Control` section of std imports because these sections
-are usually big enough.
+Put a blank line between each group of imports.
 
 The imports in each group should be sorted alphabetically, by module name.
 
@@ -272,7 +289,7 @@ Prefer two-line imports for such standard containers.
 ```haskell
 import Data.Map (Map)
 
-import qualified Data.Map as M hiding (Map)
+import qualified Data.Map as Map hiding (Map)
 ```
 
 Such tools as `stylish-haskell` can make your import section look very nice!
@@ -304,16 +321,6 @@ data Person = Person
     } deriving (Eq, Show)
 ```
 
-Type classes in `deriving` section should be always surrounded by
-parentheses. Space between names is optional.
-
-_WARNING_: try to avoid aggressive autoderiving. Deriving instances can
-slowdown compilation
-(stated here: http://www.stephendiehl.com/posts/production.html)
-
-> Deriving instances of Read/Show/Data/Generic for largely recursive ADTs can
-> sometimes lead to quadratic memory behavior when the nesting gets deep.
-
 If you have record with multiple constructors (which is generally bad idea
 because you getters become partial functions but okay if you use
 `-XRecordWildCards`) then align curly braces with
@@ -338,9 +345,39 @@ data Address
     deriving (Show, Eq)
 ```
 
+Type classes in `deriving` section should be always surrounded by
+parentheses. Space between names is optional.
+
+_WARNING_: try to avoid aggressive autoderiving. Deriving instances can
+slowdown compilation
+(stated here: http://www.stephendiehl.com/posts/production.html)
+
+> Deriving instances of Read/Show/Data/Generic for largely recursive ADTs can
+> sometimes lead to quadratic memory behavior when the nesting gets deep.
+
+If you're using GHC-8.2.2 or higher you should use
+[`-XDerivingStrategies`](https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/glasgow_exts.html#deriving-strategies)
+extension and specify the way you derive explicitly. Like this (see
+[this question](https://github.com/jaspervdj/stylish-haskell/issues/186) for example):
+
+```haskell
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE DerivingStrategies         #-}
+
+newtype SpecialId = SpecialId Int
+    deriving stock    (Eq, Ord, Show, Generic)
+    deriving newtype  Read
+    deriving anyclass (FromJSON, ToJSON)
+```
+
 ### Function declaration
 
-All functions must have type signatures.
+All top-level functions _must_ have type signatures.
+
+All functions inside `where` _must_ have type signatures.
+
+> You most likely need `-XExplicitForAll` and `-XScopedTypeVariables` extensions
+> to write polymorphic types of functions inside `where`.
 
 Specialize function type signature for concrete types if you're using this function
 with only one type for each argument. Otherwize you should use more polymorphic
@@ -386,6 +423,14 @@ due to `$` then use either `_ <-` or `void $`.
 foo = do
     _  <- forkIO $ myThread config  -- can't be used as last statement
     () <$ sendTransactionAndReport 1 "tx42"
+```
+
+Put operator fixity before operator signature:
+
+```haskell
+-- | This operator looks cool!
+infixl 5 />
+(/>) :: Uri -> PathPiece -> Uri
 ```
 
 ### Pragmas
@@ -485,6 +530,8 @@ foo = do
         return ()
 ```
 
+Use `-XMultiwayIf` only if you need complex `if-then-else` inside `do`-blocks.
+
 ### Case expressions
 
 The alternatives in a case expression can be indented using either of
@@ -506,6 +553,9 @@ foobar = case something of
 
 Align the `->` arrows when it helps readability.
 
+It's suggested to use `-XLambdaCase` extension because it's a great extension!
+See [this discussion](https://github.com/jaspervdj/stylish-haskell/issues/186) for nice usage examples.
+
 ### let expressions
 
 Put `let` before each variable inside a `do` block. But beware of name shadowing
@@ -521,7 +571,12 @@ foo = do
 
 ### ApplicativeDo
 
-TODO: use everywhere if possible?
+Don't use `-XApplicativeDo` blindly everywhere. Only when necessary.
+
+You _must_ use `-XApplicativeDo` when you're writing CLI-arguments parser with
+`optparse-applicative` because it's very easy to mess up with arguments order.
+Though, be aware of [some non-obvious behavior](https://www.reddit.com/r/haskell/comments/7679g8/ghc_821_applicativedo_possible_bug/)
+when you're using pattern-matching inside `do`-blocks.
 
 Dealing with laziness
 ---------------------
@@ -623,7 +678,20 @@ Allowed ghc forbidding option: `-fno-warn-orphans`
 
 ### Default extensions
 
+The following list of extensions is allowed to be specified inside
+`default-extensions` section inside `.cabal` files.
+
++ ConstraintKinds
++ DefaultSignatures
 + DeriveDataTypeable
++ DeriveGeneric
 + GeneralizedNewtypeDeriving
++ LambdaCase
++ NoImplicitPrelude
 + OverloadedStrings
 + RecordWildCards
++ ScopedTypeVariables
++ StandaloneDeriving
++ TupleSections
++ TypeApplications
++ ViewPatterns
