@@ -76,7 +76,7 @@ unitBuilder n@(toBytes -> bytes)
   | bytes < 0 = mconcat ["-", unitBuilder n]
   | otherwise = bprint (stext % " " % stext) (showFixedPretty' 3 value) suffix
   where
-    suffixes = ["B", "KiB", "MiB", "GiB", "TiB", "Pib", "EiB", "ZiB", "YiB"]
+    suffixes = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"]
     bytesDouble :: Double
     bytesDouble = realToFrac bytes
     order = min (length suffixes - 1) (floor $ logBase 2 bytesDouble / 10)
