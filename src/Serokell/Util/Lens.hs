@@ -12,12 +12,13 @@ module Serokell.Util.Lens
        , listL
        ) where
 
-import qualified Control.Lens as L
-import Control.Monad.Reader (MonadReader, Reader, ReaderT, reader, runReader)
-import Control.Monad.State (MonadState, State, StateT, get, runState, state)
+import Universum
+
 import Control.Monad.Trans.Except (ExceptT, mapExceptT)
 import GHC.Exts (IsList (..))
 import System.Wlog (LoggerName, LoggerNameBox (..))
+
+import qualified Control.Lens as L
 
 -- I don't know how to call these operators
 
@@ -83,5 +84,4 @@ magnify' l = reader . runReader . L.magnify l
 listL
     :: (IsList (t a), IsList (t b))
     => L.Iso (t a) (t b) [Item (t a)] [Item (t b)]
-listL = L.iso toList fromList
-
+listL = L.iso  GHC.Exts.toList fromList

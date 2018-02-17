@@ -6,11 +6,13 @@ module Serokell.Data.Variant.Class
        , FromVariant (fromVariant)
        ) where
 
-import           Control.Monad.Catch           (MonadThrow)
-import           Formatting                    (build, sformat, (%))
+import Universum
 
-import           Serokell.Data.Variant.Variant (Variant (..))
-import           Serokell.Util.Exceptions      (throwText)
+import Control.Monad.Catch (MonadThrow)
+import Formatting (build, sformat, (%))
+
+import Serokell.Data.Variant.Variant (Variant (..))
+import Serokell.Util.Exceptions (throwText)
 
 class ToVariant v where
     toVariant :: v -> Variant
@@ -28,4 +30,4 @@ instance ToVariant Double where
 
 instance FromVariant Double where
     fromVariant (VarFloat v) = pure v
-    fromVariant v = throwText $ sformat ("value is not Double: " % build) v
+    fromVariant v            = throwText $ sformat ("value is not Double: " % build) v

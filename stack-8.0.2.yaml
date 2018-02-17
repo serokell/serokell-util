@@ -10,7 +10,7 @@ extra-deps:
 - fmt-0.5.0.0
 - log-warper-1.8.5
 - recursion-schemes-5
-- universum-1.0.2
+- universum-1.0.4.1
 
 allow-newer: true
 

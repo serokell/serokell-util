@@ -1,5 +1,4 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE NoImplicitPrelude     #-}
 
 -- | Some useful helper for optparse-applicative library
 
@@ -10,12 +9,12 @@ module Serokell.Util.OptParse
        , fromParsec
        ) where
 
-import           Universum
+import Universum
 
-import           Data.String         (IsString (fromString))
-import           Options.Applicative (ArgumentFields, Mod, OptionFields, Parser, ReadM,
-                                      argument, eitherReader, option, str)
-import           Text.Parsec         (Parsec, parse)
+import Data.String (IsString (fromString))
+import Options.Applicative (ArgumentFields, Mod, OptionFields, Parser, ReadM, argument,
+                            eitherReader, option, str)
+import Text.Parsec (Parsec, parse)
 
 -- | Reader which uses IsString instance for parsing
 fromStr :: IsString s => ReadM s

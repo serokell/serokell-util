@@ -10,11 +10,10 @@ module Serokell.Util.Common
        , chunksOf
        ) where
 
-import           Control.Monad.State (evalState, get, modify)
-import           Data.List           (genericDrop, genericIndex, genericLength,
-                                      genericTake, sort)
-import           Data.Maybe          (fromMaybe)
-import           GHC.Exts            (build)
+import Universum
+
+import Data.List (genericDrop, genericIndex, genericLength, genericTake, sort)
+import GHC.Exts (build)
 
 -- | Enumerate function is analogous to python's enumerate. It
 -- takes sequences of values and returns sequence of pairs where the

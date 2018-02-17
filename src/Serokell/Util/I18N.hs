@@ -11,15 +11,16 @@ module Serokell.Util.I18N
        , ToReplaceToken(..)
        ) where
 
-import qualified Data.Aeson             as AT
-import           Data.ByteString        as BS
-import qualified Data.Map.Strict        as M
-import           Data.Text              as T
-import           Data.Yaml              (decodeEither)
-import           Formatting             (build, sformat, (%))
-import           GHC.Generics           (Generic, Rep)
-import           Serokell.Aeson.Options (defaultOptions)
+import Universum
 
+import Data.Yaml (decodeEither)
+import Formatting (build, sformat, (%))
+import GHC.Generics (Generic, Rep)
+import Serokell.Aeson.Options (defaultOptions)
+
+import qualified Data.Aeson as AT
+import qualified Data.Map.Strict as M
+import qualified Data.Text as T
 
 -- It's better to get rid of aeson-extra depricated things here, but
 -- aeson-1.0.0.0 structure of FromJSONKey requires fromJSONKeyList
@@ -38,20 +39,19 @@ instance (Eq a, Ord a, Generic a, AT.GFromJSON (Rep a)) =>
 #endif
          YamlMapKey a
 
-type Translations lang token = M.Map lang (M.Map token T.Text)
+type Translations lang token = M.Map lang (M.Map token Text)
 
 fromYaml :: (YamlMapKey lang, YamlMapKey token)
-         => BS.ByteString
+         => ByteString
          -> Translations lang token
 fromYaml yamlStr =
     either
-        (error .
-         T.unpack . sformat ("Error during translation YAML parsing " % build))
-        id $
+        (error . sformat ("Error during translation YAML parsing " % build))
+        identity $
     decodeEither yamlStr
 
 class (Ord a, Eq a) => ToReplaceToken a where
-    toReplaceToken :: a -> T.Text
+    toReplaceToken :: a -> Text
 
 #if MIN_VERSION_aeson(1,0,0)
 instance (Ord a, Eq a, Generic a, AT.GToJSON AT.Zero (Rep a)) => ToReplaceToken a where
@@ -63,7 +63,7 @@ instance (Ord a, Eq a, Generic a, AT.GToJSON (Rep a)) => ToReplaceToken a where
 
 replaceTranslations
     :: (ToReplaceToken token, Ord lang)
-    => Translations lang token -> lang -> T.Text -> Maybe T.Text
+    => Translations lang token -> lang -> Text -> Maybe Text
 replaceTranslations translations lang text =
     M.foldrWithKey
         (\token ->

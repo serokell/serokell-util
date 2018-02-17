@@ -1,6 +1,7 @@
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE RankNTypes            #-}
+{-# LANGUAGE TypeApplications      #-}
 
 -- | Parsing common helpers
 
@@ -13,9 +14,13 @@ module Serokell.Util.Parse.Common
        , parseIntegralSafe
        ) where
 
-import           Control.Applicative (some)
-import           Text.Parsec         (ParsecT, Stream, option, satisfy)
-import           Text.Parsec.Char    (digit)
+import Universum hiding (fail)
+
+import Control.Applicative (some)
+import Control.Monad (fail)
+import Prelude (read)
+import Text.Parsec (ParsecT, Stream, option, satisfy)
+import Text.Parsec.Char (digit)
 
 type CharParser a = forall s u m. Stream s m Char => ParsecT s u m a
 
@@ -50,7 +55,7 @@ limitedInt x e = do
         then fail e
         else return b
   where
-    intDigits = length . show
+    intDigits = length . show @String
 
 byte :: CharParser Word
 byte = fromIntegral <$> limitedInt 255 "Value to large"

@@ -1,5 +1,3 @@
-{-# LANGUAGE NoImplicitPrelude #-}
-
 -- | Functions for working with ANSI-colored text.
 module Serokell.Util.ANSI
        ( Color(..)

@@ -1,5 +1,4 @@
 {-# LANGUAGE ExplicitForAll      #-}
-{-# LANGUAGE NoImplicitPrelude   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies        #-}
 

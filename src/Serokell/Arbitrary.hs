@@ -8,18 +8,18 @@ module Serokell.Arbitrary
        , VariantOnlyBytes (..)
        ) where
 
-import           Data.ByteString               as BS hiding (zip)
-import qualified Data.HashMap.Lazy             as H (fromList)
-import           Data.Vector                   (fromList)
-import           GHC.Generics                  (Generic)
-import           Test.QuickCheck               (Arbitrary (..), Gen, choose,
-                                                genericShrink, frequency, oneof,
-                                                sized)
-import           Test.QuickCheck.Instances     ()
+import Universum
 
-import           Serokell.Data.Variant.Variant (Variant (..))
-import qualified Serokell.Util.Base64          as S
-import qualified Serokell.Util.Verify          as V
+import Data.ByteString as BS hiding (zip)
+import Data.Vector (fromList)
+import Test.QuickCheck (Arbitrary (..), Gen, choose, frequency, genericShrink, oneof, sized)
+import Test.QuickCheck.Instances ()
+
+import Serokell.Data.Variant.Variant (Variant (..))
+
+import qualified Data.HashMap.Lazy as H (fromList)
+import qualified Serokell.Util.Base64 as S
+import qualified Serokell.Util.Verify as V
 
 ------------------------------------------------------------------------------------------
 -- Serokell.Data.Variant
@@ -89,11 +89,11 @@ genListVariant n = VarList . fromList <$> genBoundedVariants (n-1)
 
 genMapVariant :: Int -> Gen Variant
 genMapVariant n = do
-    keys <- genBoundedVariants ((n-1) `div` 2)
-    vals <- genBoundedVariants ((n-1) `div` 2)
+    varKeys <- genBoundedVariants ((n-1) `div` 2)
+    varVals <- genBoundedVariants ((n-1) `div` 2)
     -- Lengths of keys and vals may not match and so we would get less
     -- constructors due to truncation, but we don't care.
-    return $ VarMap $ H.fromList $ zip keys vals
+    return $ VarMap $ H.fromList $ zip varKeys varVals
 
 ------------------------------------------------------------------------------------------
 -- Serokell.Util.Verify
