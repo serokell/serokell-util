@@ -1,4 +1,4 @@
-resolver: lts-10.1
+resolver: lts-10.5
 packages: [.]
 
 nix:
@@ -6,5 +6,5 @@ nix:
 
 extra-deps:
 - log-warper-1.8.5
-- universum-1.0.2
+- universum-1.0.4.1
 - o-clock-0.0.0

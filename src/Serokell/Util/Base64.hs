@@ -11,45 +11,40 @@ module Serokell.Util.Base64
        , JsonByteStringDeprecated (..)
        ) where
 
-import           Control.Monad              ((>=>))
-import           Control.Monad.Fail         (MonadFail (fail))
-import           Data.Aeson                 (FromJSON (parseJSON), ToJSON (toJSON))
-import           Data.Aeson.Types           (FromJSONKey (..),
-                                             FromJSONKeyFunction (FromJSONKeyTextParser),
-                                             ToJSONKey (..), toJSONKeyText)
-import           Data.Bifunctor             (first)
-import qualified Data.ByteString            as BS
-import qualified Data.ByteString.Base64     as B64
+import Universum hiding (fail)
+
+import Control.Monad (fail)
+import Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON))
+import Data.Aeson.Types (FromJSONKey (..), FromJSONKeyFunction (FromJSONKeyTextParser),
+                         ToJSONKey (..), toJSONKeyText)
+import Data.Text.Lazy.Builder (Builder, fromText)
+import Formatting (Format, later)
+
+import qualified Data.ByteString.Base64 as B64
 import qualified Data.ByteString.Base64.URL as B64url
-import           Data.Hashable              (Hashable)
-import qualified Data.Text                  as T
-import           Data.Text.Encoding         (decodeUtf8, encodeUtf8)
-import           Data.Text.Lazy.Builder     (Builder, fromText)
-import           Formatting                 (Format, later)
-import           Prelude                    hiding (fail)
 
 -- | Apply base64 encoding to strict ByteString.
-encode :: BS.ByteString -> T.Text
+encode :: ByteString -> Text
 encode = decodeUtf8 . B64.encode
 
 -- | Decode base64-encoded ByteString.
-decode :: T.Text -> Either T.Text BS.ByteString
-decode = first T.pack . B64.decode . encodeUtf8
+decode :: Text -> Either Text ByteString
+decode = first toText . B64.decode . encodeUtf8
 
 -- | Apply base64url encoding to strict ByteString.
-encodeUrl :: BS.ByteString -> T.Text
+encodeUrl :: ByteString -> Text
 encodeUrl = decodeUtf8 . B64url.encode
 
 -- | Decode base64url-encoded ByteString.
-decodeUrl :: T.Text -> Either T.Text BS.ByteString
-decodeUrl = first T.pack . B64url.decode . encodeUtf8
+decodeUrl :: Text -> Either Text ByteString
+decodeUrl = first toText . B64url.decode . encodeUtf8
 
 -- | Construct Builder from bytestring formatting it in Base64.
-formatBase64 :: BS.ByteString -> Builder
+formatBase64 :: ByteString -> Builder
 formatBase64 = fromText . encode
 
 -- | Format which uses Base64 to print bytestring.
-base64F :: Format r (BS.ByteString -> r)
+base64F :: Format r (ByteString -> r)
 base64F = later formatBase64
 
 ----------------------------------------------------------------------------
@@ -59,7 +54,7 @@ base64F = later formatBase64
 -- | Wrapper on top of ByteString with JSON serialization (in base64
 -- encoding).
 newtype JsonByteString = JsonByteString
-    { getJsonByteString :: BS.ByteString
+    { getJsonByteString :: ByteString
     } deriving (Show, Eq, Ord, Hashable)
 
 instance ToJSON JsonByteString where
@@ -74,15 +69,15 @@ instance FromJSON JsonByteString where
 instance FromJSONKey JsonByteString where
     fromJSONKey = FromJSONKeyTextParser jsonBSParser
 
-jsonBSParser :: MonadFail m => T.Text -> m JsonByteString
-jsonBSParser = either (fail . T.unpack) (pure . JsonByteString) . decode
+jsonBSParser :: MonadFail m => Text -> m JsonByteString
+jsonBSParser = either (fail . toString) (pure . JsonByteString) . decode
 
 ----------------------------------------------------------------------------
 -- Deprecated
 ----------------------------------------------------------------------------
 
 newtype JsonByteStringDeprecated = JsonByteStringDeprecated
-    { getJsonByteStringDeprecated :: BS.ByteString
+    { getJsonByteStringDeprecated :: ByteString
     }
 
 instance ToJSON JsonByteStringDeprecated where
@@ -91,4 +86,4 @@ instance ToJSON JsonByteStringDeprecated where
 instance FromJSON JsonByteStringDeprecated where
     parseJSON =
         parseJSON >=>
-        either (fail . T.unpack) (pure . JsonByteStringDeprecated) . decodeUrl
+        either (fail . toString) (pure . JsonByteStringDeprecated) . decodeUrl

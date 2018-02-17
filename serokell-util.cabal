@@ -32,11 +32,12 @@ library
                            Serokell.Util.Bench
                            Serokell.Util.Common
                            Serokell.Util.Concurrent
-                           Serokell.Util.I18N
-                           Serokell.Util.Parse
-                           Serokell.Util.OptParse
                            Serokell.Util.Exceptions
+                           Serokell.Util.Group
+                           Serokell.Util.I18N
                            Serokell.Util.Lens
+                           Serokell.Util.OptParse
+                           Serokell.Util.Parse
                            Serokell.Util.StaticAssert
                            Serokell.Util.Text
                            Serokell.Util.Trace
@@ -81,7 +82,7 @@ library
                      , text
                      , text-format
                      , transformers
-                     , universum ^>= 1.0.2
+                     , universum ^>= 1.0.4
                      , unordered-containers >= 0.2.7.0
                      , vector
                      , yaml
@@ -96,6 +97,7 @@ library
                        RecordWildCards
                        DeriveDataTypeable
                        GeneralizedNewtypeDeriving
+                       NoImplicitPrelude
                        TypeApplications
 
 test-suite serokell-test
@@ -121,7 +123,7 @@ test-suite serokell-test
                      , serokell-util
                      , text
                      , text-format
-                     , universum ^>= 1.0.2
+                     , universum ^>= 1.0.4
                      , unordered-containers >= 0.2.7.0
                      , vector
   hs-source-dirs:      test

@@ -7,14 +7,16 @@ module Serokell.Data.Variant.Serialization
        (
        ) where
 
-import qualified Data.Aeson                    as Aeson
-import           Data.Bifunctor                (bimap)
-import qualified Data.HashMap.Strict           as HM hiding (HashMap)
-import           Data.Scientific               (floatingOrInteger)
+import Universum
 
-import           Serokell.Data.Variant.Variant (VarMap, Variant (..))
-import           Serokell.Util.Base64          (JsonByteString (JsonByteString))
-import           Serokell.Util.Text            (show')
+import Data.Scientific (floatingOrInteger)
+
+import Serokell.Data.Variant.Variant (VarMap, Variant (..))
+import Serokell.Util.Base64 (JsonByteString (JsonByteString))
+import Serokell.Util.Text (show')
+
+import qualified Data.Aeson as Aeson
+import qualified Data.HashMap.Strict as HM
 
 --  —————————JSON serialization————————— --
 -- Since there is no bijection between Variant and JSON Value, there are some

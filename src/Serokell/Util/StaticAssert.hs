@@ -5,8 +5,10 @@ module Serokell.Util.StaticAssert
        ( staticAssert
        ) where
 
-import           Control.Monad       (unless)
-import           Language.Haskell.TH (Q)
+import Universum hiding (fail)
+
+import Control.Monad (fail)
+import Language.Haskell.TH (Q)
 
 staticAssert :: Bool -> String -> Q [a]
 staticAssert cond mesg = do

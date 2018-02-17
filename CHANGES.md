@@ -1,6 +1,8 @@
 0.7.0
 =====
 
+* [#46](https://github.com/serokell/serokell-util/issues/46):
+  Add `Group` module with grouping functions.
 * [#28](https://github.com/serokell/serokell-util/issues/28):
   Use `NonEmpty` list in `VerificationRes` instead of ordinary list.
 * [#22](https://github.com/serokell/serokell-util/issues/22):
