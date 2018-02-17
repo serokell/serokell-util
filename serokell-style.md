@@ -53,7 +53,7 @@ type signatures and function definitions. Add one blank line between
 functions in a type class instance declaration if the function bodies
 are large. You can add blank lines inside a big `do` block to separate logical
 parts of it. You can also use blank lines to separate definitions inside `where`
-clause.
+clause. Blank lines are used to separate imports (this is described in section below).
 
 ### Whitespace
 
@@ -374,7 +374,9 @@ newtype SpecialId = SpecialId Int
 
 All top-level functions _must_ have type signatures.
 
-All functions inside `where` _must_ have type signatures.
+All functions inside `where` _should_ have type signatures. Explicit type
+signatures help to avoid cryptic type errors. Though when working with pure
+arithmetics and everything is `Integer` then type signatures can look cumbersome.
 
 > You most likely need `-XExplicitForAll` and `-XScopedTypeVariables` extensions
 > to write polymorphic types of functions inside `where`.
@@ -573,7 +575,7 @@ foo = do
 
 Don't use `-XApplicativeDo` blindly everywhere. Only when necessary.
 
-You _must_ use `-XApplicativeDo` when you're writing CLI-arguments parser with
+You _should_ use `-XApplicativeDo` when you're writing CLI-arguments parser with
 `optparse-applicative` because it's very easy to mess up with arguments order.
 Though, be aware of [some non-obvious behavior](https://www.reddit.com/r/haskell/comments/7679g8/ghc_821_applicativedo_possible_bug/)
 when you're using pattern-matching inside `do`-blocks.
