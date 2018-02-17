@@ -32,11 +32,12 @@ library
                            Serokell.Util.Bench
                            Serokell.Util.Common
                            Serokell.Util.Concurrent
-                           Serokell.Util.I18N
-                           Serokell.Util.Parse
-                           Serokell.Util.OptParse
                            Serokell.Util.Exceptions
+                           Serokell.Util.Group
+                           Serokell.Util.I18N
                            Serokell.Util.Lens
+                           Serokell.Util.OptParse
+                           Serokell.Util.Parse
                            Serokell.Util.StaticAssert
                            Serokell.Util.Text
                            Serokell.Util.Trace
