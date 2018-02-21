@@ -62,7 +62,6 @@ library
                      , deepseq
                      , directory
                      , exceptions
-                     , extra
                      , filepath
                      , fmt
                      , formatting >= 6.2.0 && < 6.3
@@ -76,7 +75,6 @@ library
                      , QuickCheck >= 2.8.1
                      , quickcheck-instances
                      , scientific
-                     , semigroups
                      , stm >= 2.4.4
                      , template-haskell
                      , text
