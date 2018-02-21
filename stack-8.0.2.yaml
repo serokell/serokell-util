@@ -1,5 +1,4 @@
 resolver: lts-9.21
-packages: [.]
 
 nix:
     packages: [openssh,git]
@@ -8,11 +7,8 @@ extra-deps:
 - aeson-extra-0.4.0.0
 - containers-0.5.10.2
 - fmt-0.5.0.0
-- log-warper-1.8.5
+- log-warper-1.8.9
 - recursion-schemes-5
-- universum-1.0.4.1
+- universum-1.1.0
 
 allow-newer: true
-
-flags: {}
-extra-package-dbs: []

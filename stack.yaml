@@ -1,10 +1,9 @@
-resolver: lts-10.5
-packages: [.]
+resolver: lts-10.6
 
 nix:
     packages: [openssh,git]
 
 extra-deps:
-- log-warper-1.8.5
-- universum-1.0.4.1
-- o-clock-0.0.0
+- log-warper-1.8.9
+- universum-1.1.0
+- o-clock-0.1.0
