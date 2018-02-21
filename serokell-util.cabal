@@ -68,7 +68,7 @@ library
                      , formatting >= 6.2.0 && < 6.3
                      , hashable >= 1.2.4.0
                      , lens
-                     , log-warper ^>= 1.8.5
+                     , log-warper ^>= 1.8.9
                      , monad-control
                      , mtl
                      , optparse-applicative
@@ -82,13 +82,13 @@ library
                      , text
                      , text-format
                      , transformers
-                     , universum ^>= 1.0.4
+                     , universum ^>= 1.1.0
                      , unordered-containers >= 0.2.7.0
                      , vector
                      , yaml
 
   if impl(ghc >= 8.2.2)
-     build-depends:       o-clock
+     build-depends:       o-clock ^>= 0.1
 
   ghc-options:         -Wall -fno-warn-orphans
 
@@ -123,7 +123,7 @@ test-suite serokell-test
                      , serokell-util
                      , text
                      , text-format
-                     , universum ^>= 1.0.4
+                     , universum ^>= 1.1.0
                      , unordered-containers >= 0.2.7.0
                      , vector
   hs-source-dirs:      test

@@ -1,6 +1,7 @@
 0.7.0
 =====
 
+* Bump up dependencies to `universum >= 1.1.0` and `o-clock >= 0.1.0`.
 * [#46](https://github.com/serokell/serokell-util/issues/46):
   Add `Group` module with grouping functions.
 * [#28](https://github.com/serokell/serokell-util/issues/28):

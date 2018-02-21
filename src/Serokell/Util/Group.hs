@@ -23,7 +23,7 @@ fromList [(False,5 :| [3,1]),(True,6 :| [4,2])]
 -}
 groupBy :: forall t a b . (Container t, Element t ~ a, Eq b, Hashable b)
         => (a -> b) -> t -> HashMap b (NonEmpty a)
-groupBy f = foldl' hmGroup mempty
+groupBy f = flipfoldl' hmGroup mempty
   where
     hmGroup :: a -> HashMap b (NonEmpty a) -> HashMap b (NonEmpty a)
     hmGroup x =
@@ -40,7 +40,7 @@ fromList [(False,1),(True,2)]
 -}
 groupMapBy :: forall t a b . (Container t, Element t ~ a, Eq b, Hashable b)
            => (a -> b) -> t -> HashMap b a
-groupMapBy f = foldl' hmGroup mempty
+groupMapBy f = flipfoldl' hmGroup mempty
   where
     hmGroup :: a -> HashMap b a -> HashMap b a
     hmGroup val hm = let key = f val in
