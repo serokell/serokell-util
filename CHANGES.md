@@ -1,3 +1,10 @@
+0.8.0
+=====
+
+* [#54](https://github.com/serokell/serokell-util/issues/54):
+  Change the return type of formatting functions in `Verify`
+  to `Text` instead of `Builder`.
+
 0.7.0
 =====
 

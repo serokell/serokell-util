@@ -23,6 +23,7 @@ module Serokell.Util.Verify
 import Universum
 
 import Control.Monad.Except (MonadError, throwError)
+import Fmt (fmt)
 
 import Serokell.Util.Text (listBuilder)
 
@@ -69,15 +70,15 @@ verifyGeneric errors = case messages of
 
 -- | Format VerificationRes in a pretty way using all errors messages
 -- for VerFailure.
-verResFullF :: VerificationRes -> B.Builder
+verResFullF :: VerificationRes -> Text
 verResFullF VerSuccess          = "success"
-verResFullF (VerFailure errors) = buildVerResImpl errors
+verResFullF (VerFailure errors) = fmt $ buildVerResImpl errors
 
 -- | Format VerificationRes in a pretty way using only first message
 -- for VerFailure.
-verResSingleF :: VerificationRes -> B.Builder
+verResSingleF :: VerificationRes -> Text
 verResSingleF VerSuccess          = "success"
-verResSingleF (VerFailure errors) = buildVerResImpl $ one $ head errors
+verResSingleF (VerFailure errors) = fmt $ buildVerResImpl $ one $ head errors
 
 buildVerResImpl :: NonEmpty Text -> B.Builder
 buildVerResImpl errors =
@@ -86,11 +87,11 @@ buildVerResImpl errors =
 -- These two functions can have more general type.
 
 -- | Pretty printer for errors from VerFailure, all errors are printed.
-formatAllErrors :: NonEmpty Text -> B.Builder
+formatAllErrors :: NonEmpty Text -> Text
 formatAllErrors = verResFullF . VerFailure
 
 -- | Pretty printer for errors from VerFailure, only first error is printed.
-formatFirstError :: NonEmpty Text -> B.Builder
+formatFirstError :: NonEmpty Text -> Text
 formatFirstError = verResSingleF . VerFailure
 
 ----------------------------------------------------------------------------
