@@ -25,7 +25,6 @@ library
 
                        Serokell.Util
                            Serokell.Util.ANSI
-                           Serokell.Util.Base
                            Serokell.Util.Base16
                            Serokell.Util.Base64
                            Serokell.Util.Bench
@@ -67,8 +66,12 @@ library
                      , formatting >= 6.2.0 && < 6.3
                      , hashable >= 1.2.4.0
                      , lens
+<<<<<<< HEAD
                      , log-warper ^>= 1.8.9
                      , monad-control
+=======
+                     , log-warper ^>= 1.8.5
+>>>>>>> deleted ../Util/Base.hs and monad-control #34
                      , mtl
                      , optparse-applicative
                      , parsec
