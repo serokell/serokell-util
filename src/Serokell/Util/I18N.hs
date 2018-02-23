@@ -16,7 +16,7 @@ import Universum
 import Data.Yaml (decodeEither)
 import Formatting (build, sformat, (%))
 import GHC.Generics (Generic, Rep)
-import Serokell.Aeson.Options (defaultOptions)
+import Data.Aeson.Options (defaultOptions)
 
 import qualified Data.Aeson as AT
 import qualified Data.Map.Strict as M
