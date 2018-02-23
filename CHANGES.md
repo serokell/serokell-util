@@ -1,3 +1,9 @@
+0.9.0
+=====
+
+* [#45](https://github.com/serokell/serokell-util/issues/45):
+  Move `Aeson.Options` to separate package [`aeson-options`][1].
+
 0.8.0
 =====
 
@@ -46,3 +52,6 @@
 =====
 
 * Added `colorizeDull`.
+
+
+[1]: https://github.com/serokell/aeson-options
