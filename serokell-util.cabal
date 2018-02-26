@@ -25,7 +25,6 @@ library
 
                        Serokell.Util
                            Serokell.Util.ANSI
-                           Serokell.Util.Base
                            Serokell.Util.Base16
                            Serokell.Util.Base64
                            Serokell.Util.Bench
@@ -60,23 +59,18 @@ library
                      , clock
                      , containers >= 0.5.10
                      , deepseq
-                     , directory
                      , exceptions
-                     , extra
-                     , filepath
                      , fmt
                      , formatting >= 6.2.0 && < 6.3
                      , hashable >= 1.2.4.0
                      , lens
                      , log-warper ^>= 1.8.9
-                     , monad-control
                      , mtl
                      , optparse-applicative
                      , parsec
                      , QuickCheck >= 2.8.1
                      , quickcheck-instances
                      , scientific
-                     , semigroups
                      , stm >= 2.4.4
                      , template-haskell
                      , text
