@@ -3,19 +3,13 @@
 -- | Some useful helper for optparse-applicative library
 
 module Serokell.Util.OptParse
-       ( fromStr
-       , fromParsec
+       ( fromParsec
        ) where
 
 import Universum
 
-import Data.String (IsString (fromString))
-import Options.Applicative (ReadM, eitherReader, str)
+import Options.Applicative (ReadM, eitherReader)
 import Text.Parsec (Parsec, parse)
-
--- | Reader which uses IsString instance for parsing
-fromStr :: IsString s => ReadM s
-fromStr = fromString <$> str
 
 fromParsec :: Parsec Text () a -> ReadM a
 fromParsec parser =
