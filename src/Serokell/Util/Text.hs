@@ -7,9 +7,7 @@
 
 module Serokell.Util.Text
        ( -- * @formatting@ utilities
-         show
-       , show'
-       , FPFormat (..)
+         FPFormat (..)
        , showFloat
        , showFloat'
        , showFixedPretty'
@@ -51,30 +49,23 @@ module Serokell.Util.Text
        , readUnsignedDecimal
        ) where
 
-import qualified Universum                        as U
+import Prelude hiding (show, showList)
 
-import qualified Data.Text                        as T
-import           Data.Text.Buildable              (Buildable (build))
-import qualified Data.Text.Format                 as F
-import           Data.Text.Format.Params          (Params)
-import qualified Data.Text.Lazy                   as LT
-import qualified Data.Text.Lazy.Builder           as B
-import qualified Data.Text.Lazy.Builder.Int       as B
-import           Data.Text.Lazy.Builder.RealFloat (FPFormat (Exponent, Fixed, Generic))
+import Data.Text.Buildable (Buildable (build))
+import Data.Text.Format.Params (Params)
+import Data.Text.Lazy.Builder.RealFloat (FPFormat (Exponent, Fixed, Generic))
+import Formatting (Format, fixed, later, sformat)
+import GHC.Exts (IsList (..))
+import Serokell.Util.Common (chunksOf)
+
+import qualified Data.Text as T
+import qualified Data.Text.Format as F
+import qualified Data.Text.Lazy as LT
+import qualified Data.Text.Lazy.Builder as B
+import qualified Data.Text.Lazy.Builder.Int as B
 import qualified Data.Text.Lazy.Builder.RealFloat as B
-import qualified Data.Text.Read                   as T
-import           Formatting                       (Format, fixed, later, sformat)
-import           GHC.Exts                         (IsList (..))
-import           Prelude                          hiding (show, showList)
-import           Serokell.Util.Common             (chunksOf)
-
-show :: Buildable a
-     => a -> LT.Text
-show = B.toLazyText . build
-
-show' :: Buildable a
-      => a -> T.Text
-show' = LT.toStrict . show
+import qualified Data.Text.Read as T
+import qualified Universum as U
 
 -- | Render a floating point number using normal notation, with the
 -- given number of decimal places. This function also truncates
