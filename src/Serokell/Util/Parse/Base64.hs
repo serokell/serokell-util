@@ -9,7 +9,6 @@ module Serokell.Util.Parse.Base64
 
 import Universum hiding (fail)
 
-import Control.Applicative (many, some, (<|>))
 import Control.Monad (fail)
 import Text.Parsec.Char (char)
 

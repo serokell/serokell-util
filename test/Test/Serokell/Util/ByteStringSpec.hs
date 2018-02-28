@@ -1,5 +1,4 @@
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE StandaloneDeriving  #-}
 
 module Test.Serokell.Util.ByteStringSpec
        ( spec
@@ -21,7 +20,7 @@ import qualified Universum.Unsafe as Unsafe (fromJust)
 
 spec :: Spec
 spec =
-    describe "Serialization" $ do
+    describe "Serialization" $
         describe "Indentity Properties" $ do
             prop "Base16" $
                 \(a :: ByteString) -> a === base16Mid a

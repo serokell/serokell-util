@@ -12,13 +12,11 @@ module Serokell.Data.Variant.Variant
 
 import Universum
 
-import Control.DeepSeq (NFData)
 import Data.Text.Buildable (Buildable (build))
 import GHC.Exts (IsList (..))
 
 import Serokell.Util.Text (listBuilderJSONIndent, mapBuilder)
 
-import qualified Data.HashMap.Strict as HM
 import qualified Data.Vector as V
 import qualified Serokell.Util.Base16 as B16
 
@@ -48,7 +46,7 @@ instance Buildable Variant where
     build (VarBytes v)  = build . B16.encode $ v
     build (VarString v) = build v
     build (VarList v)   = listBuilderJSONIndent 2 v
-    build (VarMap v)    = mapBuilder . HM.toList $ v
+    build (VarMap v)    = mapBuilder . toPairs $ v
 
 instance Hashable (Vector Variant) where
     hashWithSalt salt = V.foldr' (flip hashWithSalt) (hashWithSalt salt ())

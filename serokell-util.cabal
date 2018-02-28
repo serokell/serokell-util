@@ -108,15 +108,11 @@ test-suite serokell-test
   build-tool-depends:  hspec-discover:hspec-discover
   build-depends:       aeson >= 1.0 && < 1.4
                      , base >=4.8
-                     , bytestring
                      , hspec >= 2.1.10
                      , QuickCheck >= 2.8.1
                      , quickcheck-instances
-                     , safecopy >= 0.9.0.1
                      , scientific
                      , serokell-util
-                     , text
-                     , text-format
                      , universum ^>= 1.1.0
                      , unordered-containers >= 0.2.7.0
                      , vector

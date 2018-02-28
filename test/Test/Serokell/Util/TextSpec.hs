@@ -1,6 +1,5 @@
 {-# LANGUAGE ExistentialQuantification #-}
 {-# LANGUAGE ScopedTypeVariables       #-}
-{-# LANGUAGE StandaloneDeriving        #-}
 
 module Test.Serokell.Util.TextSpec
        ( spec
@@ -17,19 +16,19 @@ import qualified Serokell.Util.Text as S
 
 spec :: Spec
 spec =
-    describe "Text Show/Read" $ do
-        describe "Indentity Properties" $ do
+    describe "Text Show/Read" $
+        describe "Indentity Properties" $
             describe "readDecimal" $ do
                 prop "Int" $
-                    \(a :: Int) -> (Right a) === showReadIntegral a
+                    \(a :: Int)     -> Right a === showReadIntegral a
                 prop "Integer" $
-                    \(a :: Integer) -> (Right a) === showReadIntegral a
+                    \(a :: Integer) -> Right a === showReadIntegral a
                 prop "Word" $
-                    \(a :: Word) -> (Right a) === showReadIntegral a
+                    \(a :: Word)    -> Right a === showReadIntegral a
                 prop "Int64" $
-                    \(a :: Int64) -> (Right a) === showReadIntegral a
+                    \(a :: Int64)   -> Right a === showReadIntegral a
                 prop "Word64" $
-                    \(a :: Word64) -> (Right a) === showReadIntegral a
+                    \(a :: Word64)  -> Right a === showReadIntegral a
 
 showReadIntegral :: (Buildable a, Integral a) => a -> Either String a
 showReadIntegral = S.readDecimal . pretty

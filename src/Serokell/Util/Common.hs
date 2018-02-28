@@ -12,7 +12,7 @@ module Serokell.Util.Common
 
 import Universum
 
-import Data.List (genericDrop, genericIndex, genericLength, genericTake, sort)
+import Data.List (genericIndex)
 import GHC.Exts (build)
 
 -- | Enumerate function is analogous to python's enumerate. It

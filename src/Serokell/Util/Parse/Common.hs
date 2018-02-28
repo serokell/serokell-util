@@ -16,7 +16,6 @@ module Serokell.Util.Parse.Common
 
 import Universum hiding (fail)
 
-import Control.Applicative (some)
 import Control.Monad (fail)
 import Prelude (read)
 import Text.Parsec (ParsecT, Stream, option, satisfy)
@@ -28,7 +27,7 @@ isAsciiAlpha :: Char -> Bool
 isAsciiAlpha c = (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
 
 isAsciiNum :: Char -> Bool
-isAsciiNum c = (c >= '0' && c <= '9')
+isAsciiNum c = c >= '0' && c <= '9'
 
 isAsciiAlphaNum :: Char -> Bool
 isAsciiAlphaNum c = isAsciiAlpha c || isAsciiNum c

@@ -18,8 +18,7 @@ module Serokell.Util.Parse.Network
 
 import Universum hiding (fail, try)
 
-import Control.Applicative (some, (<|>))
-import Control.Monad (fail, liftM, void)
+import Control.Monad (fail)
 import Text.Parsec (choice, count, oneOf, option, try, (<?>))
 import Text.Parsec.Char (alphaNum, char, hexDigit, string)
 
@@ -31,7 +30,7 @@ data Host = IPv4Address { hostAddress :: String }
     deriving(Show, Eq, Ord)
 
 concatSequence :: (Monad m) => [m [a]] -> m [a]
-concatSequence = liftM concat . sequence
+concatSequence = fmap concat . sequence
 
 port :: CharParser Word16
 port = fromIntegral <$> limitedInt 65535 "Port number to large"
