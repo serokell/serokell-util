@@ -49,7 +49,7 @@ module Serokell.Util.Text
        , readUnsignedDecimal
        ) where
 
-import Prelude hiding (showList)
+import Prelude
 
 import Data.Text.Buildable (Buildable (build))
 import Data.Text.Format.Params (Params)
@@ -161,8 +161,7 @@ listBuilderJSONIndent
   :: (Foldable t, Buildable a)
   => Word -> t a -> B.Builder
 listBuilderJSONIndent _ as | null as = "[]"
-listBuilderJSONIndent indent as
-  | otherwise =
+listBuilderJSONIndent indent as =
     listBuilder ("[\n" `LT.append` spaces)
                 delimiter
                 ("\n]" :: B.Builder)

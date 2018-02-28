@@ -101,5 +101,5 @@ formatFirstError = verResSingleF . VerFailure
 verResToMonadError
     :: MonadError e m
     => (NonEmpty Text -> e) -> VerificationRes -> m ()
-verResToMonadError _ VerSuccess          = pure ()
+verResToMonadError _ VerSuccess          = pass
 verResToMonadError f (VerFailure errors) = throwError $ f errors

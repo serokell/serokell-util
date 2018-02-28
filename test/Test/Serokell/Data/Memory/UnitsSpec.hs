@@ -1,6 +1,5 @@
 {-# LANGUAGE ExistentialQuantification #-}
 {-# LANGUAGE ScopedTypeVariables       #-}
-{-# LANGUAGE StandaloneDeriving        #-}
 
 module Test.Serokell.Data.Memory.UnitsSpec
        ( spec
@@ -17,7 +16,7 @@ import Serokell.Arbitrary ()
 import qualified Serokell.Data.Memory.Units as S
 
 spec :: Spec
-spec = describe "Unit conversion" $ do
+spec = describe "Unit conversion" $
            describe "Identity Properties" $ do
                prop "Byte" $
                    \(a :: S.Byte) -> a === bytesMid a

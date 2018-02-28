@@ -8,7 +8,6 @@ module Serokell.Data.Variant.Class
 
 import Universum
 
-import Control.Monad.Catch (MonadThrow)
 import Formatting (build, sformat, (%))
 
 import Serokell.Data.Variant.Variant (Variant (..))

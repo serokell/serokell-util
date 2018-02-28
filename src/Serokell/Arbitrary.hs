@@ -1,6 +1,4 @@
-{-# LANGUAGE DeriveGeneric      #-}
-{-# LANGUAGE StandaloneDeriving #-}
-{-# LANGUAGE TemplateHaskell    #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 -- | Arbitrary instances for Serokell datatypes
 module Serokell.Arbitrary
@@ -10,7 +8,6 @@ module Serokell.Arbitrary
 
 import Universum
 
-import Data.ByteString as BS hiding (zip)
 import Data.Vector (fromList)
 import Test.QuickCheck (Arbitrary (..), Gen, choose, frequency, genericShrink, oneof, sized)
 import Test.QuickCheck.Instances ()
@@ -26,7 +23,7 @@ import qualified Serokell.Util.Verify as V
 ------------------------------------------------------------------------------------------
 
 instance Arbitrary S.JsonByteString where
-    arbitrary = S.JsonByteString <$> (arbitrary :: Gen BS.ByteString)
+    arbitrary = S.JsonByteString <$> (arbitrary :: Gen ByteString)
 
 newtype VariantNoBytes = NoBytes
     { getVariant :: Variant
@@ -41,7 +38,7 @@ instance Arbitrary VariantOnlyBytes where
     shrink = genericShrink
 
 instance Arbitrary VariantNoBytes where
-    arbitrary = NoBytes <$> (sized $ \n -> genVariant (n*50 + 1))
+    arbitrary = NoBytes <$> sized (\n -> genVariant (n*50 + 1))
     shrink = genericShrink
 
 instance Arbitrary Variant where
@@ -56,7 +53,7 @@ instance Arbitrary Variant where
 -- constructor unless given a true boolean flag.
 genVariant :: Int -> Gen Variant
 genVariant 1 = genFlatVariant
-genVariant n = do
+genVariant n =
     frequency
         -- No reason for “3”, it just works well.
         [ (3, genFlatVariant)
@@ -67,7 +64,7 @@ genVariant n = do
         ]
 
 genFlatVariant :: Gen Variant
-genFlatVariant = oneof $
+genFlatVariant = oneof
     [ pure VarNone
     , VarBool <$> arbitrary
     , VarInt <$> arbitrary
@@ -100,7 +97,7 @@ genMapVariant n = do
 ------------------------------------------------------------------------------------------
 
 instance Arbitrary V.VerificationRes where
-    arbitrary = oneof $
+    arbitrary = oneof
         [ pure V.VerSuccess
         , V.VerFailure <$> arbitrary
         ]

@@ -8,7 +8,7 @@ module Test.Serokell.Util.CommonSpec
 import Universum hiding (show, toList)
 
 import Data.Foldable (toList)
-import Data.List (genericIndex, genericLength, intersect)
+import Data.List (genericIndex, intersect)
 import Prelude (show)
 import Test.Hspec (Spec, describe)
 import Test.Hspec.QuickCheck (prop)
