@@ -49,13 +49,14 @@ module Serokell.Util.Text
        , readUnsignedDecimal
        ) where
 
-import Prelude hiding (show, showList)
+import Prelude hiding (showList)
 
 import Data.Text.Buildable (Buildable (build))
 import Data.Text.Format.Params (Params)
 import Data.Text.Lazy.Builder.RealFloat (FPFormat (Exponent, Fixed, Generic))
 import Formatting (Format, fixed, later, sformat)
 import GHC.Exts (IsList (..))
+
 import Serokell.Util.Common (chunksOf)
 
 import qualified Data.Text as T

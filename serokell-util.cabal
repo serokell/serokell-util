@@ -126,4 +126,5 @@ test-suite serokell-test
   default-extensions:  OverloadedStrings
                      , RecordWildCards
                      , DeriveDataTypeable
+                     , NoImplicitPrelude
                      , GeneralizedNewtypeDeriving

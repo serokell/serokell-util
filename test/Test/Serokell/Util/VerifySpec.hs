@@ -1,5 +1,3 @@
-{-# LANGUAGE NoImplicitPrelude #-}
-
 module Test.Serokell.Util.VerifySpec
        ( spec
        ) where

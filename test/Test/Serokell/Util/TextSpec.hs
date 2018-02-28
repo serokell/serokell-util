@@ -1,8 +1,6 @@
 {-# LANGUAGE ExistentialQuantification #-}
-{-# LANGUAGE NoImplicitPrelude         #-}
 {-# LANGUAGE ScopedTypeVariables       #-}
 {-# LANGUAGE StandaloneDeriving        #-}
-{-# LANGUAGE TypeApplications          #-}
 
 module Test.Serokell.Util.TextSpec
        ( spec
@@ -33,5 +31,5 @@ spec =
                 prop "Word64" $
                     \(a :: Word64) -> (Right a) === showReadIntegral a
 
-showReadIntegral :: (Show a, Integral a) => a -> Either String a
-showReadIntegral = S.readDecimal . show @Text
+showReadIntegral :: (Buildable a, Integral a) => a -> Either String a
+showReadIntegral = S.readDecimal . pretty

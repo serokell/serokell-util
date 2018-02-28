@@ -1,4 +1,3 @@
-{-# LANGUAGE NoImplicitPrelude   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE ViewPatterns        #-}
 
@@ -50,7 +49,7 @@ toStr :: S.Variant -> S.Variant
 toStr var = stringVar var
   where
     stringVar :: S.Variant -> S.Variant
-    stringVar = S.VarString . show
+    stringVar = S.VarString . pretty
 
 jsonMid :: S.Variant -> S.Variant
 jsonMid = maybe err id . A.decode . A.encode
