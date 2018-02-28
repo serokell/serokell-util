@@ -3,9 +3,11 @@
 
 * [#45](https://github.com/serokell/serokell-util/issues/45):
   Move `Aeson.Options` to separate package [`aeson-options`][1].
-* [#34](https://github.com/serokell/serokell-util/issues/34)
-  Remove Serokell.Util.Base module, remove fromStr, strArgument, strOption.
-  Remove directory, extra, filepath, monad-control, semigroups
+* [#34](https://github.com/serokell/serokell-util/issues/34):
+  Remove `Serokell.Util.Base` module, remove `fromStr`, `strArgument`, `strOption`.
+  Remove `directory`, `extra`, `filepath`, `monad-control`, `semigroups` dependencies.
+* [#32](https://github.com/serokell/serokell-util/issues/32):
+  Remove `show` and `show'` functions from `Util.Text` module.
 
 0.8.0
 =====
