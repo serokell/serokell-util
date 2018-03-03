@@ -15,50 +15,52 @@ spec :: Spec
 spec =
     describe "Group" $ do
         describe "'groupBy' doesn't throw elements away" $ do
-            prop "with id"   groupByIdWorks
-            prop "with even" groupByEvenWorks
-            prop "with mod"  groupByModWorks
-            prop "with fst"  groupByFstWorks
+            prop "with id"   groupByIdProp
+            prop "with even" groupByEvenProp
+            prop "with mod"  groupByModProp
+            prop "with fst"  groupByFstProp
         describe "'groupMapBy' behaves like 'nubOn'" $ do
-            prop "with id"   groupMapByIdWorks
-            prop "with even" groupMapByEvenWorks
-            prop "with mod"  groupMapByModWorks
-            prop "with fst"  groupMapByFstWorks
+            prop "with id"   groupMapByIdProp
+            prop "with even" groupMapByEvenProp
+            prop "with mod"  groupMapByModProp
+            prop "with fst"  groupMapByFstProp
 
 
 ----------------------------------------------------------------------------
 -- GroupBy
 ----------------------------------------------------------------------------
-groupByWorks :: (Ord a, Eq b, Hashable b) => (a -> b) -> NonEmpty a -> Bool
-groupByWorks f l = sort (mconcat (fmap toList (elems (groupBy f l)))) == sort (toList l)
 
-groupByIdWorks :: NonEmpty Int -> Bool
-groupByIdWorks = groupByWorks id
+-- | Check that 'groupBy' doesn't throw elements away
+groupByProp :: (Ord a, Eq b, Hashable b) => (a -> b) -> NonEmpty a -> Bool
+groupByProp f l = foldMap toList (elems (groupBy f l)) ~=~ toList l
 
-groupByEvenWorks :: NonEmpty Int -> Bool
-groupByEvenWorks = groupByWorks even
+groupByIdProp, groupByEvenProp, groupByModProp :: NonEmpty Int -> Bool
+groupByIdProp   = groupByProp id
+groupByEvenProp = groupByProp even
+groupByModProp  = groupByProp (`mod` 100)
 
-groupByModWorks :: NonEmpty Int -> Bool
-groupByModWorks = groupByWorks (`mod` 100)
-
-groupByFstWorks :: NonEmpty (Int, Int) -> Bool
-groupByFstWorks = groupByWorks fst
+groupByFstProp :: NonEmpty (Int, Int) -> Bool
+groupByFstProp = groupByProp fst
 
 ----------------------------------------------------------------------------
 -- GroupMapBy
 ----------------------------------------------------------------------------
 
-groupMapByWorks :: (Ord a, Eq b, Hashable b) => (a -> b) -> [a] -> Bool
-groupMapByWorks f l = sort (elems (groupMapBy f l)) == sort (nubOn f l)
+-- | Checks that 'groupMapBy' behaves like 'nubOn'.
+groupMapByProp :: (Ord a, Eq b, Hashable b) => (a -> b) -> [a] -> Bool
+groupMapByProp f l = elems (groupMapBy f l) ~=~ nubOn f l
 
-groupMapByIdWorks :: [Int] -> Bool
-groupMapByIdWorks = groupMapByWorks id
+groupMapByIdProp, groupMapByEvenProp, groupMapByModProp :: [Int] -> Bool
+groupMapByIdProp   = groupMapByProp id
+groupMapByEvenProp = groupMapByProp even
+groupMapByModProp  = groupMapByProp (`mod` 100)
 
-groupMapByEvenWorks :: [Int] -> Bool
-groupMapByEvenWorks = groupMapByWorks even
+groupMapByFstProp :: [(Int, Int)] -> Bool
+groupMapByFstProp = groupMapByProp fst
 
-groupMapByModWorks :: [Int] -> Bool
-groupMapByModWorks = groupMapByWorks (`mod` 100)
+----------------------------------------------------------------------------
 
-groupMapByFstWorks :: [(Int, Int)] -> Bool
-groupMapByFstWorks = groupMapByWorks fst
+-- | Sorts lists before comparing them.
+infix 4 ~=~
+(~=~) :: (Ord a) => [a] -> [a] -> Bool
+l1 ~=~ l2 = sort l1 == sort l2
