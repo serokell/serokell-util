@@ -8,6 +8,8 @@
   Remove `directory`, `extra`, `filepath`, `monad-control`, `semigroups` dependencies.
 * [#32](https://github.com/serokell/serokell-util/issues/32):
   Remove `show` and `show'` functions from `Util.Text` module.
+* [#50](https://github.com/serokell/serokell-util/issues/50):
+  Add property tests for `Serokell.Util.Group` module functions.
 
 0.8.0
 =====

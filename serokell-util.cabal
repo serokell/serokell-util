@@ -100,6 +100,7 @@ test-suite serokell-test
                        Test.Serokell.Data.Variant.VariantSpec
                        Test.Serokell.Util.CommonSpec
                        Test.Serokell.Util.ByteStringSpec
+                       Test.Serokell.Util.GroupSpec
                        Test.Serokell.Util.TextSpec
                        Test.Serokell.Util.VerifySpec
                        Spec
@@ -108,6 +109,7 @@ test-suite serokell-test
   build-tool-depends:  hspec-discover:hspec-discover
   build-depends:       aeson >= 1.0 && < 1.4
                      , base >=4.8
+                     , extra >= 1.6
                      , hspec >= 2.1.10
                      , QuickCheck >= 2.8.1
                      , quickcheck-instances
