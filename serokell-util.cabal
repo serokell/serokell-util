@@ -49,7 +49,6 @@ library
 
   build-depends:       base >= 4.9 && < 5
                      , aeson >= 1.0 && < 1.4
-                     , aeson-options
                      , ansi-terminal
                      , base16-bytestring
                      , base64-bytestring
