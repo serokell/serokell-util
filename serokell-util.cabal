@@ -38,6 +38,7 @@ library
                            Serokell.Util.Text
                            Serokell.Util.Trace
                            Serokell.Util.Verify
+                           Serokell.Util.Version
 
   other-modules:       Serokell.Data.Variant.Class
                        Serokell.Data.Variant.Helpers
@@ -64,12 +65,14 @@ library
                      , mtl
                      , o-clock ^>= 0.1.1
                      , parsec
+                     , process
                      , QuickCheck >= 2.8.1
                      , quickcheck-instances
                      , scientific
                      , template-haskell
                      , text
                      , text-format
+                     , th-lift-instances
                      , transformers
                      , universum ^>= 1.1.0
                      , unordered-containers >= 0.2.7.0
