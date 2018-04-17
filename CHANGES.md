@@ -1,6 +1,8 @@
 0.9.0
 =====
 
+* [#61](https://github.com/serokell/serokell-util/issues/61):
+  Add utility feature to extract git revision in `Serokell.Util.Version`.
 * [#45](https://github.com/serokell/serokell-util/issues/45):
   Move `Aeson.Options` to separate package [`aeson-options`][1].
 * [#34](https://github.com/serokell/serokell-util/issues/34):
