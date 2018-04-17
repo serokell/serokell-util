@@ -54,21 +54,19 @@ library
                      , base64-bytestring
                      , bytestring
                      , clock
-                     , containers >= 0.5.10
                      , deepseq
                      , exceptions
                      , fmt
                      , formatting >= 6.2.0 && < 6.3
                      , hashable >= 1.2.4.0
-                     , log-warper ^>= 1.8.9
                      , microlens
                      , microlens-mtl
                      , mtl
+                     , o-clock ^>= 0.1.1
                      , parsec
                      , QuickCheck >= 2.8.1
                      , quickcheck-instances
                      , scientific
-                     , stm >= 2.4.4
                      , template-haskell
                      , text
                      , text-format
@@ -76,9 +74,6 @@ library
                      , universum ^>= 1.1.0
                      , unordered-containers >= 0.2.7.0
                      , vector
-
-  if impl(ghc >= 8.2.2)
-     build-depends:       o-clock ^>= 0.1
 
   ghc-options:         -Wall -fno-warn-orphans
 
@@ -108,7 +103,6 @@ test-suite serokell-test
                      , hspec >= 2.1.10
                      , QuickCheck >= 2.8.1
                      , quickcheck-instances
-                     , safecopy >= 0.9.0.1
                      , scientific
                      , serokell-util
                      , text

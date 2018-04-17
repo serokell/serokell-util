@@ -4,7 +4,5 @@ nix:
     packages: [openssh,git]
 
 extra-deps:
-- aeson-options-0.0.0
-- log-warper-1.8.9
+- o-clock-0.1.1
 - universum-1.1.0
-- o-clock-0.1.0
