@@ -5,20 +5,19 @@
 module Serokell.Util.Lens
        ( (%%=)
        , (%?=)
-       , WrappedM (..)
-       , _UnwrappedM
        , zoom'
        , magnify'
-       , listL
        ) where
 
 import Universum
 
+import Control.Monad.Identity (Identity)
 import Control.Monad.Trans.Except (ExceptT, mapExceptT)
-import GHC.Exts (IsList (..))
-import System.Wlog (LoggerName, LoggerNameBox (..))
+import Lens.Micro.Mtl ((.=))
 
-import qualified Control.Lens as L
+import Lens.Micro as L
+import Lens.Micro.Mtl as LM
+import Lens.Micro.Mtl.Internal as LMI
 
 -- I don't know how to call these operators
 
@@ -26,35 +25,15 @@ import qualified Control.Lens as L
 infix 4 %%=
 (%%=) :: L.Lens' s a -> State a b -> State s b
 (%%=) l ma = do
-    attr <- L.view l <$> get
+    attr <- LM.view l <$> get
     let (res,newAttr) = runState ma attr
-    l L..= newAttr
+    l .= newAttr
     return res
 
 -- | Like %%= but with possiblity of failure
 infix 4 %?=
 (%?=) :: L.Lens' s a -> ExceptT t (State a) b -> ExceptT t (State s) b
 (%?=) l = mapExceptT (l %%=)
-
--- | Similar to `Wrapped`, but for `Monad`s.
-class Monad m => WrappedM m where
-    type UnwrappedM m :: * -> *
-
-    _WrappedM :: L.Iso' (m a) (UnwrappedM m a)
-    _WrappedM = L.iso packM unpackM
-
-    packM :: m a -> UnwrappedM m a
-    packM = L.view _WrappedM
-
-    unpackM :: UnwrappedM m a -> m a
-    unpackM = L.view _UnwrappedM
-
-_UnwrappedM :: WrappedM m => L.Iso' (UnwrappedM m a) (m a)
-_UnwrappedM = L.from _WrappedM
-
-instance Monad m => WrappedM (LoggerNameBox m) where
-    type UnwrappedM (LoggerNameBox m) = ReaderT LoggerName m
-    _WrappedM = L.iso loggerNameBoxEntry LoggerNameBox
 
 -- | A 'zoom' which works in arbitrary 'MonadState'.
 --
@@ -63,25 +42,21 @@ instance Monad m => WrappedM (LoggerNameBox m) where
 -- handful of state monads and their combinations defined by 'Zoom'.
 zoom'
     :: MonadState s m
-    => L.LensLike' (L.Zoomed (State s) a) s t
-    -> StateT t L.Identity a
+    => L.LensLike' (LMI.Zoomed (State s) a) s t
+    -> StateT t Identity a
     -> m a
-zoom' l = state . runState . L.zoom l
+zoom' l = state . runState . LM.zoom l
 
 -- | A 'magnify' which works in arbitrary 'MonadReader'.
 magnify'
     :: MonadReader s m
-    => L.LensLike' (L.Magnified (Reader s) a) s t
-    -> ReaderT t L.Identity a
+    => L.LensLike' (LMI.Magnified (Reader s) a) s t
+    -> ReaderT t Identity a
     -> m a
-magnify' l = reader . runReader . L.magnify l
+magnify' l = reader . runReader . LM.magnify l
 
 -- | This isomorphism can be used to convert to or from an instance of 'IsList'.
 --
 -- Note that this function is quite general but doesn't allow to switch
 -- container - in most cases such behavious eliminates need in specifing
 -- container type manually.
-listL
-    :: (IsList (t a), IsList (t b))
-    => L.Iso (t a) (t b) [Item (t a)] [Item (t b)]
-listL = L.iso  GHC.Exts.toList fromList

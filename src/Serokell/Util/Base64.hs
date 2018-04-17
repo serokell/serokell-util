@@ -8,7 +8,6 @@ module Serokell.Util.Base64
        , formatBase64
        , base64F
        , JsonByteString (..)
-       , JsonByteStringDeprecated (..)
        ) where
 
 import Universum hiding (fail)
@@ -22,10 +21,10 @@ import Formatting (Format, later)
 
 import qualified Data.ByteString.Base64 as B64
 import qualified Data.ByteString.Base64.URL as B64url
-
+import qualified Fmt as Fmt 
 -- | Apply base64 encoding to strict ByteString.
 encode :: ByteString -> Text
-encode = decodeUtf8 . B64.encode
+encode = Fmt.fmt . Fmt.base64F
 
 -- | Decode base64-encoded ByteString.
 decode :: Text -> Either Text ByteString
@@ -33,7 +32,7 @@ decode = first toText . B64.decode . encodeUtf8
 
 -- | Apply base64url encoding to strict ByteString.
 encodeUrl :: ByteString -> Text
-encodeUrl = decodeUtf8 . B64url.encode
+encodeUrl = Fmt.fmt . Fmt.base64UrlF
 
 -- | Decode base64url-encoded ByteString.
 decodeUrl :: Text -> Either Text ByteString
@@ -71,19 +70,3 @@ instance FromJSONKey JsonByteString where
 
 jsonBSParser :: MonadFail m => Text -> m JsonByteString
 jsonBSParser = either (fail . toString) (pure . JsonByteString) . decode
-
-----------------------------------------------------------------------------
--- Deprecated
-----------------------------------------------------------------------------
-
-newtype JsonByteStringDeprecated = JsonByteStringDeprecated
-    { getJsonByteStringDeprecated :: ByteString
-    }
-
-instance ToJSON JsonByteStringDeprecated where
-    toJSON = toJSON . encodeUrl . getJsonByteStringDeprecated
-
-instance FromJSON JsonByteStringDeprecated where
-    parseJSON =
-        parseJSON >=>
-        either (fail . toString) (pure . JsonByteStringDeprecated) . decodeUrl

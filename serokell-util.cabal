@@ -32,9 +32,7 @@ library
                            Serokell.Util.Concurrent
                            Serokell.Util.Exceptions
                            Serokell.Util.Group
-                           Serokell.Util.I18N
                            Serokell.Util.Lens
-                           Serokell.Util.OptParse
                            Serokell.Util.Parse
                            Serokell.Util.StaticAssert
                            Serokell.Util.Text
@@ -51,27 +49,24 @@ library
 
   build-depends:       base >= 4.9 && < 5
                      , aeson >= 1.0 && < 1.4
-                     , aeson-options
                      , ansi-terminal
                      , base16-bytestring
                      , base64-bytestring
                      , bytestring
                      , clock
-                     , containers >= 0.5.10
                      , deepseq
                      , exceptions
                      , fmt
                      , formatting >= 6.2.0 && < 6.3
                      , hashable >= 1.2.4.0
-                     , lens
-                     , log-warper ^>= 1.8.9
+                     , microlens
+                     , microlens-mtl
                      , mtl
-                     , optparse-applicative
+                     , o-clock ^>= 0.1.1
                      , parsec
                      , QuickCheck >= 2.8.1
                      , quickcheck-instances
                      , scientific
-                     , stm >= 2.4.4
                      , template-haskell
                      , text
                      , text-format
@@ -79,10 +74,6 @@ library
                      , universum ^>= 1.1.0
                      , unordered-containers >= 0.2.7.0
                      , vector
-                     , yaml
-
-  if impl(ghc >= 8.2.2)
-     build-depends:       o-clock ^>= 0.1
 
   ghc-options:         -Wall -fno-warn-orphans
 

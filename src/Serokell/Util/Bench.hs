@@ -5,9 +5,6 @@
 -- | Benchmark related utils.
 
 module Serokell.Util.Bench
-#if ( __GLASGOW_HASKELL__ < 802 )
-       ( ) where
-#else
        ( getWallTime
        , getCpuTime
        , ElapsedTime (..)
@@ -72,4 +69,3 @@ perSecond :: (Real a, Fractional b) => a -> TimeSpec -> b
 perSecond n time =
     fromRational $
     toRational n / (fromIntegral (max 1 $ toNanoSecs time) * 1.0e9)
-#endif
