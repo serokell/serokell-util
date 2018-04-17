@@ -11,14 +11,13 @@ module Serokell.Util.Lens
 
 import Universum
 
-import Control.Monad.Trans.Except (ExceptT, mapExceptT)
 import Control.Monad.Identity (Identity)
+import Control.Monad.Trans.Except (ExceptT, mapExceptT)
+import Lens.Micro.Mtl ((.=))
 
 import Lens.Micro as L
-import Lens.Micro.Extras as L
-import Lens.Micro.Mtl as Mtl
-import Lens.Micro.Mtl.Internal as Mtl
-import Lens.Micro.Platform as P ((.=))
+import Lens.Micro.Mtl as LM
+import Lens.Micro.Mtl.Internal as LMI
 
 -- I don't know how to call these operators
 
@@ -26,9 +25,9 @@ import Lens.Micro.Platform as P ((.=))
 infix 4 %%=
 (%%=) :: L.Lens' s a -> State a b -> State s b
 (%%=) l ma = do
-    attr <- L.view l <$> get
+    attr <- LM.view l <$> get
     let (res,newAttr) = runState ma attr
-    l P..= newAttr
+    l .= newAttr
     return res
 
 -- | Like %%= but with possiblity of failure
@@ -43,18 +42,18 @@ infix 4 %?=
 -- handful of state monads and their combinations defined by 'Zoom'.
 zoom'
     :: MonadState s m
-    => L.LensLike' (Mtl.Zoomed (State s) a) s t
+    => L.LensLike' (LMI.Zoomed (State s) a) s t
     -> StateT t Identity a
     -> m a
-zoom' l = state . runState . Mtl.zoom l
+zoom' l = state . runState . LM.zoom l
 
 -- | A 'magnify' which works in arbitrary 'MonadReader'.
 magnify'
     :: MonadReader s m
-    => L.LensLike' (Mtl.Magnified (Reader s) a) s t
+    => L.LensLike' (LMI.Magnified (Reader s) a) s t
     -> ReaderT t Identity a
     -> m a
-magnify' l = reader . runReader . Mtl.magnify l
+magnify' l = reader . runReader . LM.magnify l
 
 -- | This isomorphism can be used to convert to or from an instance of 'IsList'.
 --

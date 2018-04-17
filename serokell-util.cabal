@@ -63,7 +63,6 @@ library
                      , log-warper ^>= 1.8.9
                      , microlens
                      , microlens-mtl
-                     , microlens-platform
                      , mtl
                      , parsec
                      , QuickCheck >= 2.8.1
