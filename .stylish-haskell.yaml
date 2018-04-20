@@ -230,6 +230,7 @@ language_extensions:
   - FunctionalDependencies
   - GADTs
   - GeneralizedNewtypeDeriving
+  - InstanceSigs
   - LambdaCase
   - MultiParamTypeClasses
   - MultiWayIf
