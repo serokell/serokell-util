@@ -1,3 +1,12 @@
+0.10.0
+=====
+
+* [#65](https://github.com/serokell/serokell-util/issues/65):
+  More recent version of `formatting` is now supported.
+  `text-format` dependency was dropped, so there are no instances of
+      `Data.Text.Buildable` anymore.
+  Also some deprecated functions have been removed.
+
 0.9.0
 =====
 

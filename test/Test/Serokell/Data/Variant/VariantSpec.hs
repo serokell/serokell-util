@@ -8,6 +8,7 @@ module Test.Serokell.Data.Variant.VariantSpec
 import Universum
 
 import Data.Scientific (floatingOrInteger, fromFloatDigits)
+import Formatting (build, sformat)
 import Test.Hspec (Spec, describe)
 import Test.Hspec.QuickCheck (prop)
 import Test.QuickCheck ((===))
@@ -46,7 +47,7 @@ jsonFixer (S.VarFloat f) =
 jsonFixer v = v
 
 toStr :: S.Variant -> S.Variant
-toStr = S.VarString . pretty
+toStr = S.VarString . sformat build
 
 jsonMid :: S.Variant -> S.Variant
 jsonMid = maybe err id . A.decode . A.encode

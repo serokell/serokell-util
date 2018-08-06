@@ -12,7 +12,7 @@ module Serokell.Data.Variant.Variant
 
 import Universum
 
-import Data.Text.Buildable (Buildable (build))
+import qualified Formatting.Buildable as B
 import GHC.Exts (IsList (..))
 
 import Serokell.Util.Text (listBuilderJSONIndent, mapBuilder)
@@ -37,14 +37,14 @@ data Variant
     | VarMap !VarMap        -- ^ Map (with unique keys) from Variant to Variant.
     deriving (Show,Eq,Generic)
 
-instance Buildable Variant where
+instance B.Buildable Variant where
     build VarNone       = "None"
-    build (VarBool v)   = build v
-    build (VarInt v)    = build v
-    build (VarUInt v)   = build v
-    build (VarFloat v)  = build v
-    build (VarBytes v)  = build . B16.encode $ v
-    build (VarString v) = build v
+    build (VarBool v)   = B.build v
+    build (VarInt v)    = B.build v
+    build (VarUInt v)   = B.build v
+    build (VarFloat v)  = B.build v
+    build (VarBytes v)  = B.build . B16.encode $ v
+    build (VarString v) = B.build v
     build (VarList v)   = listBuilderJSONIndent 2 v
     build (VarMap v)    = mapBuilder . toPairs $ v
 
