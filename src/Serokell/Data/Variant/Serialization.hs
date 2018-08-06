@@ -10,6 +10,7 @@ module Serokell.Data.Variant.Serialization
 import Universum
 
 import Data.Scientific (floatingOrInteger)
+import Formatting (build, sformat)
 
 import Serokell.Data.Variant.Variant (VarMap, Variant (..))
 import Serokell.Util.Base64 (JsonByteString (JsonByteString))
@@ -32,7 +33,8 @@ import qualified Data.HashMap.Strict as HM
 --    result type depends on sign (negative ⇒ Int, otherwise UInt).
 
 varMapToObject :: VarMap -> Aeson.Object
-varMapToObject = HM.fromList . map (bimap pretty Aeson.toJSON) . toPairs
+varMapToObject =
+    HM.fromList . map (bimap (sformat build) Aeson.toJSON) . toPairs
 
 instance Aeson.ToJSON Variant where
     toJSON VarNone       = Aeson.Null

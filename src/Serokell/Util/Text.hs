@@ -35,13 +35,6 @@ module Serokell.Util.Text
        , mapBuilder
        , mapBuilderJson
 
-       -- * @text-format@ utilities
-       , format
-       , format'
-       , formatSingle
-       , formatSingle'
-       , buildSingle
-
        -- * String readers
        , readFractional
        , readDouble
@@ -51,21 +44,21 @@ module Serokell.Util.Text
 
 import Prelude
 
-import Data.Text.Buildable (Buildable (build))
-import Data.Text.Format.Params (Params)
 import Data.Text.Lazy.Builder.RealFloat (FPFormat (Exponent, Fixed, Generic))
+import Formatting (bprint, (%))
 import Formatting (Format, fixed, later, sformat)
+import Formatting.Buildable (Buildable (build))
 import GHC.Exts (IsList (..))
 
 import Serokell.Util.Common (chunksOf)
 
 import qualified Data.Text as T
-import qualified Data.Text.Format as F
 import qualified Data.Text.Lazy as LT
 import qualified Data.Text.Lazy.Builder as B
 import qualified Data.Text.Lazy.Builder.Int as B
 import qualified Data.Text.Lazy.Builder.RealFloat as B
 import qualified Data.Text.Read as T
+import qualified Formatting.Formatters as F
 import qualified Universum as U
 
 -- | Render a floating point number using normal notation, with the
@@ -126,13 +119,14 @@ mapJson = later mapBuilderJson
 pairBuilder
     :: (Buildable a, Buildable b)
     => (a, b) -> B.Builder
-pairBuilder = F.build "({}, {})"
+pairBuilder (a, b) = bprint ("(" % F.build % ", " % F.build % ")") a b
 
 -- | Prints triple (a, b, c) like "(a, b, c)"
 tripleBuilder
     :: (Buildable a, Buildable b, Buildable c)
     => (a, b, c) -> B.Builder
-tripleBuilder = F.build "({}, {}, {})"
+tripleBuilder (a, b, c) =
+    bprint ("("%F.build%", "%F.build%", "%F.build%")") a b c
 
 -- | Generic list builder. Prints prefix, then values separated by delimiter and finally suffix
 listBuilder
@@ -202,31 +196,8 @@ mapBuilder = listBuilderJSON . fmap pairBuilder
 mapBuilderJson
     :: (IsList t, Item t ~ (k, v), Buildable k, Buildable v)
     => t -> B.Builder
-mapBuilderJson = _listBuilder "{" ", " "}" . map (F.build "{}: {}") . toList
-
-{-# DEPRECATED format, format', formatSingle, formatSingle' "Not typesafe. Use formatting library instead" #-}
-
--- | Re-export Data.Text.Format.format for convenience
-format :: Params ps
-       => F.Format -> ps -> LT.Text
-format = F.format
-
--- | Version of Data.Text.Format.format which returns strict Text
-format' :: Params ps
-        => F.Format -> ps -> T.Text
-format' f = LT.toStrict . F.format f
-
-formatSingle :: Buildable a
-             => F.Format -> a -> LT.Text
-formatSingle f = format f . F.Only
-
-formatSingle' :: Buildable a
-              => F.Format -> a -> T.Text
-formatSingle' f = LT.toStrict . formatSingle f
-
-buildSingle :: Buildable a
-            => F.Format -> a -> B.Builder
-buildSingle f = F.build f . F.Only
+mapBuilderJson = _listBuilder "{" ", " "}" .
+    map (\(a, b) -> bprint (F.build % ": " % F.build) a b) . toList
 
 -- | Read fractional number. Returns error (i. e. Left) if there is something else
 readFractional :: Fractional a => T.Text -> Either String a

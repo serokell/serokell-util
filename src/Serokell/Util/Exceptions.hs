@@ -17,10 +17,9 @@ import Universum
 import Formatting (bprint, stext, string, (%))
 
 import qualified Control.Monad as Monad
-import qualified Data.Text.Buildable
-import qualified Data.Text.Format as F
+import qualified Formatting.Buildable
 
-instance Buildable SomeException where
+instance Formatting.Buildable.Buildable SomeException where
     build e =
         case fromException e of
             Nothing                  -> bprint string (displayException e)
@@ -33,8 +32,8 @@ newtype TextException = TextException
 
 instance Exception TextException
 
-instance Buildable TextException where
-    build = F.build "TextException: {}" . F.Only . teMessage
+instance Formatting.Buildable.Buildable TextException where
+    build = bprint ("TextException: " %stext) . teMessage
 
 throwText :: MonadThrow m
           => Text -> m a

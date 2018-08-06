@@ -58,7 +58,7 @@ library
                      , deepseq
                      , exceptions
                      , fmt
-                     , formatting >= 6.2.0 && < 6.3
+                     , formatting >= 6.3.4 && < 6.4
                      , hashable >= 1.2.4.0
                      , microlens
                      , microlens-mtl
@@ -71,7 +71,6 @@ library
                      , scientific
                      , template-haskell
                      , text
-                     , text-format
                      , th-lift-instances
                      , transformers
                      , universum ^>= 1.1.0
@@ -104,6 +103,7 @@ test-suite serokell-test
   build-depends:       aeson >= 1.0 && < 1.4
                      , base >=4.8
                      , extra >= 1.6
+                     , formatting
                      , hspec >= 2.1.10
                      , QuickCheck >= 2.8.1
                      , quickcheck-instances
