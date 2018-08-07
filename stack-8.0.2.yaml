@@ -11,6 +11,6 @@ extra-deps:
 - formatting-6.3.6
 - o-clock-0.1.1
 - recursion-schemes-5
-- universum-1.1.0
+- universum-1.2.0
 
 allow-newer: true

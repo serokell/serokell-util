@@ -5,5 +5,5 @@ nix:
 
 extra-deps:
 - o-clock-0.1.1
-- universum-1.1.0
+- universum-1.2.0
 - formatting-6.3.6

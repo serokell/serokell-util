@@ -13,7 +13,7 @@ module Serokell.Util.Bench
        , perSecond
        ) where
 
-import Universum hiding (Buildable)
+import Universum
 
 import Fmt (Buildable (build), (+||), (||+))
 import System.Clock (Clock (..), TimeSpec, diffTimeSpec, getTime, toNanoSecs)
