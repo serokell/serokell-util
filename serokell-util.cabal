@@ -16,6 +16,9 @@ description:         Serokell-util is a library consisting of functions, which
                      functions from existing projects and don't want to
                      copy-paste them.
 cabal-version:       >=2.0
+tested-with:         GHC == 8.0.2
+                   , GHC == 8.2.2
+                   , GHC == 8.4.3
 
 library
   hs-source-dirs:      src
