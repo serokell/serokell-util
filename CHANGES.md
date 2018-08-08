@@ -1,10 +1,15 @@
 0.10.0
 =====
 
+* [#67](https://github.com/serokell/serokell-util/issues/67):
+  GHC-8.4.3 is now officially supported. LTS-12.5 is used.
+  GHC-8.2.2 and GHC-8.0.2 are still supported as well.
+  Lower bounds on some dependencies (e. g. fmt, o-clock, universum)
+  have been increased.
 * [#65](https://github.com/serokell/serokell-util/issues/65):
   More recent version of `formatting` is now supported.
   `text-format` dependency was dropped, so there are no instances of
-      `Data.Text.Buildable` anymore.
+  `Data.Text.Buildable` anymore.
   Also some deprecated functions have been removed.
 
 0.9.0

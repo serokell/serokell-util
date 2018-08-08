@@ -1,5 +1,6 @@
-{-# LANGUAGE CPP                 #-}
 {-# LANGUAGE ExplicitForAll      #-}
+{-# LANGUAGE FlexibleContexts    #-}
+{-# LANGUAGE MonoLocalBinds      #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
 -- | Benchmark related utils.
@@ -13,21 +14,28 @@ module Serokell.Util.Bench
        , perSecond
        ) where
 
-import Universum hiding (Buildable)
+import Universum
 
 import Fmt (Buildable (build), (+||), (||+))
 import System.Clock (Clock (..), TimeSpec, diffTimeSpec, getTime, toNanoSecs)
-import Time (KnownRat, Time, ns, toUnit)
+import Time (KnownDivRat, Nanosecond, Time, ns, toUnit)
 
 -- | Get current wall-clock time as any time unit.
-getWallTime :: forall unit m . (MonadIO m, KnownRat unit) => m (Time unit)
+getWallTime ::
+       forall unit m. (MonadIO m, KnownDivRat Nanosecond unit)
+    => m (Time unit)
 getWallTime = timeSpecToUnit <$> getTime' Realtime
 
 -- | Get current CPU time as any time unit.
-getCpuTime :: forall unit m . (MonadIO m, KnownRat unit) => m (Time unit)
+getCpuTime ::
+       forall unit m. (MonadIO m, KnownDivRat Nanosecond unit)
+    => m (Time unit)
 getCpuTime = timeSpecToUnit <$> getTime' ProcessCPUTime
 
-timeSpecToUnit :: forall unit . KnownRat unit => TimeSpec -> Time unit
+timeSpecToUnit ::
+       forall unit. KnownDivRat Nanosecond unit
+    => TimeSpec
+    -> Time unit
 timeSpecToUnit = toUnit @unit . ns . fromIntegral . toNanoSecs
 
 -- | Data type describing time passed during execution of something.

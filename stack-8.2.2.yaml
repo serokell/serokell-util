@@ -1,0 +1,10 @@
+resolver: lts-10.6
+
+nix:
+    packages: [openssh,git]
+
+extra-deps:
+- o-clock-1.0.0
+- fmt-0.6
+- universum-1.2.0
+- formatting-6.3.6

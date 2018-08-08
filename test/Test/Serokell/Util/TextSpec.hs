@@ -7,6 +7,7 @@ module Test.Serokell.Util.TextSpec
 
 import Universum
 
+import Formatting (Buildable, build, sformat)
 import Test.Hspec (Spec, describe)
 import Test.Hspec.QuickCheck (prop)
 import Test.QuickCheck ((===))
@@ -31,4 +32,4 @@ spec =
                     \(a :: Word64)  -> Right a === showReadIntegral a
 
 showReadIntegral :: (Buildable a, Integral a) => a -> Either String a
-showReadIntegral = S.readDecimal . pretty
+showReadIntegral = S.readDecimal . sformat build

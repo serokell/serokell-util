@@ -16,6 +16,9 @@ description:         Serokell-util is a library consisting of functions, which
                      functions from existing projects and don't want to
                      copy-paste them.
 cabal-version:       >=2.0
+tested-with:         GHC == 8.0.2
+                   , GHC == 8.2.2
+                   , GHC == 8.4.3
 
 library
   hs-source-dirs:      src
@@ -58,12 +61,12 @@ library
                      , deepseq
                      , exceptions
                      , fmt
-                     , formatting >= 6.3.4 && < 6.4
+                     , formatting ^>= 6.3.4
                      , hashable >= 1.2.4.0
                      , microlens
                      , microlens-mtl
                      , mtl
-                     , o-clock ^>= 0.1.1
+                     , o-clock ^>= 1.0.0
                      , parsec
                      , process
                      , QuickCheck >= 2.8.1
@@ -73,7 +76,7 @@ library
                      , text
                      , th-lift-instances
                      , transformers
-                     , universum ^>= 1.1.0
+                     , universum ^>= 1.2.0
                      , unordered-containers >= 0.2.7.0
                      , vector
 
@@ -103,13 +106,13 @@ test-suite serokell-test
   build-depends:       aeson >= 1.0 && < 1.4
                      , base >=4.8
                      , extra >= 1.6
-                     , formatting
+                     , formatting ^>= 6.3.4
                      , hspec >= 2.1.10
                      , QuickCheck >= 2.8.1
                      , quickcheck-instances
                      , scientific
                      , serokell-util
-                     , universum ^>= 1.1.0
+                     , universum ^>= 1.2.0
                      , unordered-containers >= 0.2.7.0
                      , vector
   hs-source-dirs:      test
