@@ -1,27 +1,28 @@
 Serokell Haskell Style Guide
 ============================
 > This style guide is mostly a copy of [Johan Tibell's guide](https://github.com/tibbe/haskell-style-guide/blob/master/haskell-style.md)
-> with some restructurization, elaboration on some topics and some additions.
-> This style guide's aims are code beauty, readability and understandability.
+> with some restructuring, elaboration on some topics and some additions.
+> The aims of this style guide are code beauty, readability and understandability.
 
 You can find our other formatting utilites and guidelines which expand the code style:
-* [.stylish-haskell.yaml](https://github.com/serokell/serokell-util/blob/master/.stylish-haskell.yaml)
-* [Universum](https://github.com/serokell/universum)
-* [Custom _HLint_ rules](https://github.com/input-output-hk/cardano-sl/blob/master/HLint.hs)
 
-General guide lines
+* [`stylish-haskell` config](https://github.com/serokell/serokell-util/blob/master/.stylish-haskell.yaml)
+* [`hlint` config](https://github.com/serokell/serokell-util/blob/master/.hlint.yaml)
+* [`hlint` config](https://github.com/serokell/serokell-util/blob/master/.hlint-universum.yaml) specific to [`universum`](https://github.com/serokell/universum), our custom Prelude
+
+General guidelines
 -------------------
 ### Line Length
 
 Maximum line length is *80 characters* or *100 characters* if necessary.
 
-Modern screens have high definition and big width.
-But with some tiling managers and two terminals on one screen you are not able to
-see many characters on one line.
-On the other hand, restricting line size to a very small number like 80 leads to
-some crazy indentation despite the fact that
-shorter lines should force you to write well structured code.
-That's why *100* is a reasonable compromize.
+Modern screens are wide and have high resolution.
+Yet, when you have two terminals open side-by-side or edit two files simultaneously,
+you will not be able to fit many characters on a line.
+On the other hand, restricting line length to a very small number like 80 leads
+to crazy indentation despite the fact that shorter lines should supposedly force you
+to write well-structured code.
+That is why we pick *100* as a reasonable compromise.
 
 
 ### Indentation
@@ -53,43 +54,27 @@ type signatures and function definitions. Add one blank line between
 functions in a type class instance declaration if the function bodies
 are large. You can add blank lines inside a big `do` block to separate logical
 parts of it. You can also use blank lines to separate definitions inside `where`
-clause. Blank lines are used to separate imports (this is described in section below).
+clause. Blank lines are used to separate imports (this is described in a section below).
 
 ### Whitespace
 
-Surround binary operators with a single space on either side. In case of
-currying add one space between the argument and the operation.
-
-_Exceptions (where you're allowed to not follow this rule)_:
-
-1. `%` operator for string formatting from `Formatting` library. Compare:
-
-`("block with "%int%" entries") cnt`
-
-`("block with " % int % " entries") cnt`
-
-2. `+|`-like operators from [`fmt`](http://hackage.haskell.org/package/fmt) library. Compare
-
-`"block with "+|cnt|+" entries"`
-
-`"block with " +| cnt |+ " entries"`
-
-So, you can omit spaces if surrounding strings have spaces. It also helps in
-cases when formatted strings are too long.
-
-Use some tool to remove trailing spaces!
+You _should_ surround binary operators with a single space on either side.
+In case of currying add one space between the argument and the operation.
+Use some tool to remove trailing spaces automatically. See
+[this page](https://github.com/editorconfig/editorconfig/wiki/Property-research:-Trim-trailing-spaces)
+for instructions for some editors.
 
 ### Naming convention
 
 Casing:
-+ **_lowerCamelCase_** for function and variable names.
-+ **_UpperCamelCase_** for types.
-+ TODO: some convention for global constants?
 
-Don't use short names like `n`, `sk`, `f` unless their meaning is clear from
++ **_lowerCamelCase_** for functions, variables, and global constants.
++ **_UpperCamelCase_** for types.
+
+Do not use short names like `n`, `sk`, `f` unless their meaning is clear from
 context (function name, types, other variables, etc.).
 
-For readability reasons, don't capitalize all letters when using an
+Do not capitalize all letters when using an
 abbreviation.  For example, write `HttpServer` instead of
 `HTTPServer`.  Exception: two or three letter abbreviations, e.g. `IO`, `STM`.
 
@@ -124,11 +109,11 @@ data NetworkConfig = NetworkConfig
     }
 ```
 
-TODO: consider remove this rule? GHC has `-XOverloadedRecordFields` with
+We do *not* adopt GHC's `-XOverloadedRecordFields` with
 [`HasField`](https://www.stackage.org/haddock/lts-10.4/base-4.10.1.0/GHC-Records.html#t:HasField)
 type class.
 
-**Library specific conventions**
+**Library-specific conventions**
 
 Add `F` suffix to custom formatters to avoid name conflicts:
 
@@ -141,8 +126,9 @@ nodeF = build
 
 #### Punctuation
 
-Write proper sentences; start with a capital letter and use proper
-punctuation.
+If your comment is long enough to be put on a separate line, you _should_
+write proper sentences. Start with a capital letter and use proper
+punctuation. See below for end-of-line comments.
 
 #### Top-Level Definitions
 
@@ -154,9 +140,10 @@ Comment every exported data type.  Function example:
 -- | Send a message on a socket. The socket must be in a connected
 -- state. Returns the number of bytes sent. Applications are
 -- responsible for ensuring that all data has been sent.
-send :: Socket      -- ^ Connected socket
-     -> ByteString  -- ^ Data to send
-     -> IO Int      -- ^ Bytes sent
+send
+    :: Socket      -- ^ Connected socket
+    -> ByteString  -- ^ Data to send
+    -> IO Int      -- ^ Bytes sent
 ```
 
 For functions, the documentation should give enough information to
@@ -212,7 +199,7 @@ if:
 * The user might actually want to click on it for more information (in
   your opinion), and
 
-* Only for the first occurrence of each API name in the comment (don't
+* Only for the first occurrence of each API name in the comment (do not
   bother repeating a link)
 
 Top-down guideline
@@ -221,7 +208,7 @@ Top-down guideline
 ### LANGUAGE extensions section
 
 Write each `LANGUAGE` pragma on its own line, sort them alphabetically and
-align by max width among them.
+align by max width among them. `stylish-haskell` with [our config](https://github.com/serokell/serokell-util/blob/master/.stylish-haskell.yaml) can do this for you.
 
 ```haskell
 {-# LANGUAGE FlexibleContexts #-}
@@ -233,10 +220,12 @@ align by max width among them.
 
 Use singular when naming modules (e.g. use `Data.Map` and
 `Data.ByteString.Internal` instead of `Data.Maps` and
-`Data.ByteString.Internals`). Sometimes it's acceptable to use plural
+`Data.ByteString.Internals`). Sometimes it is acceptable to use plural
 (e. g. `Types`, `Instances`).
 
 ### Export Lists
+
+All modules _must_ have explicit exports.
 
 Format export lists as follows:
 
@@ -257,7 +246,7 @@ Some clarifications:
 1. Use 7 spaces indentation for export list (so that bracket is below
    the first letter in module name).
 2. You can split export list into sections or just write all as single section.
-3. It is strongly adviced to sort each section alpabetically. However,
+3. It is strongly advised to sort each section alpabetically. However,
    classes, data types and type aliases should be written before
    functions.
 
@@ -265,15 +254,14 @@ Some clarifications:
 
 Imports should be grouped in the following order:
 
-0. Implicit import of custom prelude (for example [`universum`](https://github.com/serokell/universum)) if used.
+0. Implicit import of custom prelude (for example [`universum`](https://github.com/serokell/universum)) if you are using one. You _may_ also use [`base-noprelude`](https://hackage.haskell.org/package/base-noprelude) and import your custom prelude implicitly.
 1. Everything from hackage packages or from your packages outside current project.
 2. Everything from current project.
 3. Everything from current target (like `Bench.*` or `Test.*`).
-4. Qualified imports
 
 Put a blank line between each group of imports.
 
-The imports in each group should be sorted alphabetically, by module name.
+The imports in each group should be sorted alphabetically, by module name. `stylish-haskell` with [our config](https://github.com/serokell/serokell-util/blob/master/.stylish-haskell.yaml) can do this for you.
 
 Always use explicit import lists or `qualified` imports.
 Try to use `qualified` imports only if import list is
@@ -288,26 +276,20 @@ Prefer two-line imports for such standard containers.
 
 ```haskell
 import Data.Map (Map)
-
-import qualified Data.Map as Map hiding (Map)
+import qualified Data.Map as Map
 ```
-
-Such tools as `stylish-haskell` can make your import section look very nice!
 
 ### Data Declarations
 
-Align the constructors in a data type definition.  Example:
+Align the constructors in a data type definition. Examples:
 
 ```haskell
-data Tree a = Branch !a !(Tree a) !(Tree a)
-            | Leaf
-```
+data Tree a
+    = Branch !a !(Tree a) !(Tree a)
+    | Leaf
 
-For long type names the following formatting is also acceptable:
-
-```haskell
 data HttpException
-    = InvalidStatusCode Int
+    = InvalidStatusCode !Int
     | MissingContentHeader
 ```
 
@@ -321,10 +303,12 @@ data Person = Person
     } deriving (Eq, Show)
 ```
 
-If you have record with multiple constructors (which is generally bad idea
-because you getters become partial functions but okay if you use
-`-XRecordWildCards`) then align curly braces with
-shift to the constructor name but } should go in the end of last field.
+You should generally avoid having records with multiple constructors because
+their getters are partial functions. This is somewhat alleviated with.
+`-XRecordWildCards`, but there is still temptation to use getters directly,
+resulting in potential errors. If you are certain you need them, add a usual
+4-space indentation before `{`, but put `}` on the same line as the last field.
+Example:
 
 ```haskell
 data Address
@@ -336,7 +320,7 @@ data Address
     deriving (Show, Eq)
 ```
 
-If there is only one field for every constructor more compact style is allowed.
+If there is only one field for every constructor, you _may_ write it more compactly.
 
 ```haskell
 data Address
@@ -345,20 +329,20 @@ data Address
     deriving (Show, Eq)
 ```
 
-Type classes in `deriving` section should be always surrounded by
-parentheses. Space between names is optional.
+You _may_ omit parentheses around type classes in the `deriving` section
+if there is only one type class. As usual, separate type classes with `, ` (comma
+and a space).
 
 _WARNING_: try to avoid aggressive autoderiving. Deriving instances can
-slowdown compilation
-(stated here: http://www.stephendiehl.com/posts/production.html)
+slow down compilation
+(source: http://www.stephendiehl.com/posts/production.html).
 
 > Deriving instances of Read/Show/Data/Generic for largely recursive ADTs can
 > sometimes lead to quadratic memory behavior when the nesting gets deep.
 
-If you're using GHC-8.2.2 or higher you should use
+If you are using GHC-8.2.2 or higher you _should_ use the
 [`-XDerivingStrategies`](https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/glasgow_exts.html#deriving-strategies)
-extension and specify the way you derive explicitly. Like this (see
-[this question](https://github.com/jaspervdj/stylish-haskell/issues/186) for example):
+extension and specify the way you derive explicitly. Example:
 
 ```haskell
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
@@ -375,27 +359,29 @@ newtype SpecialId = SpecialId Int
 All top-level functions _must_ have type signatures.
 
 All functions inside `where` _should_ have type signatures. Explicit type
-signatures help to avoid cryptic type errors. Though when working with pure
-arithmetics and everything is `Integer` then type signatures can look cumbersome.
+signatures help avoid cryptic type errors. You _may_ choose not to specify them in
+cases like working with pure arithmetics where everything is `Integer`, and explicit
+type signatures look cumbersome.
 
 > You most likely need `-XExplicitForAll` and `-XScopedTypeVariables` extensions
 > to write polymorphic types of functions inside `where`.
 
-Specialize function type signature for concrete types if you're using this function
-with only one type for each argument. Otherwize you should use more polymorphic
-version. Compiler can optimize specialized functions better
-(TODO: link to haskell manual) and meaning of this function may be clearer.
-Use this rule unless you are the library creator and want your library to be abstract
-as possible.
+Specialize function type signature to concrete types if you use this function with only
+one type for each argument. Otherwise you should keep a more polymorphic version. With GHC,
+you can also use the
+[`SPECIALIZE` pragma](https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/glasgow_exts.html#specialize-pragma)
+to enable making more aggressive optimizations. Furthermore, the purpose of a specialized
+function may be clearer from its type signature. You _may_ keep you signatures general if you are writing a library that you want to be
+as abstract as possible.
 
-It is allowed to omit parentheses for only one type class constraint.
+You _should_ omit parentheses if you have only one constraint.
 
-If function type signature is very long then place type of each argument under
-its own line with respect to alignment.
+If function type signature is very long, you _should_ place the type of each argument
+on its own line, and also align constraints similarly. Example:
 
 ```haskell
 putValueInState
-    :: MonadIO m
+    :: (MonadIO m, WithLogger m)
     => UserState
     -> Maybe Int
     -> AppConfig
@@ -418,13 +404,13 @@ putValueInState
 
 In other cases place `=` sign on the same line where function definition is.
 
-Use `() <$` to  ignore the result of function. It looks cool. If this is not possible
-due to `$` then use either `_ <-` or `void $`.
+Do not use `() <$` to ignore the result of function, because it harms readability.
+Instead, use either `_ <-` or `void $`.
 
 ```haskell
 foo = do
-    _  <- forkIO $ myThread config  -- can't be used as last statement
-    () <$ sendTransactionAndReport 1 "tx42"
+    _  <- forkIO $ myThread config  -- cannot be used as last statement
+    void $ sendTransactionAndReport 1 "tx42"
 ```
 
 Put operator fixity before operator signature:
@@ -457,9 +443,13 @@ data Array e = Array
 
 ### List Declarations
 
-Align the elements in the list.  Example:
+Depending on the length of list elements, you _should_ either keep the list on one
+line or put each element on a separate line. In the latter case, put a trailing `]`
+on a separate line, like `}` when you format records. Example:
 
 ```haskell
+numbers = [1, 2, 3]
+
 exceptions =
     [ InvalidStatusCode
     , MissingContentHeader
@@ -467,33 +457,25 @@ exceptions =
     ]
 ```
 
-Optionally, you can skip the first newline. Use your judgement.
-
-```haskell
-directions = [ North
-             , East
-             , South
-             , West
-             ]
-```
-
 ### Hanging Lambdas
 
-Don't insert a space after a lambda.
+Do not insert a space after a lambda.
 
 You may or may not indent the code following a "hanging" lambda.  Use
 your judgement. Some examples:
 
 ```haskell
 bar :: IO ()
-bar = forM_ [1, 2, 3] $ \n -> do
-          putStrLn "Here comes a number!"
-          print n
+bar =
+    forM_ [1, 2, 3] $ \n -> do
+        putStrLn "Here comes a number!"
+        print n
 
 foo :: IO ()
-foo = alloca 10 $ \a ->
-      alloca 20 $ \b ->
-      cFunction a b
+foo =
+    alloca 10 $ \a ->
+    alloca 20 $ \b ->
+    cFunction a b
 ```
 
 ### If-then-else clauses
@@ -503,21 +485,23 @@ clauses, where possible.  Short cases should usually be put on a single line
 (when line length allows it).
 
 When writing non-monadic code (i.e. when not using `do`) where guards
-and pattern matches can't be used, you can align _if-then-else_ clauses
+and pattern matches cannot be used, you can align _if-then-else_ clauses
 like you would normal expressions:
 
 ```haskell
-foo = if ...
-      then ...
-      else ...
+foo =
+    if ...
+    then ...
+    else ...
 ```
 
 Or you can align _if-then-else_ in different style inside lambdas.
 
 ```haskell
-foo = bar $ \qux -> if predicate qux
-    then doSomethingSilly
-    else someOtherCode
+foo =
+    bar $ \qux -> if predicate qux
+        then doSomethingSilly
+        else someOtherCode
 ```
 
 You can also write _if-then-else_ in imperative style inside do blocks
@@ -536,27 +520,19 @@ Use `-XMultiwayIf` only if you need complex `if-then-else` inside `do`-blocks.
 
 ### Case expressions
 
-The alternatives in a case expression can be indented using either of
-the two following styles:
+The alternatives in a case expression can be indented as follows:
 
 ```haskell
-foobar = case something of
-    Just j  -> foo
-    Nothing -> bar
+foobar =
+    case something of
+        Just j  -> foo
+        Nothing -> bar
 ```
 
-or as
+You _should_ align the `->` arrows whenever it helps readability.
 
-```haskell
-foobar = case something of
-             Just j  -> foo
-             Nothing -> bar
-```
-
-Align the `->` arrows when it helps readability.
-
-It's suggested to use `-XLambdaCase` extension because it's a great extension!
-See [this discussion](https://github.com/jaspervdj/stylish-haskell/issues/186) for nice usage examples.
+It is suggested to use `-XLambdaCase`.
+See [this discussion](https://github.com/jaspervdj/stylish-haskell/issues/186) for some usage examples.
 
 ### let expressions
 
@@ -573,12 +549,12 @@ foo = do
 
 ### ApplicativeDo
 
-Don't use `-XApplicativeDo` blindly everywhere. Only when necessary.
+Use `-XApplicativeDo` only when necessary.
 
-You _should_ use `-XApplicativeDo` when you're writing CLI-arguments parser with
-`optparse-applicative` because it's very easy to mess up with arguments order.
-Though, be aware of [some non-obvious behavior](https://www.reddit.com/r/haskell/comments/7679g8/ghc_821_applicativedo_possible_bug/)
-when you're using pattern-matching inside `do`-blocks.
+You _should_ use `-XApplicativeDo` when you are writing a parser of CLI arguments with
+`optparse-applicative` because it is very easy to mess up the order of the arguments.
+However, be aware of [some non-obvious behavior](https://www.reddit.com/r/haskell/comments/7679g8/ghc_821_applicativedo_possible_bug/)
+when you use pattern-matching inside `do`-blocks.
 
 Dealing with laziness
 ---------------------
@@ -587,24 +563,22 @@ By default, use strict data types and lazy functions.
 
 ### Data types
 
-Constructor fields should be strict, unless there's an explicit reason
-to make them lazy.  This helps to avoid many common pitfalls caused by too much
-laziness and reduces the number of brain cycles the programmer has to
-spend thinking about evaluation order.
+You _should_ enable [`StrictData`](https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/glasgow_exts.html#extension-StrictData)
+globally for your project, marking fields explicitly with `~` when you need laziness.
 
 ```haskell
+{-# LANGUAGE StrictData #-}
+
 -- Good
-data Point = Point
-    { pointX :: !Double  -- ^ X coordinate
-    , pointY :: !Double  -- ^ Y coordinate
-    }
-```
-
-```haskell
--- Bad
 data Point = Point
     { pointX :: Double  -- ^ X coordinate
     , pointY :: Double  -- ^ Y coordinate
+    }
+
+-- OK, but needs justification
+data Point = Point
+    { pointX :: ~Double  -- ^ X coordinate
+    , pointY :: ~Double  -- ^ Y coordinate
     }
 ```
 
@@ -613,8 +587,8 @@ reduces memory usage:
 
 ```haskell
 data Point = Point
-    { pointX :: {-# UNPACK #-} !Double  -- ^ X coordinate
-    , pointY :: {-# UNPACK #-} !Double  -- ^ Y coordinate
+    { pointX :: {-# UNPACK #-} Double  -- ^ X coordinate
+    , pointY :: {-# UNPACK #-} Double  -- ^ Y coordinate
     }
 ```
 
@@ -630,9 +604,27 @@ applied even if someone compiles the file using other means (i.e. the
 optimization is attached to the source code it belongs to).
 
 Note that `-funbox-strict-fields` applies to all strict fields, not
-just small fields (e.g. `Double` or `Int`). If you're using GHC 7.4 or
+just small fields (e.g. `Double` or `Int`). If you are using GHC 7.4 or
 later you can use `NOUNPACK` to selectively opt-out for the unpacking
 enabled by `-funbox-strict-fields`.
+
+For backwards compatibility, you _may_ choose to keep `StrictData` off globally, but you are
+strongly advised not to. If you choose not to enable it, you _should_ mark all record
+fields as strict, unless there is an explicit reason to make them lazy.
+
+```haskell
+-- Good
+data Point = Point
+    { pointX :: !Double  -- ^ X coordinate
+    , pointY :: !Double  -- ^ Y coordinate
+    }
+
+-- Needs justification for implicit laziness
+data Point = Point
+    { pointX :: Double  -- ^ X coordinate
+    , pointY :: Double  -- ^ Y coordinate
+    }
+```
 
 ### Functions
 
@@ -670,13 +662,28 @@ Cabal file formatting
 Modules and libraries should go in alphabetical order inside corresponding
 sections. You can put blank lines between groups in each section.
 
-TODO: bounds for packages?
-
 ### Warnings ###
 
-Code should be compilable with `-Wall` without warnings.
+The following GHC options _should_ be enabled globally for your project
+([source](https://medium.com/mercury-bank/enable-all-the-warnings-a0517bc081c3)):
 
-Allowed ghc forbidding option: `-fno-warn-orphans`
+```
+-Weverything
+-Wno-missing-exported-signatures
+-Wno-missing-import-lists
+-Wno-missed-specialisations
+-Wno-all-missed-specialisations
+-Wno-unsafe
+-Wno-safe
+-Wno-missing-local-signatures
+-Wno-monomorphism-restriction
+-Wno-implicit-prelude
+-Werror
+```
+
+A successful build _must_ not trigger any of the enabled warnings.
+
+You _may_ use `{-# OPTIONS_GHC -fno-warn-orphans #-}` on a per-module basis.
 
 ### Default extensions
 
