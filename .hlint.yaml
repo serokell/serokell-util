@@ -33,7 +33,7 @@
 - ignore: { name: 'Use ?~' }
 - ignore: { name: Use <$> }
 
-# Sometimes [Char] is okay (if it means "a set of characters")
+# Sometimes [Char] is okay (if it means "a sequence of characters")
 - ignore: { name: Use String }
 
 # Sometimes TemplateHaskell is needed to please stylish-haskell

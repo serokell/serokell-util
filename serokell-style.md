@@ -12,82 +12,87 @@ You can find our other formatting utilites and guidelines which expand the code 
 
 General guidelines
 -------------------
+
+All existing projects _should_ continue using their old formatting guidelines, but
+_may_ choose to switch to these guidelines.
+All new projects _must_ adhere to the guidelines below.
+
 ### Line Length
 
-Maximum line length is *80 characters* or *100 characters* if necessary.
-
-Modern screens are wide and have high resolution.
-Yet, when you have two terminals open side-by-side or edit two files simultaneously,
-you will not be able to fit many characters on a line.
-On the other hand, restricting line length to a very small number like 80 leads
-to crazy indentation despite the fact that shorter lines should supposedly force you
-to write well-structured code.
-That is why we pick *100* as a reasonable compromise.
-
+You _should_ keep maximum line length below *80 characters*. If necessary,
+you _may_ use up to *100 characters*, although this is discouraged.
 
 ### Indentation
 
 Tabs are illegal.  Use spaces for indenting.  Indent your code blocks
-with *4 spaces*.  Indent the `where` keyword with two spaces to set it
-apart from the rest of the code and indent the definitions in a
-`where` clause with 2 spaces.  Some examples:
+with *2 spaces*.  Indent the `where` keyword with 2 spaces and the definitions
+within the `where` clause with 2 more spaces.  Some examples:
 
 ```haskell
 sayHello :: IO ()
 sayHello = do
-    name <- getLine
-    putStrLn $ greeting name
+  name <- getLine
+  putStrLn $ greeting name
   where
     greeting name = "Hello, " ++ name ++ "!"
 
 filter :: (a -> Bool) -> [a] -> [a]
 filter _ []     = []
 filter p (x:xs)
-    | p x       = x : filter p xs
-    | otherwise = filter p xs
+  | p x       = x : filter p xs
+  | otherwise = filter p xs
 ```
 
 ### Blank Lines
 
-One blank line between top-level definitions. No blank lines between
-type signatures and function definitions. Add one blank line between
-functions in a type class instance declaration if the function bodies
-are large. You can add blank lines inside a big `do` block to separate logical
-parts of it. You can also use blank lines to separate definitions inside `where`
-clause. Blank lines are used to separate imports (this is described in a section below).
+* You _must_ add one blank line between top-level definitions.
+* You _must not_ add any blank lines between type signatures and function definitions.
+* You _should_ add one blank line between definitions in a type class instance
+  declaration or inside a `where` clause if the definitions are large.
+* You _may_ add blank lines inside a big `do` block to separate logical parts of it.
+* See below for usage of blank lines in the import section.
 
 ### Whitespace
 
-You _should_ surround binary operators with a single space on either side.
-In case of currying add one space between the argument and the operation.
-Use some tool to remove trailing spaces automatically. See
-[this page](https://github.com/editorconfig/editorconfig/wiki/Property-research:-Trim-trailing-spaces)
-for instructions for some editors.
+* You _must_ surround binary operators with a single space on either side: `3 + 5`.
+* When using currying with binary operators, you _must_ add one space between the argument
+  and the operation: `(42 +)`.
+* You _must_ remove all trailing whitespace.
+* You _must_ append a trailing newline to all source files.
+
+The latter two points can be handled by [EditorConfig](https://editorconfig.org/).
+You _may_ configure your editor using specific instructions for
+[removing trailing whitespace](https://github.com/editorconfig/editorconfig/wiki/Property-research:-Trim-trailing-spaces)
+and
+[appending a trailing newline](https://github.com/editorconfig/editorconfig/wiki/Newline-at-End-of-File-Support),
+but you are encouraged to install an EditorConfig plugin for your editor and use
+[our config](https://github.com/serokell/serokell-util/blob/master/.editorconfig)
+for Haskell files.
 
 ### Naming convention
 
-Casing:
+You _must_ use the following cases:
 
 + **_lowerCamelCase_** for functions, variables, and global constants.
 + **_UpperCamelCase_** for types.
 
-Do not use short names like `n`, `sk`, `f` unless their meaning is clear from
+You _should not_ use short names like `n`, `sk`, `f`, unless their meaning is clear from
 context (function name, types, other variables, etc.).
 
-Do not capitalize all letters when using an
-abbreviation.  For example, write `HttpServer` instead of
-`HTTPServer`.  Exception: two or three letter abbreviations, e.g. `IO`, `STM`.
+You _should not_ capitalize all letters in an abbreviation.
+For example, write `HttpServer` instead of `HTTPServer`.
+Exception: two or three letter abbreviations, e.g. `IO`, `STM`.
 
-**Records name conventions**
+**Record name conventions**
 
-If data type has only one constructor then this data type name should be same
-as constructor name (also applies to `newtype`).
+If data type has only one constructor then this data type name _should_ be the same
+as the constructor name (also applies to `newtype`).
 
 ```haskell
 data User = User Int String
 ```
 
-Field name for `newtype` should start with `un` or `run` prefix followed by type name.
+Field name for `newtype` _should_ start with `un` or `run` prefix followed by type name.
 
 * `run` for wrappers with monadic semantic.
 * `un` for wrappers introduced for type safety.
@@ -104,12 +109,12 @@ name.
 
 ```haskell
 data NetworkConfig = NetworkConfig
-    { ncDelay :: Microsecond  -- `nc` corresponds to `_N_etwork_C_onfig`
-    , ncPort  :: Word
-    }
+  { ncDelay :: Microsecond  -- `nc` corresponds to `_N_etwork_C_onfig`
+  , ncPort  :: Word
+  }
 ```
 
-We do *not* adopt GHC's `-XOverloadedRecordFields` with
+You _should not_ adopt GHC's `-XOverloadedRecordFields` with
 [`HasField`](https://www.stackage.org/haddock/lts-10.4/base-4.10.1.0/GHC-Records.html#t:HasField)
 type class.
 
@@ -132,45 +137,50 @@ punctuation. See below for end-of-line comments.
 
 #### Top-Level Definitions
 
-Comment every top level function (particularly exported functions),
-and provide a type signature; use Haddock syntax in the comments.
-Comment every exported data type.  Function example:
+* You _must_ provide a type signature for every top-level definition.
+* You _must_ comment every exported function and data type.
+* You _should_ comment every top-level function.
+
+You _must_ use [Haddock syntax](https://www.haskell.org/haddock/doc/html/ch03s08.html)
+in the comments.
+
+Example:
 
 ```haskell
 -- | Send a message on a socket. The socket must be in a connected
 -- state. Returns the number of bytes sent. Applications are
 -- responsible for ensuring that all data has been sent.
 send
-    :: Socket      -- ^ Connected socket
-    -> ByteString  -- ^ Data to send
-    -> IO Int      -- ^ Bytes sent
+  :: Socket      -- ^ Connected socket
+  -> ByteString  -- ^ Data to send
+  -> IO Int      -- ^ Bytes sent
 ```
 
-For functions, the documentation should give enough information to
+For functions, the documentation _should_ give enough information to
 apply the function without looking at its definition.
 
 Record example:
 
 ```haskell
--- | Bla bla bla.
+-- | Person representation used in address book.
 data Person = Person
-    { age  :: !Int     -- ^ Age
-    , name :: !String  -- ^ First name
-    }
+  { age  :: Int     -- ^ Age
+  , name :: String  -- ^ First name
+  }
 ```
 
 For fields that require longer comments, format them this way:
 
 ```haskell
 data Record = Record
-    { -- | This is a very very very long comment that is split over
-      -- multiple lines.
-      field1 :: !Text
+  { -- | This is a very very very long comment that is split over
+    -- multiple lines.
+    field1 :: Text
 
-      -- | This is a second very very very long comment that is split
-      -- over multiple lines.
-    , field2 :: !Int
-    }
+    -- | This is a second very very very long comment that is split
+    -- over multiple lines.
+  , field2 :: Int
+  }
 ```
 
 #### End-of-Line Comments
@@ -180,8 +190,8 @@ comments for data type definitions. Some examples:
 
 ```haskell
 data Parser = Parser
-    !Int         -- Current position
-    !ByteString  -- Remaining input
+  Int         -- Current position
+  ByteString  -- Remaining input
 
 foo :: Int -> Int
 foo n = salt * n + 9
@@ -231,30 +241,29 @@ Format export lists as follows:
 
 ```haskell
 module Data.Set
-       ( -- * The @Set@ type
-         Set
-       , empty
-       , singleton
+  ( -- * The @Set@ type
+   Set
+  , empty
+  , singleton
 
-         -- * Querying
-       , member
-       ) where
+   -- * Querying
+  , member
+  ) where
 ```
 
 Some clarifications:
 
-1. Use 7 spaces indentation for export list (so that bracket is below
-   the first letter in module name).
+1. Use 2 spaces indentation for export list, like in all other cases.
 2. You can split export list into sections or just write all as single section.
 3. It is strongly advised to sort each section alpabetically. However,
-   classes, data types and type aliases should be written before
+   within each section, classes, data types and type aliases should be written before
    functions.
 
 ### Imports
 
 Imports should be grouped in the following order:
 
-0. Implicit import of custom prelude (for example [`universum`](https://github.com/serokell/universum)) if you are using one. You _may_ also use [`base-noprelude`](https://hackage.haskell.org/package/base-noprelude) and import your custom prelude implicitly.
+0. Implicit import of custom prelude (for example [`universum`](https://github.com/serokell/universum)) if you are using one. You _may_ also use [`base-noprelude`](https://hackage.haskell.org/package/base-noprelude) in order to avoid importing your custom prelude at all.
 1. Everything from hackage packages or from your packages outside current project.
 2. Everything from current project.
 3. Everything from current target (like `Bench.*` or `Test.*`).
@@ -285,22 +294,22 @@ Align the constructors in a data type definition. Examples:
 
 ```haskell
 data Tree a
-    = Branch !a !(Tree a) !(Tree a)
-    | Leaf
+  = Branch a (Tree a) (Tree a)
+  | Leaf
 
 data HttpException
-    = InvalidStatusCode !Int
-    | MissingContentHeader
+  = InvalidStatusCode Int
+  | MissingContentHeader
 ```
 
 Format records as follows:
 
 ```haskell
 data Person = Person
-    { firstName :: !String  -- ^ First name
-    , lastName  :: !String  -- ^ Last name
-    , age       :: !Int     -- ^ Age
-    } deriving (Eq, Show)
+  { firstName :: String  -- ^ First name
+  , lastName  :: String  -- ^ Last name
+  , age       :: Int     -- ^ Age
+  } deriving (Eq, Show)
 ```
 
 You should generally avoid having records with multiple constructors because
@@ -312,21 +321,21 @@ Example:
 
 ```haskell
 data Address
-    = PubKeyAddress
-        { addrKeyHash :: !(AddressHash PublicKey) }
-    | ScriptAddress
-        { addrScriptHash   :: !(AddressHash Script)
-        , addrDistribution :: ![(AddressHash PublicKey, Coin)] }
-    deriving (Show, Eq)
+  = PubKeyAddress
+    { addrKeyHash :: (AddressHash PublicKey) }
+  | ScriptAddress
+    { addrScriptHash   :: (AddressHash Script)
+    , addrDistribution :: [(AddressHash PublicKey, Coin)] }
+  deriving (Show, Eq)
 ```
 
 If there is only one field for every constructor, you _may_ write it more compactly.
 
 ```haskell
 data Address
-    = PubKeyAddress { addrKeyHash    :: !(AddressHash PublicKey) }
-    | ScriptAddress { addrScriptHash :: !(AddressHash Script)    }
-    deriving (Show, Eq)
+  = PubKeyAddress { addrKeyHash    :: (AddressHash PublicKey) }
+  | ScriptAddress { addrScriptHash :: (AddressHash Script)    }
+  deriving (Show, Eq)
 ```
 
 You _may_ omit parentheses around type classes in the `deriving` section
@@ -349,9 +358,9 @@ extension and specify the way you derive explicitly. Example:
 {-# LANGUAGE DerivingStrategies         #-}
 
 newtype SpecialId = SpecialId Int
-    deriving stock    (Eq, Ord, Show, Generic)
-    deriving newtype  Read
-    deriving anyclass (FromJSON, ToJSON)
+  deriving stock    (Eq, Ord, Show, Generic)
+  deriving newtype  Read
+  deriving anyclass (FromJSON, ToJSON)
 ```
 
 ### Function declaration
@@ -381,12 +390,12 @@ on its own line, and also align constraints similarly. Example:
 
 ```haskell
 putValueInState
-    :: (MonadIO m, WithLogger m)
-    => UserState
-    -> Maybe Int
-    -> AppConfig
-    -> (Int -> m ())
-    -> m ()
+  :: (MonadIO m, WithLogger m)
+  => UserState
+  -> Maybe Int
+  -> AppConfig
+  -> (Int -> m ())
+  -> m ()
 ```
 
 If the line with argument names is too big then put each argument on its own line
@@ -409,14 +418,14 @@ Instead, use either `_ <-` or `void $`.
 
 ```haskell
 foo = do
-    _  <- forkIO $ myThread config  -- cannot be used as last statement
-    void $ sendTransactionAndReport 1 "tx42"
+  _  <- forkIO $ myThread config  -- cannot be used as last statement
+  void $ sendTransactionAndReport 1 "tx42"
 ```
 
 Put operator fixity before operator signature:
 
 ```haskell
--- | This operator looks cool!
+-- | Append a piece to the URI.
 infixl 5 />
 (/>) :: Uri -> PathPiece -> Uri
 ```
@@ -437,8 +446,8 @@ the type it applies to. Example:
 
 ```haskell
 data Array e = Array
-    {-# UNPACK #-} !Int
-    !ByteArray
+  {-# UNPACK #-} Int
+  ByteArray
 ```
 
 ### List Declarations
@@ -451,10 +460,10 @@ on a separate line, like `}` when you format records. Example:
 numbers = [1, 2, 3]
 
 exceptions =
-    [ InvalidStatusCode
-    , MissingContentHeader
-    , InternalServerError
-    ]
+  [ InvalidStatusCode
+  , MissingContentHeader
+  , InternalServerError
+  ]
 ```
 
 ### Hanging Lambdas
@@ -467,15 +476,15 @@ your judgement. Some examples:
 ```haskell
 bar :: IO ()
 bar =
-    forM_ [1, 2, 3] $ \n -> do
-        putStrLn "Here comes a number!"
-        print n
+  forM_ [1, 2, 3] $ \n -> do
+    putStrLn "Here comes a number!"
+    print n
 
 foo :: IO ()
 foo =
-    alloca 10 $ \a ->
-    alloca 20 $ \b ->
-    cFunction a b
+  alloca 10 $ \a ->
+  alloca 20 $ \b ->
+  cFunction a b
 ```
 
 ### If-then-else clauses
@@ -490,30 +499,30 @@ like you would normal expressions:
 
 ```haskell
 foo =
-    if ...
-    then ...
-    else ...
+  if ...
+  then ...
+  else ...
 ```
 
 Or you can align _if-then-else_ in different style inside lambdas.
 
 ```haskell
 foo =
-    bar $ \qux -> if predicate qux
-        then doSomethingSilly
-        else someOtherCode
+  bar $ \qux -> if predicate qux
+    then doSomethingSilly
+    else someOtherCode
 ```
 
 You can also write _if-then-else_ in imperative style inside do blocks
 
 ```haskell
 foo = do
-    someCode
-    if condition then do
-        someMoreCode
-        andMore
-    else
-        return ()
+  someCode
+  if condition then do
+    someMoreCode
+    andMore
+  else
+    return ()
 ```
 
 Use `-XMultiwayIf` only if you need complex `if-then-else` inside `do`-blocks.
@@ -524,9 +533,9 @@ The alternatives in a case expression can be indented as follows:
 
 ```haskell
 foobar =
-    case something of
-        Just j  -> foo
-        Nothing -> bar
+  case something of
+    Just j  -> foo
+    Nothing -> bar
 ```
 
 You _should_ align the `->` arrows whenever it helps readability.
@@ -541,10 +550,10 @@ Put `let` before each variable inside a `do` block. But beware of name shadowing
 
 ```haskell
 foo = do
-    let x   = 10
-    let f 1 = 5
-        f _ = 0  -- possible shadowing here with let
-    return $ x + f 2
+  let x   = 10
+  let f 1 = 5
+      f _ = 0  -- possible shadowing here with let
+  return $ x + f 2
 ```
 
 ### ApplicativeDo
@@ -571,15 +580,15 @@ globally for your project, marking fields explicitly with `~` when you need lazi
 
 -- Good
 data Point = Point
-    { pointX :: Double  -- ^ X coordinate
-    , pointY :: Double  -- ^ Y coordinate
-    }
+  { pointX :: Double  -- ^ X coordinate
+  , pointY :: Double  -- ^ Y coordinate
+  }
 
 -- OK, but needs justification
 data Point = Point
-    { pointX :: ~Double  -- ^ X coordinate
-    , pointY :: ~Double  -- ^ Y coordinate
-    }
+  { pointX :: ~Double  -- ^ X coordinate
+  , pointY :: ~Double  -- ^ Y coordinate
+  }
 ```
 
 Additionally, unpacking simple fields often improves performance and
@@ -587,9 +596,9 @@ reduces memory usage:
 
 ```haskell
 data Point = Point
-    { pointX :: {-# UNPACK #-} Double  -- ^ X coordinate
-    , pointY :: {-# UNPACK #-} Double  -- ^ Y coordinate
-    }
+  { pointX :: {-# UNPACK #-} Double  -- ^ X coordinate
+  , pointY :: {-# UNPACK #-} Double  -- ^ Y coordinate
+  }
 ```
 
 As an alternative to the `UNPACK` pragma, you can put
@@ -615,15 +624,15 @@ fields as strict, unless there is an explicit reason to make them lazy.
 ```haskell
 -- Good
 data Point = Point
-    { pointX :: !Double  -- ^ X coordinate
-    , pointY :: !Double  -- ^ Y coordinate
-    }
+  { pointX :: !Double  -- ^ X coordinate
+  , pointY :: !Double  -- ^ Y coordinate
+  }
 
 -- Needs justification for implicit laziness
 data Point = Point
-    { pointX :: Double  -- ^ X coordinate
-    , pointY :: Double  -- ^ Y coordinate
-    }
+  { pointX :: Double  -- ^ X coordinate
+  , pointY :: Double  -- ^ Y coordinate
+  }
 ```
 
 ### Functions
