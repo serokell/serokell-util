@@ -1,8 +1,11 @@
 Serokell Haskell Style Guide
 ============================
-> This style guide is mostly a copy of [Johan Tibell's guide](https://github.com/tibbe/haskell-style-guide/blob/master/haskell-style.md)
-> with some restructuring, elaboration on some topics and some additions.
-> The aims of this style guide are code beauty, readability and understandability.
+
+This style guide is mostly a copy of
+[Johan Tibell's guide](https://github.com/tibbe/haskell-style-guide/blob/master/haskell-style.md)
+with some restructuring, elaboration on some topics and some additions.
+The aims of this style guide are making the code easy to understand and uniform,
+while keeping diffs as small as possible.
 
 You can find our other formatting utilites and guidelines which expand the code style:
 
@@ -13,8 +16,8 @@ You can find our other formatting utilites and guidelines which expand the code 
 General guidelines
 -------------------
 
-All existing projects _should_ continue using their old formatting guidelines, but
-_may_ choose to switch to these guidelines.
+All existing projects _should_ continue using their current styleguides, but
+_may_ choose to switch to this one.
 All new projects _must_ adhere to the guidelines below.
 
 ### Line Length
@@ -37,7 +40,7 @@ sayHello = do
     greeting name = "Hello, " ++ name ++ "!"
 
 filter :: (a -> Bool) -> [a] -> [a]
-filter _ []     = []
+filter _ [] = []
 filter p (x:xs)
   | p x       = x : filter p xs
   | otherwise = filter p xs
@@ -54,7 +57,8 @@ filter p (x:xs)
 
 ### Whitespace
 
-* You _must_ surround binary operators with a single space on either side: `3 + 5`.
+* You _should_ surround binary operators with a single space on either side: `3 + 5`.
+  You _may_ choose not to do that to emphasize grouping of terms: `2 + 2*2`.
 * When using currying with binary operators, you _must_ add one space between the argument
   and the operation: `(42 +)`.
 * You _must_ remove all trailing whitespace.
@@ -76,8 +80,8 @@ You _must_ use the following cases:
 + **_lowerCamelCase_** for functions, variables, and global constants.
 + **_UpperCamelCase_** for types.
 
-You _should not_ use short names like `n`, `sk`, `f`, unless their meaning is clear from
-context (function name, types, other variables, etc.).
+You _should not_ use short names like `n`, `sk`, `f`, unless their meaning is clear
+from the context (function name, types, other variables, etc.).
 
 You _should not_ capitalize all letters in an abbreviation.
 For example, write `HttpServer` instead of `HTTPServer`.
@@ -253,11 +257,11 @@ module Data.Set
 
 Some clarifications:
 
-1. Use 2 spaces indentation for export list, like in all other cases.
-2. You can split export list into sections or just write all as single section.
+1. Use 2-space indentation for export list.
+2. You can split export list into sections or just write everything in one section.
 3. It is strongly advised to sort each section alpabetically. However,
-   within each section, classes, data types and type aliases should be written before
-   functions.
+   within each section, classes, data types and type aliases _should_ be
+   written before functions.
 
 ### Imports
 
@@ -316,7 +320,7 @@ You should generally avoid having records with multiple constructors because
 their getters are partial functions. This is somewhat alleviated with.
 `-XRecordWildCards`, but there is still temptation to use getters directly,
 resulting in potential errors. If you are certain you need them, add a usual
-4-space indentation before `{`, but put `}` on the same line as the last field.
+2-space indentation before `{`, but put `}` on the same line as the last field.
 Example:
 
 ```haskell
@@ -398,23 +402,37 @@ putValueInState
   -> m ()
 ```
 
-If the line with argument names is too big then put each argument on its own line
+If there are a lot of constraints, or they are very long, you _may_ put them
+in a separate `type` definition, or format them as follows:
+
+```haskell
+parseTree
+  :: ( KnownSpine components
+     , AllConstrained (ComponentTokenizer components) components
+     , AllConstrained (ComponentTokenToLit components) components
+     )
+  => Text
+  -> Either (ParseError components) (Expr ParseTreeExt CommandId components)
+```
+
+If the line with argument names is too long, you _should_ put each argument
+on a separate line with the usual 2-space indentation.
 and separate it somehow from body section.
 
 ```haskell
 putValueInState
-    userState
-    mValue@(Just x)
-    Config{..}        -- { should go after ctor name without space
-    valueModificator
+  userState
+  mValue@(Just x)
+  Config{..}        -- { should go after ctor name without space
+  valueModificator
   = do
     <code goes here>
 ```
 
 In other cases place `=` sign on the same line where function definition is.
 
-Do not use `() <$` to ignore the result of function, because it harms readability.
-Instead, use either `_ <-` or `void $`.
+Do not use `() <$` to ignore the result of function, because it less legible
+than `_ <-` or `void $`.
 
 ```haskell
 foo = do
@@ -457,7 +475,7 @@ line or put each element on a separate line. In the latter case, put a trailing 
 on a separate line, like `}` when you format records. Example:
 
 ```haskell
-numbers = [1, 2, 3]
+numbers = [1, 2, 4]
 
 exceptions =
   [ InvalidStatusCode
