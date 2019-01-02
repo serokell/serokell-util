@@ -1,13 +1,12 @@
 Serokell Haskell Style Guide
 ============================
 
-This style guide is mostly a copy of
-[Johan Tibell's guide](https://github.com/tibbe/haskell-style-guide/blob/master/haskell-style.md)
-with some restructuring, elaboration on some topics and some additions.
-The aims of this style guide are making the code easy to understand and uniform,
+This style guide is derived from
+[Johan Tibell's guide](https://github.com/tibbe/haskell-style-guide/blob/master/haskell-style.md).
+It aims to make code easy to understand and uniform,
 while keeping diffs as small as possible.
 
-You can find our other formatting utilites and guidelines which expand the code style:
+We provide some configuration files for popular tools that help maintain code style:
 
 * [`stylish-haskell` config](https://github.com/serokell/serokell-util/blob/master/.stylish-haskell.yaml)
 * [`hlint` config](https://github.com/serokell/serokell-util/blob/master/.hlint.yaml)
@@ -16,7 +15,7 @@ You can find our other formatting utilites and guidelines which expand the code 
 General guidelines
 -------------------
 
-All existing projects _should_ continue using their current styleguides, but
+All existing projects _should_ continue using their current style guides, but
 _may_ choose to switch to this one.
 All new projects _must_ adhere to the guidelines below.
 
@@ -246,7 +245,7 @@ Format export lists as follows:
 ```haskell
 module Data.Set
   ( -- * The @Set@ type
-   Set
+    Set
   , empty
   , singleton
 
@@ -262,6 +261,8 @@ Some clarifications:
 3. It is strongly advised to sort each section alpabetically. However,
    within each section, classes, data types and type aliases _should_ be
    written before functions.
+4. If your export list is empty, you _may_ write in on the same line as
+   the `module` declaration.
 
 ### Imports
 
@@ -316,46 +317,20 @@ data Person = Person
   } deriving (Eq, Show)
 ```
 
-You should generally avoid having records with multiple constructors because
-their getters are partial functions. This is somewhat alleviated with.
-`-XRecordWildCards`, but there is still temptation to use getters directly,
-resulting in potential errors. If you are certain you need them, add a usual
-2-space indentation before `{`, but put `}` on the same line as the last field.
-Example:
+You _must_ avoid having records with multiple constructors because
+their getters are partial functions.
 
-```haskell
-data Address
-  = PubKeyAddress
-    { addrKeyHash :: (AddressHash PublicKey) }
-  | ScriptAddress
-    { addrScriptHash   :: (AddressHash Script)
-    , addrDistribution :: [(AddressHash PublicKey, Coin)] }
-  deriving (Show, Eq)
-```
+As usual, separate type classes with `, ` (comma and a space).
 
-If there is only one field for every constructor, you _may_ write it more compactly.
-
-```haskell
-data Address
-  = PubKeyAddress { addrKeyHash    :: (AddressHash PublicKey) }
-  | ScriptAddress { addrScriptHash :: (AddressHash Script)    }
-  deriving (Show, Eq)
-```
-
-You _may_ omit parentheses around type classes in the `deriving` section
-if there is only one type class. As usual, separate type classes with `, ` (comma
-and a space).
-
-_WARNING_: try to avoid aggressive autoderiving. Deriving instances can
-slow down compilation
-(source: http://www.stephendiehl.com/posts/production.html).
+_WARNING_: try to avoid aggressive autoderiving because
+[it can slow down compilation](http://www.stephendiehl.com/posts/production.html).
 
 > Deriving instances of Read/Show/Data/Generic for largely recursive ADTs can
 > sometimes lead to quadratic memory behavior when the nesting gets deep.
 
-If you are using GHC-8.2.2 or higher you _should_ use the
+If you are using GHC-8.2.2 or higher you _should_ use
 [`-XDerivingStrategies`](https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/glasgow_exts.html#deriving-strategies)
-extension and specify the way you derive explicitly. Example:
+and specify the way you derive explicitly. Example:
 
 ```haskell
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
@@ -711,23 +686,3 @@ The following GHC options _should_ be enabled globally for your project
 A successful build _must_ not trigger any of the enabled warnings.
 
 You _may_ use `{-# OPTIONS_GHC -fno-warn-orphans #-}` on a per-module basis.
-
-### Default extensions
-
-The following list of extensions is allowed to be specified inside
-`default-extensions` section inside `.cabal` files.
-
-+ ConstraintKinds
-+ DefaultSignatures
-+ DeriveDataTypeable
-+ DeriveGeneric
-+ GeneralizedNewtypeDeriving
-+ LambdaCase
-+ NoImplicitPrelude
-+ OverloadedStrings
-+ RecordWildCards
-+ ScopedTypeVariables
-+ StandaloneDeriving
-+ TupleSections
-+ TypeApplications
-+ ViewPatterns
