@@ -8,7 +8,7 @@ while keeping diffs as small as possible.
 
 We provide some configuration files for popular tools that help maintain code style:
 
-* [`stylish-haskell` config](https://github.com/serokell/serokell-util/blob/master/.stylish-haskell.yaml)
+* [`stylish-haskell` config][stylish-haskell]
 * [`hlint` config](https://github.com/serokell/serokell-util/blob/master/.hlint.yaml)
 * [`hlint` config](https://github.com/serokell/serokell-util/blob/master/.hlint-universum.yaml) specific to [`universum`](https://github.com/serokell/universum), our custom Prelude
 
@@ -63,14 +63,13 @@ filter p (x:xs)
 * You _must_ remove all trailing whitespace.
 * You _must_ append a trailing newline to all source files.
 
-The latter two points can be handled by [EditorConfig](https://editorconfig.org/).
-You _may_ configure your editor using specific instructions for
+The last two points can be handled by [EditorConfig](https://editorconfig.org/).
+You are encouraged to install an EditorConfig plugin for your editor and use
+[our config][editorconfig] for Haskell files, but you _may_ also
+configure your editor using specific instructions for
 [removing trailing whitespace](https://github.com/editorconfig/editorconfig/wiki/Property-research:-Trim-trailing-spaces)
 and
-[appending a trailing newline](https://github.com/editorconfig/editorconfig/wiki/Newline-at-End-of-File-Support),
-but you are encouraged to install an EditorConfig plugin for your editor and use
-[our config](https://github.com/serokell/serokell-util/blob/master/.editorconfig)
-for Haskell files.
+[appending a trailing newline](https://github.com/editorconfig/editorconfig/wiki/Newline-at-End-of-File-Support).
 
 ### Naming convention
 
@@ -221,7 +220,7 @@ Top-down guideline
 ### LANGUAGE extensions section
 
 Write each `LANGUAGE` pragma on its own line, sort them alphabetically and
-align by max width among them. `stylish-haskell` with [our config](https://github.com/serokell/serokell-util/blob/master/.stylish-haskell.yaml) can do this for you.
+align by max width among them. `stylish-haskell` with [our config][stylish-haskell] can do this for you.
 
 ```haskell
 {-# LANGUAGE FlexibleContexts #-}
@@ -275,7 +274,7 @@ Imports should be grouped in the following order:
 
 Put a blank line between each group of imports.
 
-The imports in each group should be sorted alphabetically, by module name. `stylish-haskell` with [our config](https://github.com/serokell/serokell-util/blob/master/.stylish-haskell.yaml) can do this for you.
+The imports in each group should be sorted alphabetically, by module name. `stylish-haskell` with [our config][stylish-haskell] can do this for you.
 
 Always use explicit import lists or `qualified` imports.
 Try to use `qualified` imports only if import list is
@@ -686,3 +685,6 @@ The following GHC options _should_ be enabled globally for your project
 A successful build _must_ not trigger any of the enabled warnings.
 
 You _may_ use `{-# OPTIONS_GHC -fno-warn-orphans #-}` on a per-module basis.
+
+[stylish-haskell]: https://github.com/serokell/serokell-util/blob/master/.stylish-haskell.yaml
+[editorconfig]: https://github.com/serokell/serokell-util/blob/master/.editorconfig
