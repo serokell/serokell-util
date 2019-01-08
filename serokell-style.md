@@ -269,12 +269,13 @@ Imports should be grouped in the following order:
 
 0. Implicit import of custom prelude (for example [`universum`](https://github.com/serokell/universum)) if you are using one. You _may_ also use [`base-noprelude`](https://hackage.haskell.org/package/base-noprelude) in order to avoid importing your custom prelude at all.
 1. Everything from hackage packages or from your packages outside current project.
+   "Project" is loosely defined as everything that is in your current repository.
 2. Everything from current project.
 3. Everything from current target (like `Bench.*` or `Test.*`).
 
 Put a blank line between each group of imports.
 
-The imports in each group should be sorted alphabetically, by module name. `stylish-haskell` with [our config][stylish-haskell] can do this for you.
+The imports in each group should be sorted alphabetically. `stylish-haskell` with [our config][stylish-haskell] can do this for you.
 
 Always use explicit import lists or `qualified` imports.
 Try to use `qualified` imports only if import list is
@@ -410,7 +411,7 @@ than `_ <-` or `void $`.
 
 ```haskell
 foo = do
-  _  <- forkIO $ myThread config  -- cannot be used as last statement
+  _ <- sendCert ourVssCertificate  -- cannot be used as last statement
   void $ sendTransactionAndReport 1 "tx42"
 ```
 
