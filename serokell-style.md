@@ -400,8 +400,8 @@ putValueInState
   mValue@(Just x)
   Config{..}        -- { should go after ctor name without space
   valueModificator
-  = do
-    <code goes here>
+ = do               -- note how this line uses 1-space indentation
+  <code goes here>
 ```
 
 In other cases place `=` sign on the same line where function definition is.
