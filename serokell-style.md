@@ -662,30 +662,8 @@ Cabal file formatting
 ### Modules & libraries
 
 Modules and libraries should go in alphabetical order inside corresponding
-sections. You can put blank lines between groups in each section.
-
-### Warnings ###
-
-The following GHC options _should_ be enabled globally for your project
-([source](https://medium.com/mercury-bank/enable-all-the-warnings-a0517bc081c3)):
-
-```
--Weverything
--Wno-missing-exported-signatures
--Wno-missing-import-lists
--Wno-missed-specialisations
--Wno-all-missed-specialisations
--Wno-unsafe
--Wno-safe
--Wno-missing-local-signatures
--Wno-monomorphism-restriction
--Wno-implicit-prelude
--Werror
-```
-
-A successful build _must_ not trigger any of the enabled warnings.
-
-You _may_ use `{-# OPTIONS_GHC -fno-warn-orphans #-}` on a per-module basis.
+sections. You can put blank lines between groups in each section and sort
+each group independently.
 
 [stylish-haskell]: https://github.com/serokell/serokell-util/blob/master/.stylish-haskell.yaml
 [editorconfig]: https://github.com/serokell/serokell-util/blob/master/.editorconfig
