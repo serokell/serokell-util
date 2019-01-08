@@ -1,3 +1,4 @@
+
 Serokell Haskell Style Guide
 ============================
 
@@ -94,12 +95,11 @@ as the constructor name (also applies to `newtype`).
 data User = User Int String
 ```
 
-Field name for `newtype` _should_ start with `un` or `run` prefix followed by type name.
+Field name for `newtype` _should_ start with `un` or `run` prefix followed by type name
+(motivated by [this discussion](https://www.reddit.com/r/haskell/comments/7rl9hx/newtype_field_naming_getx_vs_runx/)):
 
-* `run` for wrappers with monadic semantic.
-* `un` for wrappers introduced for type safety.
-
-Motivated by [this discussion](https://www.reddit.com/r/haskell/comments/7rl9hx/newtype_field_naming_getx_vs_runx/).
+* `run` for wrappers with monadic semantic
+* `un` for wrappers introduced for type safety
 
 ```haskell
 newtype Coin = Coin { unCoin :: Int }
@@ -198,7 +198,7 @@ data Parser = Parser
 foo :: Int -> Int
 foo n = salt * n + 9
   where
-    salt = 453645243  -- Magic hash salt.
+    salt = 453645243  -- Magic hash salt
 ```
 
 #### Links
@@ -262,6 +262,8 @@ Some clarifications:
    written before functions.
 4. If your export list is empty, you _may_ write in on the same line as
    the `module` declaration.
+
+You _may_ use [`weeder`][weeder] to detect unused exports.
 
 ### Imports
 
@@ -662,8 +664,11 @@ Cabal file formatting
 ### Modules & libraries
 
 Modules and libraries should go in alphabetical order inside corresponding
-sections. You can put blank lines between groups in each section and sort
+sections. You _may_ put blank lines between groups in each section and sort
 each group independently.
+
+You _may_ use [`weeder`][weeder] to detect unused dependencies and exported modules.
 
 [stylish-haskell]: https://github.com/serokell/serokell-util/blob/master/.stylish-haskell.yaml
 [editorconfig]: https://github.com/serokell/serokell-util/blob/master/.editorconfig
+[weeder]: https://hackage.haskell.org/package/weeder
