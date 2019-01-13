@@ -57,6 +57,18 @@ filter p (x:xs)
 
 ### Whitespace
 
+* You _may_ align blocks of code with extra whitespace if alignment
+  emphasizes common structure.
+  ```haskell
+  data WalletApiRecord route = WalletApiRecord
+    { _test      :: route :- WTestApi             -- /test
+    , _wallets   :: route :- WWalletsApi          -- /wallets
+    , _accounts  :: route :- WAccountsApi         -- /accounts
+    , _addresses :: route :- WAddressesApi        -- /addresses
+    , _profile   :: route :- WProfileApi          -- /profile
+    -- ...
+    } deriving Generic
+  ```
 * You _should_ surround binary operators with a single space on either side: `3 + 5`.
   You _may_ choose not to do that to emphasize grouping of terms: `2 + 2*2`.
 * When using currying with binary operators, you _must_ add one space between the argument
