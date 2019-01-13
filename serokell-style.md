@@ -130,12 +130,6 @@ data NetworkConfig = NetworkConfig
   }
 ```
 
-You _should not_ use the
-[`HasField`](https://www.stackage.org/haddock/lts-10.4/base-4.10.1.0/GHC-Records.html#t:HasField)
-type class from GHC's
-[Overloaded Record Fields](https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0002-overloaded-record-fields.rst)
-extension.
-
 #### Library-specific conventions
 
 Add `F` suffix to custom formatters to avoid name conflicts:
