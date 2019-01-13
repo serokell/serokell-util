@@ -10,6 +10,7 @@ We provide some configuration files for popular tools that help maintain code st
 * [`stylish-haskell` config][stylish-haskell]
 * [`hlint` config](https://github.com/serokell/serokell-util/blob/master/.hlint.yaml)
 * [`hlint` config](https://github.com/serokell/serokell-util/blob/master/.hlint-universum.yaml) specific to [`universum`](https://github.com/serokell/universum), our custom Prelude
+* [EditorConfig config][editorconfig]
 
 Note for Serokell people:
 
