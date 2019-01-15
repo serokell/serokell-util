@@ -408,15 +408,6 @@ putValueInState
 
 In other cases place `=` sign on the same line where function definition is.
 
-You _should not_ use `() <$` to ignore the result of function, because it less legible
-than `_ <-` or `void $`.
-
-```haskell
-foo = do
-  _ <- sendCert ourVssCertificate  -- cannot be used as last statement
-  void $ sendTransactionAndReport 1 "tx42"
-```
-
 You _must_ put operator fixity before operator signature:
 
 ```haskell
