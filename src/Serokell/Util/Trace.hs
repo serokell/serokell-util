@@ -21,7 +21,7 @@ class VarArgTrace fmt f | fmt -> f where
     traceIdFHelper :: fmt -> f
 
 instance {-# OVERLAPPING #-}
-         Print p => VarArgTrace (x -> p) (x -> x) where
+         VarArgTrace (x -> Text) (x -> x) where
     traceIdFHelper fmt x = trace (fmt x) x
 
 instance VarArgTrace fmt f => VarArgTrace (a -> fmt) (a -> f) where
