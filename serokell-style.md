@@ -534,19 +534,6 @@ It is suggested to use `-XLambdaCase`. See
 [this discussion](https://github.com/jaspervdj/stylish-haskell/issues/186)
 for some usage examples.
 
-### let expressions
-
-You _should_ put `let` before each variable inside a `do` block.
-But beware of name shadowing (though compiler can help with it).
-
-```haskell
-foo = do
-  let x   = 10
-  let f 1 = 5
-      f _ = 0  -- possible shadowing here with let
-  return $ x + f 2
-```
-
 ## Misc
 
 ### Point-free style
