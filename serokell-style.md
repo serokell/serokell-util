@@ -51,7 +51,7 @@ filter p (x:xs)
 * You _must_ add one blank line between top-level definitions.
 * You _must not_ add any blank lines between type signatures and function definitions.
 * You _should_ add one blank line between definitions in a type class instance
-  declaration or inside a `where` clause if the definitions are large.
+  declaration or inside a `where` clause or `let` block if the definitions are large.
 * You _may_ add blank lines inside a big `do` block to separate logical parts of it.
 * See below for usage of blank lines in the import section.
 
