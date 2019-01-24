@@ -331,7 +331,7 @@ data Person = Person
   } deriving (Eq, Show)
 ```
 
-You _must_ avoid having records with multiple constructors because
+You _must_ not declare records with multiple constructors because
 their getters are partial functions.
 
 As usual, separate type classes with `, ` (comma and a space).
