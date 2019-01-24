@@ -503,15 +503,16 @@ foo =
     else someOtherCode
 ```
 
-You _may_ also write `if-then-else` in imperative style inside do blocks.
+You _may_ also write `if-then-else` in imperative style inside do blocks:
 
 ```haskell
 foo = do
   someCode
-  if condition then do
+  if condition
+  then do
     someMoreCode
     andMore
-  else
+  else  -- you _may_ omit the `do` if the block is a one-liner
     return ()
 ```
 
