@@ -422,8 +422,8 @@ infixl 5 />
 
 ### Pragmas
 
-If you need to use pragmas, you _must_ put them immediately
-after the function that they apply to. Example:
+If you need to use pragmas, you _must_ put them next to
+the function that they apply to. Example:
 
 ```haskell
 id :: a -> a
