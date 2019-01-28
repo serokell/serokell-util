@@ -406,7 +406,7 @@ putValueInState
   mValue@(Just x)
   Config{..}        -- { should go after ctor name without space
   valueModificator
- = do               -- note how this line uses 1-space indentation
+    = do               -- note how this line uses 4-space indentation
   <code goes here>
 ```
 
