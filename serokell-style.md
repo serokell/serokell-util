@@ -186,8 +186,8 @@ Record example:
 ``` haskell
 -- | Person representation used in address book.
 data Person = Person
-  { age  :: Int     -- ^ Age
-  , name :: String  -- ^ First name
+  { pAge  :: Int     -- ^ Age
+  , pName :: String  -- ^ First name
   }
 ```
 
@@ -197,11 +197,11 @@ For fields that require longer comments, format them this way:
 data Record = Record
   { -- | This is a very very very long comment that is split over
     -- multiple lines.
-    field1 :: Text
+    rField1 :: Text
 
     -- | This is a second very very very long comment that is split
     -- over multiple lines.
-  , field2 :: Int
+  , rField2 :: Int
   }
 ```
 
@@ -337,9 +337,9 @@ Format records as follows:
 
 ``` haskell
 data Person = Person
-  { firstName :: String  -- ^ First name
-  , lastName  :: String  -- ^ Last name
-  , age       :: Int     -- ^ Age
+  { pFirstName :: String  -- ^ First name
+  , pLastName  :: String  -- ^ Last name
+  , pAge       :: Int     -- ^ Age
   } deriving (Eq, Show)
 ```
 
