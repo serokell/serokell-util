@@ -1,5 +1,6 @@
 {-# LANGUAGE FlexibleInstances      #-}
 {-# LANGUAGE FunctionalDependencies #-}
+{-# LANGUAGE GADTs                  #-}
 {-# LANGUAGE MultiParamTypeClasses  #-}
 {-# LANGUAGE UndecidableInstances   #-}
 {-# OPTIONS_GHC -fno-warn-warnings-deprecations #-}
@@ -10,18 +11,18 @@ module Serokell.Util.Trace
     ( traceIdF
     ) where
 
-import           Universum
+import Universum
 
-import           Data.Text           (Text)
-import           Formatting          (Format, now, sformat)
-import           Formatting.Internal (runFormat)
+import Data.Text (Text)
+import Formatting (Format, now, sformat)
+import Formatting.Internal (runFormat)
 
 -- | Class for supplying various variable-arguments traces
 class VarArgTrace fmt f | fmt -> f where
     traceIdFHelper :: fmt -> f
 
 instance {-# OVERLAPPING #-}
-         VarArgTrace (x -> Text) (x -> x) where
+         (p ~ Text) => VarArgTrace (x -> p) (x -> x) where
     traceIdFHelper fmt x = trace (fmt x) x
 
 instance VarArgTrace fmt f => VarArgTrace (a -> fmt) (a -> f) where
