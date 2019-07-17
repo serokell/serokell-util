@@ -13,8 +13,8 @@ module Serokell.Util.Trace
 
 import           Universum
 
-import           Data.Text (Text)
-import           Formatting (Format, now, sformat)
+import           Data.Text           (Text)
+import           Formatting          (Format, now, sformat)
 import           Formatting.Internal (runFormat)
 
 -- | Class for supplying various variable-arguments traces
