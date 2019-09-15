@@ -1,3 +1,9 @@
+0.11.0
+=====
+
+* Permit more recent versions of [universum](https://github.com/serokell/universum).
+  As result, `traceIdF` has less general type.
+
 0.10.0
 =====
 

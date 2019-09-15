@@ -1,5 +1,6 @@
 {-# LANGUAGE FlexibleInstances      #-}
 {-# LANGUAGE FunctionalDependencies #-}
+{-# LANGUAGE GADTs                  #-}
 {-# LANGUAGE MultiParamTypeClasses  #-}
 {-# LANGUAGE UndecidableInstances   #-}
 {-# OPTIONS_GHC -fno-warn-warnings-deprecations #-}
@@ -21,7 +22,7 @@ class VarArgTrace fmt f | fmt -> f where
     traceIdFHelper :: fmt -> f
 
 instance {-# OVERLAPPING #-}
-         Print p => VarArgTrace (x -> p) (x -> x) where
+         (p ~ Text) => VarArgTrace (x -> p) (x -> x) where
     traceIdFHelper fmt x = trace (fmt x) x
 
 instance VarArgTrace fmt f => VarArgTrace (a -> fmt) (a -> f) where

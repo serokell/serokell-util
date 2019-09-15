@@ -1,5 +1,5 @@
 name:                serokell-util
-version:             0.10.0
+version:             0.11.0
 synopsis:            General-purpose functions by Serokell
 homepage:            https://github.com/serokell/serokell-util
 license:             MIT
@@ -76,7 +76,7 @@ library
                      , text
                      , th-lift-instances
                      , transformers
-                     , universum ^>= 1.2.0
+                     , universum >= 1.2.0 && < 1.6
                      , unordered-containers >= 0.2.7.0
                      , vector
 
@@ -112,7 +112,7 @@ test-suite serokell-test
                      , quickcheck-instances
                      , scientific
                      , serokell-util
-                     , universum ^>= 1.2.0
+                     , universum >= 1.2.0 && < 1.6
                      , unordered-containers >= 0.2.7.0
                      , vector
   hs-source-dirs:      test
